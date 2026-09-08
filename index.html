@@ -36,8 +36,10 @@
       <nav class="site-nav">
         <a href="#how-it-works" data-i18n="navHow">How It Works</a>
         <a href="#what-we-fix" data-i18n="navFix">What We Fix</a>
+        <a href="#clinic" data-i18n="clinicLabel">Formula Clinic</a>
+        <a href="#calculator" data-i18n="calcLabel">Calculator</a>
+        <a href="#security" data-i18n="securityLabel">Security</a>
         <a href="#pricing" data-i18n="navPricing">Pricing</a>
-        <a href="#guarantee" data-i18n="navGuarantee">Guarantee</a>
       </nav>
 
       <div class="header-cta-group">
@@ -96,6 +98,11 @@
 
         <div class="canvas-drag-hint">
           <span data-i18n="dragHint">👆 Click & drag with mouse to spin in 3D</span>
+        </div>
+
+        <!-- 3D Cell Inspector HUD -->
+        <div id="sheetHudBadge" class="canvas-hud-badge" data-i18n="hudInitial">
+          📍 Hover over any cell to inspect live formula
         </div>
       </div>
 
@@ -226,6 +233,124 @@
   </section>
 
   <!-- =============================================================
+       Interactive Formula Clinic (Before / After Lab)
+  ============================================================= -->
+  <section id="clinic" class="content-section bg-contrast">
+    <div class="content-container">
+      <div class="section-title-wrap">
+        <span class="pill-label" data-i18n="clinicLabel">Interactive Code Comparison</span>
+        <h2 class="section-heading" data-i18n="clinicHeading">Real Spreadsheet Disasters We Remediate</h2>
+        <p class="section-subtext" data-i18n="clinicSubtext">Inspect real before-and-after production spreadsheet overhauls.</p>
+      </div>
+
+      <div class="clinic-box">
+        <div class="clinic-tab-nav" role="tablist">
+          <button class="clinic-tab-btn active" data-clinic-target="clinicPanel1" data-i18n="clinicTab1">
+            #REF! & Broken VLOOKUP
+          </button>
+          <button class="clinic-tab-btn" data-clinic-target="clinicPanel2" data-i18n="clinicTab2">
+            120MB Calculation Freeze
+          </button>
+          <button class="clinic-tab-btn" data-clinic-target="clinicPanel3" data-i18n="clinicTab3">
+            Spaghetti Multi-Branch Pipeline
+          </button>
+        </div>
+
+        <!-- Panel 1 -->
+        <div id="clinicPanel1" class="clinic-tab-panel active">
+          <div class="clinic-diff-grid">
+            <div class="diff-card diff-broken">
+              <span class="diff-tag" data-i18n="clinicTab1BrokenTitle">💥 Fragile Legacy Formula</span>
+              <pre class="diff-code-snippet"><code data-i18n="clinicTab1BrokenCode">=VLOOKUP(A2, "[Budget_2024_OLD.xlsx]Sheet1"!$A:$G, 4, FALSE)</code></pre>
+              <p class="diff-note" data-i18n="clinicTab1BrokenNote">Breaks immediately when columns shift or external workbook path is moved.</p>
+            </div>
+            <div class="diff-card diff-fixed">
+              <span class="diff-tag" data-i18n="clinicTab1FixedTitle">✨ Hardened Modern Architecture</span>
+              <pre class="diff-code-snippet"><code data-i18n="clinicTab1FixedCode">=XLOOKUP(A2, Ledger_Master!A:A, Ledger_Master!D:D, "Missing", 0)</code></pre>
+              <p class="diff-note" data-i18n="clinicTab1FixedNote">Self-healing dynamic array; insensitive to column insertion; zero link rot.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 2 -->
+        <div id="clinicPanel2" class="clinic-tab-panel">
+          <div class="clinic-diff-grid">
+            <div class="diff-card diff-broken">
+              <span class="diff-tag" data-i18n="clinicTab2BrokenTitle">💥 Bloated Uncompressed Cache</span>
+              <pre class="diff-code-snippet"><code data-i18n="clinicTab2BrokenCode">124,000 Unused formatted cells • 118MB size • 14.2s calculation lag</code></pre>
+              <p class="diff-note" data-i18n="clinicTab2BrokenNote">Causes Excel to freeze, memory leak alerts, and accidental corruption.</p>
+            </div>
+            <div class="diff-card diff-fixed">
+              <span class="diff-tag" data-i18n="clinicTab2FixedTitle">✨ Stripped & Optimized Workbook</span>
+              <pre class="diff-code-snippet"><code data-i18n="clinicTab2FixedCode">Clean range bound • 2.4MB size • 0.08s instantaneous calculation</code></pre>
+              <p class="diff-note" data-i18n="clinicTab2FixedNote">Purged phantom styles and corrupted XML parts; opens in sub-second.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 3 -->
+        <div id="clinicPanel3" class="clinic-tab-panel">
+          <div class="clinic-diff-grid">
+            <div class="diff-card diff-broken">
+              <span class="diff-tag" data-i18n="clinicTab3BrokenTitle">💥 4 Hours of Manual Copy-Paste</span>
+              <pre class="diff-code-snippet"><code data-i18n="clinicTab3BrokenCode">Daily manual copy-pasting across 12 branch tabs with typos</code></pre>
+              <p class="diff-note" data-i18n="clinicTab3BrokenNote">High human error rate; impossible to audit changes.</p>
+            </div>
+            <div class="diff-card diff-fixed">
+              <span class="diff-tag" data-i18n="clinicTab3FixedTitle">✨ 1-Click PowerQuery Pipeline</span>
+              <pre class="diff-code-snippet"><code data-i18n="clinicTab3FixedCode">Automated PowerQuery M-code ETL with instant data schema validation</code></pre>
+              <p class="diff-note" data-i18n="clinicTab3FixedNote">One-click background refresh updates entire multi-tab model in 2.1s.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       Interactive ROI & Turnaround Calculator
+  ============================================================= -->
+  <section id="calculator" class="content-section">
+    <div class="content-container">
+      <div class="section-title-wrap">
+        <span class="pill-label" data-i18n="calcLabel">Dynamic Pricing & ROI Estimator</span>
+        <h2 class="section-heading" data-i18n="calcHeading">Estimate Your Turnaround Cost</h2>
+        <p class="section-subtext" data-i18n="calcSubtext">Select how many files require repair to view volume discounts and estimated engineering hours saved.</p>
+      </div>
+
+      <div class="calc-box">
+        <div class="calc-slider-header">
+          <label for="calcFileSlider" class="calc-slider-title" data-i18n="calcSliderLabel">How many spreadsheets do you need fixed?</label>
+          <span id="calcFilesDisplay" class="calc-count-pill tabular">5 Files</span>
+        </div>
+
+        <input type="range" id="calcFileSlider" class="calc-slider" min="1" max="30" value="5" step="1" aria-label="Spreadsheet Count">
+
+        <div class="calc-grid">
+          <div class="calc-stat-item">
+            <div class="calc-stat-label" data-i18n="calcStatCost">Total Investment</div>
+            <div id="calcCostDisplay" class="calc-stat-value highlight-cost tabular">$2.00</div>
+          </div>
+          <div class="calc-stat-item">
+            <div class="calc-stat-label" data-i18n="calcStatHours">Time Saved</div>
+            <div id="calcHoursDisplay" class="calc-stat-value tabular">19.0 hrs</div>
+          </div>
+          <div class="calc-stat-item">
+            <div class="calc-stat-label" data-i18n="calcStatFormulas">Formulas Audited</div>
+            <div id="calcFormulasDisplay" class="calc-stat-value tabular">90+</div>
+          </div>
+        </div>
+
+        <div class="calc-cta-wrap">
+          <button id="calcCtaBtn" class="btn-hero-primary open-modal-btn" data-plan="Calculated Order (5 Files - $2.00)" data-plan-en="Calculated Order (5 Files - $2.00)" data-plan-fa="سفارش محاسبه‌شده (۵ فایل - ۳۰۰,۰۰۰ تومان)" data-i18n="calcCta">
+            Claim This Package ➔
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================
        Simple, Clear Pricing
   ============================================================= -->
   <section id="pricing" class="content-section">
@@ -317,6 +442,45 @@
           </button>
         </div>
 
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       Bank-Grade Confidentiality Protocol (Never-Get-Hacked Architecture)
+  ============================================================= -->
+  <section id="security" class="content-section">
+    <div class="content-container">
+      <div class="section-title-wrap">
+        <span class="pill-label" data-i18n="securityLabel">Bank-Grade Confidentiality Protocol</span>
+        <h2 class="section-heading" data-i18n="securityHeading">Zero Data Leakage Architecture</h2>
+        <p class="section-subtext" data-i18n="securitySubtext">Enterprise-grade precautions protecting your proprietary financial records.</p>
+      </div>
+
+      <div class="security-grid">
+        <div class="security-card">
+          <div class="security-icon-badge">📝</div>
+          <h3 class="security-card-title" data-i18n="sec1Title">Upfront Mutual NDA</h3>
+          <p class="security-card-desc" data-i18n="sec1Desc">Signed legally binding non-disclosure agreement before any file is uploaded or inspected.</p>
+        </div>
+
+        <div class="security-card">
+          <div class="security-icon-badge">🛡️</div>
+          <h3 class="security-card-title" data-i18n="sec2Title">Air-Gapped Offline Audit</h3>
+          <p class="security-card-desc" data-i18n="sec2Desc">Zero AI model ingestion. Client spreadsheets are strictly never processed through public LLMs.</p>
+        </div>
+
+        <div class="security-card">
+          <div class="security-icon-badge">⏳</div>
+          <h3 class="security-card-title" data-i18n="sec3Title">7-Day Ephemeral Storage</h3>
+          <p class="security-card-desc" data-i18n="sec3Desc">Workbooks and interim files are cryptographically wiped after client verification.</p>
+        </div>
+
+        <div class="security-card">
+          <div class="security-icon-badge">🔐</div>
+          <h3 class="security-card-title" data-i18n="sec4Title">SHA-256 Integrity Checks</h3>
+          <p class="security-card-desc" data-i18n="sec4Desc">Every delivered workbook carries cryptographic hash verification ensuring zero tampering.</p>
+        </div>
       </div>
     </div>
   </section>

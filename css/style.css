@@ -958,3 +958,298 @@ a {
 .success-icon {
   font-size: 40px;
 }
+
+/* =============================================================
+   Interactive 3D Canvas HUD
+============================================================= */
+.canvas-hud-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid var(--border-emerald);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--emerald-light);
+  margin-top: 10px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.canvas-hud-badge.is-error {
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #F87171;
+}
+
+/* =============================================================
+   Interactive Micro-Pricing & ROI Calculator
+============================================================= */
+.calc-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-emerald);
+  border-radius: 20px;
+  padding: 36px 32px;
+  max-width: 860px;
+  margin: 40px auto 0 auto;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+
+.calc-slider-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.calc-slider-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.calc-count-pill {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid var(--border-emerald);
+  color: var(--emerald-light);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.calc-slider {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 4px;
+  background: #1E293B;
+  outline: none;
+  margin: 16px 0 28px 0;
+  cursor: pointer;
+}
+
+.calc-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--emerald);
+  border: 2px solid #FFFFFF;
+  cursor: pointer;
+  box-shadow: 0 0 12px var(--emerald-glow);
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.calc-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  background: var(--emerald-light);
+}
+
+.calc-slider:focus-visible {
+  outline: 2px solid var(--emerald);
+  outline-offset: 4px;
+}
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.calc-stat-item {
+  background: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+
+.calc-stat-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.calc-stat-value {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #FFFFFF;
+}
+
+.calc-stat-value.highlight-cost {
+  color: var(--emerald-light);
+}
+
+.calc-cta-wrap {
+  text-align: center;
+}
+
+/* =============================================================
+   Interactive Formula Clinic (Before / After Inspector)
+============================================================= */
+.clinic-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 900px;
+  margin: 36px auto 0 auto;
+}
+
+.clinic-tab-nav {
+  display: flex;
+  gap: 10px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+}
+
+.clinic-tab-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.clinic-tab-btn:hover {
+  border-color: var(--emerald);
+  color: #FFFFFF;
+}
+
+.clinic-tab-btn.active {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: var(--emerald);
+  color: var(--emerald-light);
+}
+
+.clinic-tab-panel {
+  display: none;
+}
+
+.clinic-tab-panel.active {
+  display: block;
+}
+
+.clinic-diff-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 720px) {
+  .clinic-diff-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.diff-card {
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.diff-card.diff-broken {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.diff-card.diff-fixed {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid var(--border-emerald);
+}
+
+.diff-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.diff-broken .diff-tag {
+  color: #F87171;
+}
+
+.diff-fixed .diff-tag {
+  color: var(--emerald-light);
+}
+
+.diff-code-snippet {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #E2E8F0;
+  overflow-x: auto;
+  line-height: 1.4;
+}
+
+.diff-note {
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+}
+
+/* =============================================================
+   Security & Privacy Protocol (Never-Get-Hacked Certified)
+============================================================= */
+.security-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  max-width: 960px;
+  margin: 36px auto 0 auto;
+}
+
+.security-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 20px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.security-card:hover {
+  border-color: var(--border-emerald);
+  transform: translateY(-2px);
+}
+
+.security-icon-badge {
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+}
+
+.security-card-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: 8px;
+}
+
+.security-card-desc {
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}

@@ -1,6 +1,6 @@
 /**
- * SheetFix 3D - Ultra-Clean Interactive 3D Spreadsheet Experience
- * Simple, dramatic, and satisfying: Messy vs. Clean Excel Spreadsheet.
+ * SheetFix 3D - Interactive 3D Spreadsheet Experience
+ * High-performance WebGL scene featuring cell inspection, spring inertia, and before/after metamorphosis.
  */
 
 class SimpleSpreadsheet3D {
@@ -16,13 +16,19 @@ class SimpleSpreadsheet3D {
     this.chaosTokens = [];
     this.cleanTokens = [];
 
-    // Simple 0 (Messy) to 1 (Clean) progress
+    // Interaction & Animation State
     this.cleanProgress = 1.0;
     this.targetClean = 1.0;
     this.isDragging = false;
     this.previousMouseX = 0;
+    this.dragVelocity = 0;
     this.rotationY = 0.5;
     this.targetRotationY = 0.5;
+
+    // Raycasting & Hover State
+    this.raycaster = new THREE.Raycaster();
+    this.mouse = new THREE.Vector2(-999, -999);
+    this.hoveredCell = null;
 
     this.init();
     this.buildSheet();
@@ -81,6 +87,22 @@ class SimpleSpreadsheet3D {
 
     const boxGeo = new THREE.BoxGeometry(cellW, cellH, cellD);
 
+    const colsLetters = ['A', 'B', 'C', 'D', 'E'];
+    const cleanFormulas = [
+      '=XLOOKUP(A2, Ledger!A:A, Ledger!C:C)',
+      '=SUMIFS(C2:C100, B2:B100, ">0")',
+      '=LET(tax, B2*0.09, B2+tax)',
+      '=INDEX(RateTable, MATCH(A2, Codes, 0))',
+      '=LAMBDA(v, v*1.15)(D2)'
+    ];
+    const chaosFormulas = [
+      '#REF! Invalid Column Reference',
+      '#DIV/0! Formula Evaluated to Null',
+      '#VALUE! Expected Numeric Token',
+      'CIRCULAR: Cyclic Loop A2 -> E2 -> A2',
+      '#NAME? Unknown Legacy Macro VLOOKUP'
+    ];
+
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
         const cleanX = startX + c * (cellW + gap);
@@ -92,7 +114,8 @@ class SimpleSpreadsheet3D {
         const mat = new THREE.MeshStandardMaterial({
           color: baseColor,
           roughness: 0.3,
-          metalness: 0.2
+          metalness: 0.2,
+          emissive: new THREE.Color(0x000000)
         });
 
         const cell = new THREE.Mesh(boxGeo, mat);
@@ -109,7 +132,6 @@ class SimpleSpreadsheet3D {
         cell.add(wire);
 
         // Chaotic shattered coordinates
-        const chaosAngle = Math.random() * Math.PI * 2;
         const chaosX = cleanX + (Math.random() - 0.5) * 1.8;
         const chaosY = (Math.random() - 0.5) * 1.4;
         const chaosZ = cleanZ + (Math.random() - 0.5) * 1.8;
@@ -118,14 +140,21 @@ class SimpleSpreadsheet3D {
         const chaosRotY = (Math.random() - 0.5) * 0.9;
         const chaosRotZ = (Math.random() - 0.5) * 0.7;
 
+        const cellAddress = `${colsLetters[c]}${r + 1}`;
+        const cleanF = isHeader ? `Header: Column ${colsLetters[c]}` : cleanFormulas[(r * cols + c) % cleanFormulas.length];
+        const chaosF = isHeader ? `Corrupted Header: ${colsLetters[c]}` : chaosFormulas[(r * cols + c) % chaosFormulas.length];
+
         cell.userData = {
+          cellAddress: cellAddress,
+          cleanFormula: cleanF,
+          chaosFormula: chaosF,
           cleanPos: new THREE.Vector3(cleanX, 0, cleanZ),
           cleanRot: new THREE.Euler(0, 0, 0),
           chaosPos: new THREE.Vector3(chaosX, chaosY, chaosZ),
           chaosRot: new THREE.Euler(chaosRotX, chaosRotY, chaosRotZ),
           cleanColor: baseColor,
           chaosColor: 0x7f1d1d, // Dark burnt red
-          isBroken: Math.random() > 0.5
+          isBroken: Math.random() > 0.4
         };
 
         this.sheetGroup.add(cell);
@@ -213,11 +242,13 @@ class SimpleSpreadsheet3D {
   setupEvents() {
     window.addEventListener('resize', () => this.onResize());
 
-    // Simple Drag to Rotate
     const dom = this.renderer.domElement;
+
+    // Mouse Drag with Inertia Handover (Anti-Slop 05-motion)
     dom.addEventListener('mousedown', (e) => {
       this.isDragging = true;
       this.previousMouseX = e.clientX;
+      this.dragVelocity = 0;
     });
 
     window.addEventListener('mouseup', () => {
@@ -225,10 +256,24 @@ class SimpleSpreadsheet3D {
     });
 
     window.addEventListener('mousemove', (e) => {
-      if (!this.isDragging) return;
-      const deltaX = e.clientX - this.previousMouseX;
-      this.targetRotationY += deltaX * 0.008;
-      this.previousMouseX = e.clientX;
+      // Raycast tracking
+      const rect = dom.getBoundingClientRect();
+      if (
+        e.clientX >= rect.left &&
+        e.clientX <= rect.right &&
+        e.clientY >= rect.top &&
+        e.clientY <= rect.bottom
+      ) {
+        this.mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        this.mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      }
+
+      if (this.isDragging) {
+        const deltaX = e.clientX - this.previousMouseX;
+        this.dragVelocity = deltaX * 0.007;
+        this.targetRotationY += this.dragVelocity;
+        this.previousMouseX = e.clientX;
+      }
     });
 
     // Touch support for mobile/tablets
@@ -236,8 +281,9 @@ class SimpleSpreadsheet3D {
       if (e.touches.length > 0) {
         this.isDragging = true;
         this.previousMouseX = e.touches[0].clientX;
+        this.dragVelocity = 0;
       }
-    });
+    }, { passive: true });
 
     window.addEventListener('touchend', () => {
       this.isDragging = false;
@@ -246,9 +292,10 @@ class SimpleSpreadsheet3D {
     window.addEventListener('touchmove', (e) => {
       if (!this.isDragging || !e.touches[0]) return;
       const deltaX = e.touches[0].clientX - this.previousMouseX;
-      this.targetRotationY += deltaX * 0.008;
+      this.dragVelocity = deltaX * 0.007;
+      this.targetRotationY += this.dragVelocity;
       this.previousMouseX = e.touches[0].clientX;
-    });
+    }, { passive: true });
   }
 
   onResize() {
@@ -263,10 +310,14 @@ class SimpleSpreadsheet3D {
   setMode(mode) {
     if (mode === 'clean') {
       this.targetClean = 1.0;
-      if (window.soundEngine) window.soundEngine.playChime();
+      if (window.soundEngine && typeof window.soundEngine.playChime === 'function') {
+        window.soundEngine.playChime();
+      }
     } else {
       this.targetClean = 0.0;
-      if (window.soundEngine) window.soundEngine.playGlitch();
+      if (window.soundEngine && typeof window.soundEngine.playGlitch === 'function') {
+        window.soundEngine.playGlitch();
+      }
     }
   }
 
@@ -278,13 +329,66 @@ class SimpleSpreadsheet3D {
     // Smooth Morph
     this.cleanProgress += (this.targetClean - this.cleanProgress) * 0.09;
 
-    // Smooth Rotation
+    // Smooth Rotation with spring inertia damping
     this.rotationY += (this.targetRotationY - this.rotationY) * 0.1;
-    if (!this.isDragging) {
-      this.targetRotationY += 0.004; // subtle idle spin
+    if (this.isDragging) {
+      // User driving rotation
+    } else if (Math.abs(this.dragVelocity) > 0.0001) {
+      this.targetRotationY += this.dragVelocity;
+      this.dragVelocity *= 0.92; // decay
+    } else {
+      this.targetRotationY += 0.003; // idle slow spin
     }
+
     if (this.sheetGroup) {
       this.sheetGroup.rotation.y = this.rotationY;
+    }
+
+    // Interactive Raycasting on Cells
+    this.raycaster.setFromCamera(this.mouse, this.camera);
+    const intersects = this.raycaster.intersectObjects(this.cells);
+    const hud = document.getElementById('sheetHudBadge');
+
+    if (intersects.length > 0) {
+      const hitCell = intersects[0].object;
+      if (this.hoveredCell !== hitCell) {
+        if (this.hoveredCell && this.hoveredCell.material) {
+          this.hoveredCell.material.emissive.setHex(0x000000);
+        }
+        this.hoveredCell = hitCell;
+        if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
+          window.soundEngine.playClick();
+        }
+      }
+
+      const isClean = (this.cleanProgress > 0.5);
+      const emissiveColor = isClean ? 0x059669 : 0x991B1B;
+      hitCell.material.emissive.setHex(emissiveColor);
+
+      if (hud) {
+        const addr = hitCell.userData.cellAddress || 'Cell';
+        const formula = isClean ? hitCell.userData.cleanFormula : hitCell.userData.chaosFormula;
+        hud.textContent = `📍 [${addr}]: ${formula}`;
+        if (!isClean) {
+          hud.classList.add('is-error');
+        } else {
+          hud.classList.remove('is-error');
+        }
+      }
+    } else {
+      if (this.hoveredCell && this.hoveredCell.material) {
+        this.hoveredCell.material.emissive.setHex(0x000000);
+        this.hoveredCell = null;
+      }
+      if (hud && !hud.dataset.manual) {
+        const isClean = (this.cleanProgress > 0.5);
+        hud.textContent = isClean ? '📍 Hover over any cell to inspect live formula' : '⚠️ Warning: Cascading formula errors detected';
+        if (!isClean) {
+          hud.classList.add('is-error');
+        } else {
+          hud.classList.remove('is-error');
+        }
+      }
     }
 
     // Animate Cells

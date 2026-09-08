@@ -1,5 +1,6 @@
 /**
- * SheetFix 3D - Streamlined Application Controller with Bilingual Support (EN / FA)
+ * SheetFix 3D - Application Controller
+ * Bilingual (EN / FA), 3D Canvas integration, Interactive Pricing Calculator, and Formula Clinic.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -65,6 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.dataset.plan = btn.dataset.planEn;
       }
     });
+
+    // Refresh Calculator
+    updateCalculator(calcSlider ? calcSlider.value : 1);
   }
 
   // Language Toggle Button Click
@@ -73,7 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
     langToggleBtn.addEventListener('click', () => {
       const nextLang = (currentLang === 'fa' ? 'en' : 'fa');
       setLanguage(nextLang);
-      if (window.soundEngine) window.soundEngine.playClick();
+      if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
+        window.soundEngine.playClick();
+      }
     });
   }
 
@@ -116,29 +122,35 @@ document.addEventListener('DOMContentLoaded', () => {
   // 5. Modal Open & Close
   const modal = document.getElementById('bookingModal');
   const closeBtn = document.getElementById('closeModalBtn');
-  const openBtns = document.querySelectorAll('.open-modal-btn');
   const form = document.getElementById('simpleBookingForm');
   const successBox = document.getElementById('modalSuccessMsg');
 
-  openBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const plan = btn.dataset.plan;
-      const notesInput = document.getElementById('sheetNotes');
-      if (notesInput && plan) {
-        notesInput.value = (currentLang === 'fa' ? `بسته انتخابی: ${plan}. ` : `Selected Package: ${plan}. `);
-      }
-      if (modal) {
-        modal.classList.add('open');
-        if (window.soundEngine) window.soundEngine.playClick();
-      }
+  function wireModalTriggers() {
+    document.querySelectorAll('.open-modal-btn').forEach(btn => {
+      btn.onclick = (e) => {
+        e.preventDefault();
+        const plan = btn.dataset.plan;
+        const notesInput = document.getElementById('sheetNotes');
+        if (notesInput && plan) {
+          notesInput.value = (currentLang === 'fa' ? `بسته انتخابی: ${plan}. ` : `Selected Package: ${plan}. `);
+        }
+        if (modal) {
+          modal.classList.add('open');
+          if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
+            window.soundEngine.playClick();
+          }
+        }
+      };
     });
-  });
+  }
+  wireModalTriggers();
 
   if (closeBtn && modal) {
     closeBtn.addEventListener('click', () => {
       modal.classList.remove('open');
-      if (window.soundEngine) window.soundEngine.playClick();
+      if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
+        window.soundEngine.playClick();
+      }
     });
   }
 
@@ -181,13 +193,103 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      if (window.soundEngine) window.soundEngine.playSuccess();
+      if (window.soundEngine && typeof window.soundEngine.playSuccess === 'function') {
+        window.soundEngine.playSuccess();
+      }
       form.style.display = 'none';
-      if (successBox) successBox.style.display = 'flex';
+      if (successBox) {
+        successBox.classList.remove('is-hidden');
+        successBox.style.display = 'flex';
+      }
     });
   }
 
-  // 7. Smooth Scroll
+  // 7. Interactive Micro-Pricing & ROI Calculator
+  const calcSlider = document.getElementById('calcFileSlider');
+  const calcFilesDisplay = document.getElementById('calcFilesDisplay');
+  const calcCostDisplay = document.getElementById('calcCostDisplay');
+  const calcHoursDisplay = document.getElementById('calcHoursDisplay');
+  const calcFormulasDisplay = document.getElementById('calcFormulasDisplay');
+  const calcCtaBtn = document.getElementById('calcCtaBtn');
+
+  function updateCalculator(count) {
+    const files = parseInt(count, 10) || 1;
+    if (calcFilesDisplay) {
+      calcFilesDisplay.textContent = currentLang === 'fa' ? `${files} فایل` : `${files} ${files === 1 ? 'File' : 'Files'}`;
+    }
+
+    // Micro-pricing computation
+    let costText = '';
+    let costVal = 0;
+    if (currentLang === 'fa') {
+      let unitPrice = 75000;
+      if (files >= 15) unitPrice = 50000;
+      else if (files >= 5) unitPrice = 60000;
+      costVal = files * unitPrice;
+      costText = `${costVal.toLocaleString('fa-IR')} تومان`;
+    } else {
+      let unitPrice = 0.50;
+      if (files >= 15) unitPrice = 0.3333;
+      else if (files >= 5) unitPrice = 0.40;
+      costVal = (files * unitPrice).toFixed(2);
+      costText = `$${costVal}`;
+    }
+
+    if (calcCostDisplay) calcCostDisplay.textContent = costText;
+
+    const hoursSaved = (files * 3.8).toFixed(1);
+    const formulasFixed = files * 18;
+
+    if (calcHoursDisplay) {
+      calcHoursDisplay.textContent = currentLang === 'fa' ? `${Number(hoursSaved).toLocaleString('fa-IR')} ساعت` : `${hoursSaved} hrs`;
+    }
+    if (calcFormulasDisplay) {
+      calcFormulasDisplay.textContent = currentLang === 'fa' ? `${Number(formulasFixed).toLocaleString('fa-IR')}+` : `${formulasFixed}+`;
+    }
+
+    if (calcCtaBtn) {
+      const planName = currentLang === 'fa'
+        ? `سفارش محاسبه‌شده (${files} فایل - ${costText})`
+        : `Calculated Order (${files} Files - ${costText})`;
+      calcCtaBtn.dataset.plan = planName;
+      calcCtaBtn.dataset.planEn = `Calculated Order (${files} Files - $${costVal})`;
+      calcCtaBtn.dataset.planFa = `سفارش محاسبه‌شده (${files} فایل - ${costText})`;
+    }
+  }
+
+  if (calcSlider) {
+    calcSlider.addEventListener('input', (e) => {
+      updateCalculator(e.target.value);
+    });
+    calcSlider.addEventListener('change', () => {
+      if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
+        window.soundEngine.playClick();
+      }
+    });
+  }
+
+  // 8. Interactive Formula Clinic Tab Switcher
+  const clinicTabBtns = document.querySelectorAll('.clinic-tab-btn');
+  const clinicPanels = document.querySelectorAll('.clinic-tab-panel');
+
+  clinicTabBtns.forEach(tabBtn => {
+    tabBtn.addEventListener('click', () => {
+      clinicTabBtns.forEach(b => b.classList.remove('active'));
+      clinicPanels.forEach(p => p.classList.remove('active'));
+
+      tabBtn.classList.add('active');
+      const targetId = tabBtn.dataset.clinicTarget;
+      const targetPanel = document.getElementById(targetId);
+      if (targetPanel) {
+        targetPanel.classList.add('active');
+      }
+      if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
+        window.soundEngine.playClick();
+      }
+    });
+  });
+
+  // 9. Smooth Scroll
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', function(e) {
       const targetId = this.getAttribute('href');
@@ -196,7 +298,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (el) {
         e.preventDefault();
         el.scrollIntoView({ behavior: 'smooth' });
-        if (window.soundEngine) window.soundEngine.playClick();
+        if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
+          window.soundEngine.playClick();
+        }
       }
     });
   });

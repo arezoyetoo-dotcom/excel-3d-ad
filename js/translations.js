@@ -22,6 +22,7 @@ window.SHEETFIX_I18N = {
     chaosPill: "💥 Messy & Broken (#REF!)",
     cleanPill: "✨ Clean & Organized (Fixed)",
     dragHint: "👆 Click & drag with mouse to spin in 3D",
+    hudInitial: "📍 Hover over any cell to inspect live formula",
     
     heroCtaPrimary: "Fix My Sheet for $0.50 ➔",
     heroCtaSecondary: "See How It Works ↓",
@@ -52,7 +53,60 @@ window.SHEETFIX_I18N = {
     
     fix4Title: "Ugly, Unreadable Wall of Plain Numbers",
     fix4Desc: "We design an executive-ready visual dashboard with clear KPI cards, drill-downs, and clean formatting your investors and boss will love.",
+
+    // Formula Clinic
+    clinicLabel: "Interactive Code Comparison",
+    clinicHeading: "Real Spreadsheet Disasters We Remediate",
+    clinicSubtext: "Inspect real before-and-after production spreadsheet overhauls.",
+    clinicTab1: "#REF! & Broken VLOOKUP",
+    clinicTab2: "120MB Calculation Freeze",
+    clinicTab3: "Spaghetti Multi-Branch Pipeline",
     
+    clinicTab1BrokenTitle: "💥 Fragile Legacy Formula",
+    clinicTab1BrokenCode: '=VLOOKUP(A2, "[Budget_2024_OLD.xlsx]Sheet1"!$A:$G, 4, FALSE)',
+    clinicTab1BrokenNote: "Breaks immediately when columns shift or external workbook path is moved.",
+    clinicTab1FixedTitle: "✨ Hardened Modern Architecture",
+    clinicTab1FixedCode: '=XLOOKUP(A2, Ledger_Master!A:A, Ledger_Master!D:D, "Missing", 0)',
+    clinicTab1FixedNote: "Self-healing dynamic array; insensitive to column insertion; zero link rot.",
+
+    clinicTab2BrokenTitle: "💥 Bloated Uncompressed Cache",
+    clinicTab2BrokenCode: "124,000 Unused formatted cells • 118MB size • 14.2s calculation lag",
+    clinicTab2BrokenNote: "Causes Excel to freeze, memory leak alerts, and accidental corruption.",
+    clinicTab2FixedTitle: "✨ Stripped & Optimized Workbook",
+    clinicTab2FixedCode: "Clean range bound • 2.4MB size • 0.08s instantaneous calculation",
+    clinicTab2FixedNote: "Purged phantom styles and corrupted XML parts; opens in sub-second.",
+
+    clinicTab3BrokenTitle: "💥 4 Hours of Manual Copy-Paste",
+    clinicTab3BrokenCode: "Daily manual copy-pasting across 12 branch tabs with typos",
+    clinicTab3BrokenNote: "High human error rate; impossible to audit changes.",
+    clinicTab3FixedTitle: "✨ 1-Click PowerQuery Pipeline",
+    clinicTab3FixedCode: "Automated PowerQuery M-code ETL with instant data schema validation",
+    clinicTab3FixedNote: "One-click background refresh updates entire multi-tab model in 2.1s.",
+
+    // Calculator
+    calcLabel: "Dynamic Pricing & ROI Estimator",
+    calcHeading: "Estimate Your Turnaround Cost",
+    calcSubtext: "Select how many files require repair to view volume discounts and estimated engineering hours saved.",
+    calcSliderLabel: "How many spreadsheets do you need fixed?",
+    calcStatCost: "Total Investment",
+    calcStatHours: "Time Saved",
+    calcStatFormulas: "Formulas Audited",
+    calcCta: "Claim This Package ➔",
+
+    // Security Blueprint
+    securityLabel: "Bank-Grade Confidentiality Protocol",
+    securityHeading: "Zero Data Leakage Architecture",
+    securitySubtext: "Enterprise-grade precautions protecting your proprietary financial records.",
+    sec1Title: "Upfront Mutual NDA",
+    sec1Desc: "Signed legally binding non-disclosure agreement before any file is uploaded or inspected.",
+    sec2Title: "Air-Gapped Offline Audit",
+    sec2Desc: "Zero AI model ingestion. Client spreadsheets are strictly never processed through public LLMs.",
+    sec3Title: "7-Day Ephemeral Storage",
+    sec3Desc: "Workbooks and interim files are cryptographically wiped after client verification.",
+    sec4Title: "SHA-256 Integrity Checks",
+    sec4Desc: "Every delivered workbook carries cryptographic hash verification ensuring zero tampering.",
+    
+    // Pricing
     pricingLabel: "Ultra-Affordable Micro Pricing",
     pricingHeading: "Just 50¢ Per Spreadsheet",
     pricingSubtext: "No expensive agency retainers. Fix single spreadsheets for pocket change, or grab a multi-pack for extra volume savings.",
@@ -135,6 +189,7 @@ window.SHEETFIX_I18N = {
     chaosPill: "💥 به هم ریخته و دارای خطا (#REF!)",
     cleanPill: "✨ تمیز، مهندسی و مرتب شده",
     dragHint: "👆 برای چرخش سه‌بعدی، با ماوس کلیک کنید و بچرخانید",
+    hudInitial: "📍 برای مشاهده فرمول هر سلول، ماوس را روی آن ببرید",
     
     heroCtaPrimary: "اصلاح فایل اکسل با ۷۵,۰۰۰ تومان ➔",
     heroCtaSecondary: "مشاهده مراحل کار ↓",
@@ -165,7 +220,60 @@ window.SHEETFIX_I18N = {
     
     fix4Title: "کوهی از اعداد نامفهوم بدون داشبورد",
     fix4Desc: "طراحی داشبورد بصری مدیریتی با کارت‌های شاخص کلیدی عملکرد (KPI)، نمودارهای مقایسه‌ای و ظاهری آراسته که مدیران و سهامداران تحسین خواهند کرد.",
+
+    // Formula Clinic
+    clinicLabel: "آزمایشگاه مقایسه قبل و بعد فرمول‌ها",
+    clinicHeading: "نمونه خطاهای رایج که اصلاح می‌کنیم",
+    clinicSubtext: "مقایسه فرمول‌های شکننده قدیمی با ساختار مهندسی‌شده و مدرن.",
+    clinicTab1: "خطای #REF! و VLOOKUP",
+    clinicTab2: "فایل سنگین و هنگ محاسبات",
+    clinicTab3: "یکپارچه‌سازی شعب",
     
+    clinicTab1BrokenTitle: "💥 فرمول شکننده و پرخطا",
+    clinicTab1BrokenCode: '=VLOOKUP(A2, "[Budget_OLD.xlsx]Sheet1"!$A:$G, 4, FALSE)',
+    clinicTab1BrokenNote: "با افزودن یا جابه‌جایی حتی یک ستون، کل مدل مالی با خطای #REF! مواجه می‌شود.",
+    clinicTab1FixedTitle: "✨ معماری مدرن و خودترمیم",
+    clinicTab1FixedCode: '=XLOOKUP(A2, Ledger_Master!A:A, Ledger_Master!D:D, "ناموجود", 0)',
+    clinicTab1FixedNote: "تابع پیشرفته XLOOKUP که با جابه‌جایی ستون‌ها هرگز خراب نمی‌شود و سرعت ۲ برابری دارد.",
+
+    clinicTab2BrokenTitle: "💥 حجم سنگین و هنگ ۵ دقیقه‌ای",
+    clinicTab2BrokenCode: "۱۲۴,۰۰۰ سلول با استایل‌های نامرئی • ۱۱۸ مگابایت حجم • ۱۴ ثانیه فریز در هر محاسبه",
+    clinicTab2BrokenNote: "باعث هنگ دائم سیستم، خطای کمبود حافظه و خطر خرابی کامل فایل می‌شود.",
+    clinicTab2FixedTitle: "✨ بهینه‌سازی و پاکسازی عمیق",
+    clinicTab2FixedCode: "محدوده محاسباتی پاکسازی‌شده • ۲.۴ مگابایت حجم • ۰.۰۸ ثانیه محاسبه آنی",
+    clinicTab2FixedNote: "حذف کامل کَش‌ها و استایل‌های مخرب؛ باز شدن فایل در کسری از ثانیه.",
+
+    clinicTab3BrokenTitle: "💥 ساعت‌ها کپی و پیست دستی",
+    clinicTab3BrokenCode: "ورود دستی داده‌های ۱۲ شعبه در شیت‌های مجزا همراه با خطای انسانی",
+    clinicTab3BrokenNote: "خسته‌کننده، زمان‌بر و غیرقابل رهگیری.",
+    clinicTab3FixedTitle: "✨ خط لوله خودکار PowerQuery",
+    clinicTab3FixedCode: "اتصال هوشمند داده‌ها با خط لوله PowerQuery و به‌روزرسانی ۱ کلیکی",
+    clinicTab3FixedNote: "کل مدل و جدول‌های تلفیقی با ۱ کلیک در ۲ ثانیه به‌طور خودکار تازه‌سازی می‌شوند.",
+
+    // Calculator
+    calcLabel: "محاسبه‌گر هوشمند هزینه و صرفه‌جویی زمان",
+    calcHeading: "محاسبه آنلاین تعرفه و بازگشت سرمایه",
+    calcSubtext: "تعداد فایل‌های اکسل خود را مشخص کنید تا هزینه نهایی و میزان صرفه‌جویی زمان را مشاهده کنید.",
+    calcSliderLabel: "چند فایل اکسل برای ساماندهی دارید؟",
+    calcStatCost: "مبلغ نهایی",
+    calcStatHours: "صرفه‌جویی در زمان",
+    calcStatFormulas: "سلول و فرمول بررسی‌شده",
+    calcCta: "ثبت سفارش با این تعرفه ➔",
+
+    // Security Blueprint
+    securityLabel: "پروتکل امنیت و محرمانگی داده‌ها",
+    securityHeading: "معماری حفظ کامل محرمانگی اطلاعات",
+    securitySubtext: "استانداردهای حفاظتی شرکتی برای امنیت اسناد مالی و تجاری شما.",
+    sec1Title: "امضای قرارداد رسمی NDA",
+    sec1Desc: "انعقاد قرارداد الزام‌آور حقوقی حفظ محرمانگی پیش از دریافت هرگونه فایل.",
+    sec2Title: "محیط ایزوله آفلاین",
+    sec2Desc: "عدم استفاده از مدل‌های هوش مصنوعی عمومی. داده‌های مالی شما محرمانه می‌ماند.",
+    sec3Title: "حذف خودکار پس از ۷ روز",
+    sec3Desc: "تمام فایل‌ها پس از تایید تحویل، به شکل رمزنگاری‌شده و غیرقابل بازیابی پاکسازی می‌شوند.",
+    sec4Title: "تطبیق یکپارچگی SHA-256",
+    sec4Desc: "بررسی صحت فایل با توابع درهم‌ساز کریپتوگرافیک جهت اطمینان از اصالت اسناد.",
+    
+    // Pricing
     pricingLabel: "تعرفه‌های اقتصادی بر پایه هر فایل",
     pricingHeading: "فقط ۷۵,۰۰۰ تومان به ازای هر فایل اکسل",
     pricingSubtext: "بدون قراردادهای سنگین؛ فایل‌های اکسل خود را فقط با ۷۵ هزار تومان اصلاح کنید و در بسته‌های چندتایی تخفیف بیشتر بگیرید.",
