@@ -57,6 +57,12 @@ html[dir="rtl"] .input-wrap {
   text-align: right;
 }
 
+html[lang="fa"] .price-figure {
+  font-family: 'Vazirmatn', sans-serif;
+  font-size: 2.3rem;
+  letter-spacing: -0.02em;
+}
+
 /* Background glow */
 body::before {
   content: '';

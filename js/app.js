@@ -56,6 +56,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (soundBtn && window.soundEngine) {
       soundBtn.textContent = window.soundEngine.isMuted ? dict.soundOff : dict.soundOn;
     }
+
+    // Update data-plan attributes on interactive buttons
+    document.querySelectorAll('[data-plan]').forEach(btn => {
+      if (lang === 'fa' && btn.dataset.planFa) {
+        btn.dataset.plan = btn.dataset.planFa;
+      } else if (lang === 'en' && btn.dataset.planEn) {
+        btn.dataset.plan = btn.dataset.planEn;
+      }
+    });
   }
 
   // Language Toggle Button Click
