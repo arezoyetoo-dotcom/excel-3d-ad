@@ -6,6 +6,11 @@
   <title id="docTitle">SheetFix 3D • We Fix & Organize Your Messy Excel Sheets in 24h</title>
   <meta name="description" content="Send us your broken, slow, chaotic spreadsheets. We clean, restructure, and automate them into fast, beautiful models in 24 hours.">
 
+  <!-- Security Meta Policies (CSP & Hardening) -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self';">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2310B981'/><text y='.72em' x='50%' text-anchor='middle' font-size='60' fill='%23000' font-family='sans-serif' font-weight='900'>XLS</text></svg>">
 
@@ -363,20 +368,20 @@
         <p class="modal-sub" data-i18n="modalSub">Tell us about your sheet and we'll reply within 2 hours with an upfront NDA and intake link.</p>
       </div>
 
-      <form id="simpleBookingForm" class="modal-form">
+      <form id="simpleBookingForm" class="modal-form" autocomplete="on">
         <div class="input-wrap">
           <label for="clientName" data-i18n="modalNameLabel">Your Name</label>
-          <input type="text" id="clientName" placeholder="e.g. Sarah Jenkins" required>
+          <input type="text" id="clientName" placeholder="e.g. Sarah Jenkins" maxlength="80" required autocomplete="name">
         </div>
 
         <div class="input-wrap">
           <label for="clientEmail" data-i18n="modalEmailLabel">Work Email (Strictly Confidential)</label>
-          <input type="email" id="clientEmail" placeholder="sarah@company.com" required>
+          <input type="email" id="clientEmail" placeholder="sarah@company.com" maxlength="100" required autocomplete="email">
         </div>
 
         <div class="input-wrap">
           <label for="sheetNotes" data-i18n="modalNotesLabel">What is wrong with your spreadsheet?</label>
-          <textarea id="sheetNotes" placeholder="e.g. 5 tabs, broken #REF! formulas in the budget model, file freezes when saving..." rows="3" required></textarea>
+          <textarea id="sheetNotes" placeholder="e.g. 5 tabs, broken #REF! formulas in the budget model, file freezes when saving..." rows="3" maxlength="1000" required></textarea>
         </div>
 
         <button type="submit" class="btn-hero-primary" style="width: 100%; justify-content: center;" data-i18n="modalSubmitBtn">

@@ -150,10 +150,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 6. Form Submit
+  // 6. Form Submit with Defensive Input Sanitization & Validation
+  function sanitizeInput(str) {
+    if (typeof str !== 'string') return '';
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#x27;')
+      .trim();
+  }
+
   if (form) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
+
+      const nameInput = document.getElementById('clientName');
+      const emailInput = document.getElementById('clientEmail');
+      const notesInput = document.getElementById('sheetNotes');
+
+      const name = sanitizeInput(nameInput ? nameInput.value : '');
+      const email = sanitizeInput(emailInput ? emailInput.value : '');
+      const notes = sanitizeInput(notesInput ? notesInput.value : '');
+
+      // Strict validation checks
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!name || name.length > 80 || !email || !emailRegex.test(email) || !notes || notes.length > 1000) {
+        alert(currentLang === 'fa' ? 'لطفاً اطلاعات فرم را به درستی وارد نمایید.' : 'Please provide valid information.');
+        return;
+      }
+
       if (window.soundEngine) window.soundEngine.playSuccess();
       form.style.display = 'none';
       if (successBox) successBox.style.display = 'flex';
