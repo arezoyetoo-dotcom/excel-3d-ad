@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="docTitle">شیت‌فیکس سه‌بعدی • ساماندهی و نجات فایل‌های اکسل در ۲۴ ساعت</title>
+  <meta name="description" content="فرمول‌های خراب، فایل‌های سنگین و جدول‌های شلخته را برای ما بفرستید؛ یک مدل سریع، تمیز، خودکار و بدون خطا در ۲۴ ساعت تحویل بگیرید.">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2310B981'/><text y='.72em' x='50%' text-anchor='middle' font-size='60' fill='%23000' font-family='sans-serif' font-weight='900'>XLS</text></svg>">
+
+  <!-- Fonts (Vazirmatn & JetBrains Mono) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- =============================================================
+       Clean Header with Language Switcher
+  ============================================================= -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="#" class="site-logo">
+        <span class="logo-icon">📊</span>
+        <span class="logo-text"><span data-i18n="logoText">شیت‌فیکس</span> <strong>3D</strong></span>
+      </a>
+
+      <nav class="site-nav">
+        <a href="#how-it-works" data-i18n="navHow">مراحل کار</a>
+        <a href="#what-we-fix" data-i18n="navFix">چه مواردی را حل می‌کنیم؟</a>
+        <a href="#pricing" data-i18n="navPricing">تعرفه‌ها</a>
+        <a href="#guarantee" data-i18n="navGuarantee">ضمانت بازگشت وجه</a>
+      </nav>
+
+      <div class="header-cta-group">
+        <!-- Language Switcher Button -->
+        <button id="langToggle" class="btn-lang" title="Switch Language / تغییر زبان">
+          <span>🌐</span> <strong id="langText">English (EN)</strong>
+        </button>
+
+        <!-- Sound Toggle -->
+        <button id="soundToggle" class="btn-sound" title="قطع و وصل صدا">
+          🔊 صدا: روشن
+        </button>
+
+        <!-- CTA -->
+        <button class="btn-nav-action open-modal-btn" data-i18n="navCta">
+          اصلاح فایل در ۲۴ ساعت ➔
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =============================================================
+       Hero Section (Clean, Big & 3D)
+  ============================================================= -->
+  <section class="hero-section">
+    <div class="hero-container">
+      
+      <!-- Headline & Tagline -->
+      <div class="hero-heading-block">
+        <div class="hero-badge" data-i18n="heroBadge">⚡ تحویل سریع ۲۴ ساعته • قیمت کاملاً شفاف و مقطوع</div>
+        <h1 class="hero-main-title" data-i18n-html="heroTitle">
+          فایل‌های اکسل شما به هم ریخته است؟<br>
+          <span class="highlight-emerald">ما در ۲۴ ساعت نجاتش می‌دهیم.</span>
+        </h1>
+        <p class="hero-subline" data-i18n-html="heroSubline">
+          فرمول‌های خراب، فایل‌های سنگین و جدول‌های شلخته را برای ما بفرستید؛<br>
+          یک مدل سریع، تمیز، خودکار و بدون خطای محاسباتی تحویل بگیرید.
+        </p>
+      </div>
+
+      <!-- 3D Interactive Stage -->
+      <div class="hero-3d-wrapper">
+        
+        <!-- 3D Canvas -->
+        <div id="simple3dCanvas" class="simple-3d-canvas"></div>
+
+        <!-- Single Prominent 3D Toggle -->
+        <div class="mode-toggle-bar">
+          <button id="modeChaosBtn" class="toggle-pill pill-chaos" data-i18n="chaosPill">
+            <span>💥</span> به هم ریخته و دارای خطا (#REF!)
+          </button>
+          <button id="modeCleanBtn" class="toggle-pill pill-clean active" data-i18n="cleanPill">
+            <span>✨</span> تمیز، مهندسی و مرتب شده
+          </button>
+        </div>
+
+        <div class="canvas-drag-hint">
+          <span data-i18n="dragHint">👆 برای چرخش سه‌بعدی، با ماوس کلیک کنید و بچرخانید</span>
+        </div>
+      </div>
+
+      <!-- Hero Actions -->
+      <div class="hero-action-row">
+        <button class="btn-hero-primary open-modal-btn" data-i18n="heroCtaPrimary">
+          ارسال فایل و اصلاح اکسل ➔
+        </button>
+        <a href="#how-it-works" class="btn-hero-secondary" data-i18n="heroCtaSecondary">
+          مشاهده مراحل کار ↓
+        </a>
+      </div>
+
+      <div class="hero-trust-note">
+        <span data-i18n="heroTrust">🔒 امضای قرارداد محرمانگی اطلاعات (NDA) قبل از دریافت فایل. در صورت عدم رضایت ۱۰۰٪ وجه بازگردانده می‌شود.</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =============================================================
+       How It Works in 3 Simple Steps
+  ============================================================= -->
+  <section id="how-it-works" class="content-section">
+    <div class="content-container">
+      <div class="section-title-wrap">
+        <span class="pill-label" data-i18n="stepsLabel">فرآیند ساده ۳ مرحله‌ای</span>
+        <h2 class="section-heading" data-i18n="stepsHeading">شیت‌فیکس چگونه کار می‌کند؟</h2>
+        <p class="section-subtext" data-i18n="stepsSubtext">نیازی به یادگیری نرم‌افزار جدید یا جلسات بی‌پایان نیست. فقط فایلتان را بفرستید و نسخه مرتب را تحویل بگیرید.</p>
+      </div>
+
+      <div class="steps-grid">
+        
+        <div class="step-card">
+          <div class="step-num">۰۱</div>
+          <div class="step-icon">📤</div>
+          <h3 class="step-title" data-i18n="step1Title">۱. ارسال فایل اکسل</h3>
+          <p class="step-desc" data-i18n="step1Desc">
+            فایل اکسل یا گوگل‌شیت خود را بارگذاری کنید. قبل از باز کردن فایل، قرارداد رسمی حفظ محرمانگی (NDA) امضا می‌شود.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">۰۲</div>
+          <div class="step-icon">⚡</div>
+          <h3 class="step-title" data-i18n="step2Title">۲. اصلاح و مهندسی کامل</h3>
+          <p class="step-desc" data-i18n="step2Desc">
+            معماران ارشد اکسل فرمول‌های خراب را بازسازی، کندی فایل را حذف، داده‌های تکراری را پاکسازی و داشبورد مدیریتی طراحی می‌کنند.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">۰۳</div>
+          <div class="step-icon">💎</div>
+          <h3 class="step-title" data-i18n="step3Title">۳. تحویل در ۲۴ ساعت</h3>
+          <p class="step-desc" data-i18n="step3Desc">
+            یک فایل اکسل پرسرعت، بدون خطا و زیبا همراه با یک ویدیوی توضیحی ۳ دقیقه‌ای از تمام اصلاحات تحویل بگیرید.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       What We Fix (Concrete & Visual)
+  ============================================================= -->
+  <section id="what-we-fix" class="content-section bg-contrast">
+    <div class="content-container">
+      <div class="section-title-wrap">
+        <span class="pill-label" data-i18n="fixLabel">دردسرهایی که حل می‌کنیم</span>
+        <h2 class="section-heading" data-i18n="fixHeading">چه مشکلاتی را روزانه برطرف می‌کنیم؟</h2>
+        <p class="section-subtext" data-i18n="fixSubtext">دیگر نگران فایل‌های اکسل شکننده و پرخطا نباشید.</p>
+      </div>
+
+      <div class="fixes-grid">
+        
+        <div class="fix-box">
+          <div class="fix-header">
+            <span class="fix-tag tag-bad">قبل از شیت‌فیکس</span>
+            <span class="fix-arrow">➔</span>
+            <span class="fix-tag tag-good">بعد از اصلاح</span>
+          </div>
+          <h3 class="fix-title" data-i18n="fix1Title">خطاهای فرمولی #REF! و #VALUE!</h3>
+          <p class="fix-desc" data-i18n-html="fix1Desc">
+            جایگزینی فرمول‌های قدیمی و شکننده VLOOKUP با توابع مدرن و قدرتمند <code>=XLOOKUP</code> و آرایه‌های پویا که با جابه‌جایی سطرها خراب نمی‌شوند.
+          </p>
+        </div>
+
+        <div class="fix-box">
+          <div class="fix-header">
+            <span class="fix-tag tag-bad">قبل از شیت‌فیکس</span>
+            <span class="fix-arrow">➔</span>
+            <span class="fix-tag tag-good">بعد از اصلاح</span>
+          </div>
+          <h3 class="fix-title" data-i18n="fix2Title">فایل‌های سنگین ۱۲۰ مگابایتی با ۵ دقیقه هنگ</h3>
+          <p class="fix-desc" data-i18n-html="fix2Desc">
+            حذف کَش‌های مخرب، استایل‌های پنهان و محدوده‌های زائد برای کاهش حجم فایل تا ۳ مگابایت؛ به‌طوری که زیر ۱ ثانیه باز و محاسبه شود.
+          </p>
+        </div>
+
+        <div class="fix-box">
+          <div class="fix-header">
+            <span class="fix-tag tag-bad">قبل از شیت‌فیکس</span>
+            <span class="fix-arrow">➔</span>
+            <span class="fix-tag tag-good">بعد از اصلاح</span>
+          </div>
+          <h3 class="fix-title" data-i18n="fix3Title">ساعت‌ها کپی و پیست دستی در هفته</h3>
+          <p class="fix-desc" data-i18n-html="fix3Desc">
+            طراحی دکمه‌های بارگذاری ۱ کلیکی و خط لوله PowerQuery تا گزارش‌های هفتگی شما تنها با یک کلیک در ۲ ثانیه به‌روزرسانی شوند.
+          </p>
+        </div>
+
+        <div class="fix-box">
+          <div class="fix-header">
+            <span class="fix-tag tag-bad">قبل از شیت‌فیکس</span>
+            <span class="fix-arrow">➔</span>
+            <span class="fix-tag tag-good">بعد از اصلاح</span>
+          </div>
+          <h3 class="fix-title" data-i18n="fix4Title">کوهی از اعداد نامفهوم بدون داشبورد</h3>
+          <p class="fix-desc" data-i18n-html="fix4Desc">
+            طراحی داشبورد بصری مدیریتی با کارت‌های شاخص کلیدی عملکرد (KPI)، نمودارهای مقایسه‌ای و ظاهری آراسته که مدیران و سهامداران تحسین خواهند کرد.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       Simple, Clear Pricing
+  ============================================================= -->
+  <section id="pricing" class="content-section">
+    <div class="content-container">
+      <div class="section-title-wrap">
+        <span class="pill-label" data-i18n="pricingLabel">قیمت‌گذاری شفاف و مقطوع</span>
+        <h2 class="section-heading" data-i18n="pricingHeading">بسته مناسب خود را انتخاب کنید</h2>
+        <p class="section-subtext" data-i18n="pricingSubtext">بدون هزینه‌های پنهان یا ساعتی. زمان تحویل تضمینی و گارانتی بازگشت وجه.</p>
+      </div>
+
+      <div class="pricing-deck">
+        
+        <!-- Package 1 -->
+        <div class="price-box">
+          <div class="price-header">
+            <h3 class="price-name" data-i18n="plan1Name">پاکسازی سریع (Quick Clean)</h3>
+            <p class="price-pitch" data-i18n="plan1Pitch">مناسب شیت‌های تکی با فرمول‌های شکسته یا ظاهر نامرتب.</p>
+            <div class="price-figure">
+              <span data-i18n="plan1Price">۱۴۹ دلار</span>
+            </div>
+            <div class="price-speed" data-i18n="plan1Speed">⚡ تحویل ۲۴ ساعته</div>
+          </div>
+
+          <ul class="price-features">
+            <li data-i18n="plan1F1">✓ رفع تمام خطاهای فرمولی (#REF! و #DIV/0!)</li>
+            <li data-i18n="plan1F2">✓ زیباسازی قالب‌بندی و حذف ردیف‌های تکراری</li>
+            <li data-i18n="plan1F3">✓ بهینه‌سازی سرعت و کاهش هنگ فایل</li>
+            <li data-i18n="plan1F4">✓ تا ۳ شیت / ۲۰,۰۰۰ سطر داده</li>
+            <li data-i18n="plan1F5">✓ ۷ روز پشتیبانی پس از تحویل</li>
+          </ul>
+
+          <button class="btn-price-action open-modal-btn" data-plan="Quick Clean ($149)" data-i18n="plan1Btn">
+            انتخاب بسته پاکسازی سریع
+          </button>
+        </div>
+
+        <!-- Package 2 (Featured) -->
+        <div class="price-box price-featured">
+          <div class="popular-ribbon" data-i18n="plan2Badge">محبوب‌ترین انتخاب</div>
+          <div class="price-header">
+            <h3 class="price-name" data-i18n="plan2Name">اورحال و بازسازی کامل</h3>
+            <p class="price-pitch" data-i18n="plan2Pitch">تغییر ساختار اساسی، داشبورد مدیریتی جدید و مدل‌سازی پویا.</p>
+            <div class="price-figure">
+              <span data-i18n="plan2Price">۳۴۹ دلار</span>
+            </div>
+            <div class="price-speed" data-i18n="plan2Speed">🚀 تحویل ۴۸ ساعته</div>
+          </div>
+
+          <ul class="price-features">
+            <li data-i18n="plan2F1">✓ بازسازی ساختار کلی و مدل ارتباطی داده‌ها</li>
+            <li data-i18n="plan2F2">✓ طراحی داشبورد مدیریتی شاخص‌های KPI</li>
+            <li data-i18n="plan2F3">✓ پیش‌بینی‌های مالی پویا و نمودارهای پیشرفته</li>
+            <li data-i18n="plan2F4">✓ قفل‌گذاری هوشمند سلول‌ها جهت جلوگیری از اشتباه سهوی</li>
+            <li data-i18n="plan2F5">✓ تا ۱۰ شیت / ۱۰۰,۰۰۰ سطر داده</li>
+            <li data-i18n="plan2F6">✓ ویدیوی اختصاصی ۳ دقیقه‌ای توضیح نحوه استفاده از شیت</li>
+            <li data-i18n="plan2F7">✓ ۳۰ روز ویرایش و اصلاح رایگان</li>
+          </ul>
+
+          <button class="btn-price-action featured-btn open-modal-btn" data-plan="Full Overhaul ($349)" data-i18n="plan2Btn">
+            انتخاب بازسازی کامل ➔
+          </button>
+        </div>
+
+        <!-- Package 3 -->
+        <div class="price-box">
+          <div class="price-header">
+            <h3 class="price-name" data-i18n="plan3Name">اتوماسیون کامل داده‌ها</h3>
+            <p class="price-pitch" data-i18n="plan3Pitch">پایان دائمی کپی‌پیست دستی؛ به‌روزرسانی خودکار گزارش‌ها.</p>
+            <div class="price-figure">
+              <span data-i18n="plan3Price">۷۹۹ دلار</span>
+            </div>
+            <div class="price-speed" data-i18n="plan3Speed">🤖 تحویل ۳ تا ۵ روزه</div>
+          </div>
+
+          <ul class="price-features">
+            <li data-i18n="plan3F1">✓ خط لوله خودکار دریافت داده از CSV و PowerQuery</li>
+            <li data-i18n="plan3F2">✓ به‌روزرسانی گزارش‌های هفتگی با یک کلیک</li>
+            <li data-i18n="plan3F3">✓ ماکروهای پیشرفته و اسکریپت‌های Python در اکسل</li>
+            <li data-i18n="plan3F4">✓ خروجی خودکار گزارش‌های PDF و ایمیل</li>
+            <li data-i18n="plan3F5">✓ شیت‌ها و داده‌های تاریخی نامحدود</li>
+            <li data-i18n="plan3F6">✓ ۶۰ روز پشتیبانی فنی اختصاصی</li>
+          </ul>
+
+          <button class="btn-price-action open-modal-btn" data-plan="Automated Pipeline ($799)" data-i18n="plan3Btn">
+            انتخاب اتوماسیون کامل
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       The Zero-Risk Guarantee
+  ============================================================= -->
+  <section id="guarantee" class="content-section bg-contrast">
+    <div class="content-container">
+      <div class="guarantee-banner">
+        <div class="shield-badge">🛡️</div>
+        <h2 class="guarantee-heading" data-i18n="guaranteeHeading">تضمین ۱۰۰٪ بازگشت وجه در صورت عدم رضایت</h2>
+        <p class="guarantee-subtext" data-i18n="guaranteeSubtext">
+          اگر پس از دریافت فایل از سرعت، نظم و راحتی کار با آن شگفت‌زده نشدید، ظرف مدت ۱۴ روز به ما اطلاع دهید تا کل مبلغ پرداختی فوراً و بدون هیچ سوالی به شما بازگردانده شود.
+        </p>
+        <button class="btn-hero-primary open-modal-btn" data-i18n="guaranteeBtn">
+          سفارش بازسازی اکسل بدون ریسک ➔
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       Simple Footer
+  ============================================================= -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <span class="footer-logo" data-i18n="footerLogo">📊 شیت‌فیکس سه‌بعدی</span>
+        <span class="footer-text" data-i18n="footerCopy">© ۲۰۲۶ شیت‌فیکس. سامانه تخصصی معماری و ساماندهی اکسل. فعال روی پورت ۵۴۲۶.</span>
+      </div>
+      <div class="footer-right">
+        <a href="#how-it-works" data-i18n="navHow">مراحل کار</a>
+        <a href="#what-we-fix" data-i18n="navFix">چه مواردی را حل می‌کنیم؟</a>
+        <a href="#pricing" data-i18n="navPricing">تعرفه‌ها</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =============================================================
+       Simple Booking Modal
+  ============================================================= -->
+  <div id="bookingModal" class="simple-modal-backdrop">
+    <div class="simple-modal-card">
+      <button id="closeModalBtn" class="modal-x-btn" title="بستن (Esc)">✕</button>
+      
+      <div class="modal-head">
+        <h3 class="modal-title" data-i18n="modalTitle">ثبت درخواست بررسی اکسل</h3>
+        <p class="modal-sub" data-i18n="modalSub">مشکلات فایل اکسل خود را مطرح کنید؛ معماران ما ظرف ۲ ساعت با ارسال NDA و لینک امن پاسخ خواهند داد.</p>
+      </div>
+
+      <form id="simpleBookingForm" class="modal-form">
+        <div class="input-wrap">
+          <label for="clientName" data-i18n="modalNameLabel">نام و نام خانوادگی</label>
+          <input type="text" id="clientName" placeholder="مثال: علی رضایی" required>
+        </div>
+
+        <div class="input-wrap">
+          <label for="clientEmail" data-i18n="modalEmailLabel">ایمیل کاری (کاملاً محرمانه)</label>
+          <input type="email" id="clientEmail" placeholder="ali@company.com" required>
+        </div>
+
+        <div class="input-wrap">
+          <label for="sheetNotes" data-i18n="modalNotesLabel">چه مشکلی در فایل اکسل خود دارید؟</label>
+          <textarea id="sheetNotes" placeholder="مثال: ۵ شیت با فرمول‌های خراب #REF! در مدل بودجه، هنگام ذخیره کردن هنگ می‌کند..." rows="3" required></textarea>
+        </div>
+
+        <button type="submit" class="btn-hero-primary" style="width: 100%; justify-content: center;" data-i18n="modalSubmitBtn">
+          ارسال درخواست بررسی فوری ➔
+        </button>
+      </form>
+
+      <div id="modalSuccessMsg" class="modal-success-box" style="display: none;">
+        <div class="success-icon">✅</div>
+        <h4 data-i18n="modalSuccessTitle">درخواست شما دریافت شد!</h4>
+        <p data-i18n="modalSuccessText">پرونده شما به معمار ارشد اکسل ارجاع داده شد. ظرف ۲ ساعت کاری قرارداد محرمانگی NDA و لینک بارگذاری اختصاصی برای شما ارسال می‌شود.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="vendor/three.min.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/three_scene.js"></script>
+  <script src="js/translations.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

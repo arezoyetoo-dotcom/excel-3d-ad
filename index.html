@@ -1,45 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SheetFix 3D • We Fix & Organize Your Messy Excel Sheets in 24h</title>
+  <title id="docTitle">SheetFix 3D • We Fix & Organize Your Messy Excel Sheets in 24h</title>
   <meta name="description" content="Send us your broken, slow, chaotic spreadsheets. We clean, restructure, and automate them into fast, beautiful models in 24 hours.">
 
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2310B981'/><text y='.72em' x='50%' text-anchor='middle' font-size='60' fill='%23000' font-family='sans-serif' font-weight='900'>XLS</text></svg>">
 
-  <!-- Font -->
+  <!-- Fonts (Plus Jakarta Sans, JetBrains Mono & Persian Vazirmatn) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
   <!-- =============================================================
-       Clean Header
+       Clean Header with Language Switcher
   ============================================================= -->
   <header class="site-header">
     <div class="header-container">
       <a href="#" class="site-logo">
         <span class="logo-icon">📊</span>
-        <span class="logo-text">SheetFix <strong>3D</strong></span>
+        <span class="logo-text"><span data-i18n="logoText">SheetFix</span> <strong>3D</strong></span>
       </a>
 
       <nav class="site-nav">
-        <a href="#how-it-works">How It Works</a>
-        <a href="#what-we-fix">What We Fix</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#guarantee">Guarantee</a>
+        <a href="#how-it-works" data-i18n="navHow">How It Works</a>
+        <a href="#what-we-fix" data-i18n="navFix">What We Fix</a>
+        <a href="#pricing" data-i18n="navPricing">Pricing</a>
+        <a href="#guarantee" data-i18n="navGuarantee">Guarantee</a>
       </nav>
 
       <div class="header-cta-group">
+        <!-- Language Switcher Button -->
+        <button id="langToggle" class="btn-lang" title="Switch Language / تغییر زبان">
+          <span>🌐</span> <strong id="langText">فارسی</strong>
+        </button>
+
+        <!-- Sound Toggle -->
         <button id="soundToggle" class="btn-sound" title="Toggle Sound">
           🔊 Sound: ON
         </button>
-        <button class="btn-nav-action open-modal-btn">
+
+        <!-- CTA -->
+        <button class="btn-nav-action open-modal-btn" data-i18n="navCta">
           Fix My Sheet in 24h ➔
         </button>
       </div>
@@ -54,12 +62,12 @@
       
       <!-- Headline & Tagline -->
       <div class="hero-heading-block">
-        <div class="hero-badge">⚡ 24-Hour Turnaround • 100% Fixed-Price</div>
-        <h1 class="hero-main-title">
+        <div class="hero-badge" data-i18n="heroBadge">⚡ 24-Hour Turnaround • 100% Fixed-Price</div>
+        <h1 class="hero-main-title" data-i18n-html="heroTitle">
           Your Excel sheets are a mess.<br>
           <span class="highlight-emerald">We fix them in 24 hours.</span>
         </h1>
-        <p class="hero-subline">
+        <p class="hero-subline" data-i18n-html="heroSubline">
           Send us your broken formulas, freezing files, and chaotic spreadsheets.<br>
           We rebuild, clean, and automate them into fast, beautiful models.
         </p>
@@ -73,31 +81,31 @@
 
         <!-- Single Prominent 3D Toggle -->
         <div class="mode-toggle-bar">
-          <button id="modeChaosBtn" class="toggle-pill pill-chaos">
+          <button id="modeChaosBtn" class="toggle-pill pill-chaos" data-i18n="chaosPill">
             <span>💥</span> Messy & Broken (#REF!)
           </button>
-          <button id="modeCleanBtn" class="toggle-pill pill-clean active">
+          <button id="modeCleanBtn" class="toggle-pill pill-clean active" data-i18n="cleanPill">
             <span>✨</span> Clean & Organized (Fixed)
           </button>
         </div>
 
         <div class="canvas-drag-hint">
-          <span>👆 Click & drag with mouse to spin in 3D</span>
+          <span data-i18n="dragHint">👆 Click & drag with mouse to spin in 3D</span>
         </div>
       </div>
 
       <!-- Hero Actions -->
       <div class="hero-action-row">
-        <button class="btn-hero-primary open-modal-btn">
+        <button class="btn-hero-primary open-modal-btn" data-i18n="heroCtaPrimary">
           Get My Sheet Fixed ➔
         </button>
-        <a href="#how-it-works" class="btn-hero-secondary">
+        <a href="#how-it-works" class="btn-hero-secondary" data-i18n="heroCtaSecondary">
           See How It Works ↓
         </a>
       </div>
 
       <div class="hero-trust-note">
-        <span>🔒 Mutual NDA signed upfront. If you don't love your fixed spreadsheet, you pay $0.</span>
+        <span data-i18n="heroTrust">🔒 Mutual NDA signed upfront. If you don't love your fixed spreadsheet, you pay $0.</span>
       </div>
 
     </div>
@@ -109,9 +117,9 @@
   <section id="how-it-works" class="content-section">
     <div class="content-container">
       <div class="section-title-wrap">
-        <span class="pill-label">Simple 3-Step Process</span>
-        <h2 class="section-heading">How SheetFix Works</h2>
-        <p class="section-subtext">No complex software to learn. No endless meetings. Just send your file and get it back clean.</p>
+        <span class="pill-label" data-i18n="stepsLabel">Simple 3-Step Process</span>
+        <h2 class="section-heading" data-i18n="stepsHeading">How SheetFix Works</h2>
+        <p class="section-subtext" data-i18n="stepsSubtext">No complex software to learn. No endless meetings. Just send your file and get it back clean.</p>
       </div>
 
       <div class="steps-grid">
@@ -119,8 +127,8 @@
         <div class="step-card">
           <div class="step-num">01</div>
           <div class="step-icon">📤</div>
-          <h3 class="step-title">Upload Your Sheet</h3>
-          <p class="step-desc">
+          <h3 class="step-title" data-i18n="step1Title">Upload Your Sheet</h3>
+          <p class="step-desc" data-i18n="step1Desc">
             Upload your messy Excel file or Google Sheet. We sign a mutual non-disclosure agreement (NDA) before opening it.
           </p>
         </div>
@@ -128,8 +136,8 @@
         <div class="step-card">
           <div class="step-num">02</div>
           <div class="step-icon">⚡</div>
-          <h3 class="step-title">We Fix Everything</h3>
-          <p class="step-desc">
+          <h3 class="step-title" data-i18n="step2Title">We Fix Everything</h3>
+          <p class="step-desc" data-i18n="step2Desc">
             Our senior Excel architects fix broken formulas, eliminate lag, remove duplicates, and build clean dashboards.
           </p>
         </div>
@@ -137,8 +145,8 @@
         <div class="step-card">
           <div class="step-num">03</div>
           <div class="step-icon">💎</div>
-          <h3 class="step-title">Delivered in 24 Hours</h3>
-          <p class="step-desc">
+          <h3 class="step-title" data-i18n="step3Title">Delivered in 24 Hours</h3>
+          <p class="step-desc" data-i18n="step3Desc">
             Receive an immaculate, error-free, lightning-fast spreadsheet with a 3-minute video explaining all improvements.
           </p>
         </div>
@@ -153,9 +161,9 @@
   <section id="what-we-fix" class="content-section bg-contrast">
     <div class="content-container">
       <div class="section-title-wrap">
-        <span class="pill-label">Common Headaches We Solve</span>
-        <h2 class="section-heading">What We Fix Every Day</h2>
-        <p class="section-subtext">Stop losing sleep over fragile spreadsheets.</p>
+        <span class="pill-label" data-i18n="fixLabel">Common Headaches We Solve</span>
+        <h2 class="section-heading" data-i18n="fixHeading">What We Fix Every Day</h2>
+        <p class="section-subtext" data-i18n="fixSubtext">Stop losing sleep over fragile spreadsheets.</p>
       </div>
 
       <div class="fixes-grid">
@@ -166,8 +174,8 @@
             <span class="fix-arrow">➔</span>
             <span class="fix-tag tag-good">After SheetFix</span>
           </div>
-          <h3 class="fix-title">Broken Formulas & #REF! Errors</h3>
-          <p class="fix-desc">
+          <h3 class="fix-title" data-i18n="fix1Title">Broken Formulas & #REF! Errors</h3>
+          <p class="fix-desc" data-i18n-html="fix1Desc">
             Replaced fragile old VLOOKUPs and broken links with modern, bulletproof <code>=XLOOKUP</code> and dynamic arrays that never break when rows move.
           </p>
         </div>
@@ -178,8 +186,8 @@
             <span class="fix-arrow">➔</span>
             <span class="fix-tag tag-good">After SheetFix</span>
           </div>
-          <h3 class="fix-title">120MB File Freezing for 5 Minutes</h3>
-          <p class="fix-desc">
+          <h3 class="fix-title" data-i18n="fix2Title">120MB File Freezing for 5 Minutes</h3>
+          <p class="fix-desc" data-i18n-html="fix2Desc">
             We strip phantom styles, corrupted caches, and bloated ranges to shrink your file down to 3MB so it opens and calculates in under 1 second.
           </p>
         </div>
@@ -190,8 +198,8 @@
             <span class="fix-arrow">➔</span>
             <span class="fix-tag tag-good">After SheetFix</span>
           </div>
-          <h3 class="fix-title">Hours of Weekly Copy-Pasting</h3>
-          <p class="fix-desc">
+          <h3 class="fix-title" data-i18n="fix3Title">Hours of Weekly Copy-Pasting</h3>
+          <p class="fix-desc" data-i18n-html="fix3Desc">
             We build automated 1-click import buttons and PowerQuery connections so your weekly reports update automatically in 2 seconds.
           </p>
         </div>
@@ -202,8 +210,8 @@
             <span class="fix-arrow">➔</span>
             <span class="fix-tag tag-good">After SheetFix</span>
           </div>
-          <h3 class="fix-title">Ugly, Unreadable Wall of Plain Numbers</h3>
-          <p class="fix-desc">
+          <h3 class="fix-title" data-i18n="fix4Title">Ugly, Unreadable Wall of Plain Numbers</h3>
+          <p class="fix-desc" data-i18n-html="fix4Desc">
             We design an executive-ready visual dashboard with clear KPI cards, drill-downs, and clean formatting your investors and boss will love.
           </p>
         </div>
@@ -218,9 +226,9 @@
   <section id="pricing" class="content-section">
     <div class="content-container">
       <div class="section-title-wrap">
-        <span class="pill-label">Transparent Fixed Pricing</span>
-        <h2 class="section-heading">Pick Your Package</h2>
-        <p class="section-subtext">No hourly surprises. Guaranteed delivery times. 100% money-back guarantee.</p>
+        <span class="pill-label" data-i18n="pricingLabel">Transparent Fixed Pricing</span>
+        <h2 class="section-heading" data-i18n="pricingHeading">Pick Your Package</h2>
+        <p class="section-subtext" data-i18n="pricingSubtext">No hourly surprises. Guaranteed delivery times. 100% money-back guarantee.</p>
       </div>
 
       <div class="pricing-deck">
@@ -228,50 +236,50 @@
         <!-- Package 1 -->
         <div class="price-box">
           <div class="price-header">
-            <h3 class="price-name">Quick Clean</h3>
-            <p class="price-pitch">For single sheets with broken formulas or messy formatting.</p>
+            <h3 class="price-name" data-i18n="plan1Name">Quick Clean</h3>
+            <p class="price-pitch" data-i18n="plan1Pitch">For single sheets with broken formulas or messy formatting.</p>
             <div class="price-figure">
-              <span class="currency">$</span>149
+              <span data-i18n="plan1Price">$149</span>
             </div>
-            <div class="price-speed">⚡ 24-Hour Delivery</div>
+            <div class="price-speed" data-i18n="plan1Speed">⚡ 24-Hour Delivery</div>
           </div>
 
           <ul class="price-features">
-            <li>✓ Fix all formula errors (#REF!, #DIV/0!)</li>
-            <li>✓ Clean formatting and remove duplicates</li>
-            <li>✓ Speed optimization (reduce file lag)</li>
-            <li>✓ Up to 3 tabs / 20,000 rows</li>
-            <li>✓ 7 days of follow-up support</li>
+            <li data-i18n="plan1F1">✓ Fix all formula errors (#REF!, #DIV/0!)</li>
+            <li data-i18n="plan1F2">✓ Clean formatting and remove duplicates</li>
+            <li data-i18n="plan1F3">✓ Speed optimization (reduce file lag)</li>
+            <li data-i18n="plan1F4">✓ Up to 3 tabs / 20,000 rows</li>
+            <li data-i18n="plan1F5">✓ 7 days of follow-up support</li>
           </ul>
 
-          <button class="btn-price-action open-modal-btn" data-plan="Quick Clean ($149)">
+          <button class="btn-price-action open-modal-btn" data-plan="Quick Clean ($149)" data-i18n="plan1Btn">
             Choose Quick Clean
           </button>
         </div>
 
         <!-- Package 2 (Featured) -->
         <div class="price-box price-featured">
-          <div class="popular-ribbon">Most Popular</div>
+          <div class="popular-ribbon" data-i18n="plan2Badge">Most Popular</div>
           <div class="price-header">
-            <h3 class="price-name">Full Overhaul</h3>
-            <p class="price-pitch">Complete restructure, new executive dashboard & dynamic model.</p>
+            <h3 class="price-name" data-i18n="plan2Name">Full Overhaul</h3>
+            <p class="price-pitch" data-i18n="plan2Pitch">Complete restructure, new executive dashboard & dynamic model.</p>
             <div class="price-figure">
-              <span class="currency">$</span>349
+              <span data-i18n="plan2Price">$349</span>
             </div>
-            <div class="price-speed">🚀 48-Hour Delivery</div>
+            <div class="price-speed" data-i18n="plan2Speed">🚀 48-Hour Delivery</div>
           </div>
 
           <ul class="price-features">
-            <li>✓ Complete sheet restructure & data model</li>
-            <li>✓ Beautiful executive KPI dashboard</li>
-            <li>✓ Dynamic financial forecasts & charts</li>
-            <li>✓ Typo-proof input locking & validation</li>
-            <li>✓ Up to 10 tabs / 100,000 rows</li>
-            <li>✓ 3-minute video walkthrough of your sheet</li>
-            <li>✓ 30 days of free revisions</li>
+            <li data-i18n="plan2F1">✓ Complete sheet restructure & data model</li>
+            <li data-i18n="plan2F2">✓ Beautiful executive KPI dashboard</li>
+            <li data-i18n="plan2F3">✓ Dynamic financial forecasts & charts</li>
+            <li data-i18n="plan2F4">✓ Typo-proof input locking & validation</li>
+            <li data-i18n="plan2F5">✓ Up to 10 tabs / 100,000 rows</li>
+            <li data-i18n="plan2F6">✓ 3-minute video walkthrough of your sheet</li>
+            <li data-i18n="plan2F7">✓ 30 days of free revisions</li>
           </ul>
 
-          <button class="btn-price-action featured-btn open-modal-btn" data-plan="Full Overhaul ($349)">
+          <button class="btn-price-action featured-btn open-modal-btn" data-plan="Full Overhaul ($349)" data-i18n="plan2Btn">
             Choose Full Overhaul ➔
           </button>
         </div>
@@ -279,24 +287,24 @@
         <!-- Package 3 -->
         <div class="price-box">
           <div class="price-header">
-            <h3 class="price-name">Automated Pipeline</h3>
-            <p class="price-pitch">Zero manual copy-pasting ever again. Automated data updates.</p>
+            <h3 class="price-name" data-i18n="plan3Name">Automated Pipeline</h3>
+            <p class="price-pitch" data-i18n="plan3Pitch">Zero manual copy-pasting ever again. Automated data updates.</p>
             <div class="price-figure">
-              <span class="currency">$</span>799
+              <span data-i18n="plan3Price">$799</span>
             </div>
-            <div class="price-speed">🤖 3-5 Days Delivery</div>
+            <div class="price-speed" data-i18n="plan3Speed">🤖 3-5 Days Delivery</div>
           </div>
 
           <ul class="price-features">
-            <li>✓ Automated PowerQuery / CSV data ingestion</li>
-            <li>✓ 1-Click refresh for all weekly reports</li>
-            <li>✓ Custom macros & Python in Excel scripts</li>
-            <li>✓ Automated PDF / email export</li>
-            <li>✓ Unlimited tabs & historical data</li>
-            <li>✓ 60 days of priority technical support</li>
+            <li data-i18n="plan3F1">✓ Automated PowerQuery / CSV data ingestion</li>
+            <li data-i18n="plan3F2">✓ 1-Click refresh for all weekly reports</li>
+            <li data-i18n="plan3F3">✓ Custom macros & Python in Excel scripts</li>
+            <li data-i18n="plan3F4">✓ Automated PDF / email export</li>
+            <li data-i18n="plan3F5">✓ Unlimited tabs & historical data</li>
+            <li data-i18n="plan3F6">✓ 60 days of priority technical support</li>
           </ul>
 
-          <button class="btn-price-action open-modal-btn" data-plan="Automated Pipeline ($799)">
+          <button class="btn-price-action open-modal-btn" data-plan="Automated Pipeline ($799)" data-i18n="plan3Btn">
             Choose Automation
           </button>
         </div>
@@ -312,11 +320,11 @@
     <div class="content-container">
       <div class="guarantee-banner">
         <div class="shield-badge">🛡️</div>
-        <h2 class="guarantee-heading">100% Money-Back Performance Guarantee</h2>
-        <p class="guarantee-subtext">
+        <h2 class="guarantee-heading" data-i18n="guaranteeHeading">100% Money-Back Performance Guarantee</h2>
+        <p class="guarantee-subtext" data-i18n="guaranteeSubtext">
           If you open the spreadsheet we deliver and you aren't blown away by how clean, fast, and easy to use it is, let us know within 14 days and we will issue an immediate 100% refund. No questions asked.
         </p>
-        <button class="btn-hero-primary open-modal-btn">
+        <button class="btn-hero-primary open-modal-btn" data-i18n="guaranteeBtn">
           Fix My Sheet Without Risk ➔
         </button>
       </div>
@@ -329,13 +337,13 @@
   <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-left">
-        <span class="footer-logo">📊 SheetFix 3D</span>
-        <span class="footer-text">© 2026 SheetFix. The bespoke Excel organizing agency. Running on Port 5426.</span>
+        <span class="footer-logo" data-i18n="footerLogo">📊 SheetFix 3D</span>
+        <span class="footer-text" data-i18n="footerCopy">© 2026 SheetFix. The bespoke Excel organizing agency. Running on Port 5426.</span>
       </div>
       <div class="footer-right">
-        <a href="#how-it-works">How It Works</a>
-        <a href="#what-we-fix">What We Fix</a>
-        <a href="#pricing">Pricing</a>
+        <a href="#how-it-works" data-i18n="navHow">How It Works</a>
+        <a href="#what-we-fix" data-i18n="navFix">What We Fix</a>
+        <a href="#pricing" data-i18n="navPricing">Pricing</a>
       </div>
     </div>
   </footer>
@@ -348,35 +356,35 @@
       <button id="closeModalBtn" class="modal-x-btn" title="Close (Esc)">✕</button>
       
       <div class="modal-head">
-        <h3 class="modal-title">Get Your Sheet Fixed</h3>
-        <p class="modal-sub">Tell us about your sheet and we'll reply within 2 hours with an upfront NDA and intake link.</p>
+        <h3 class="modal-title" data-i18n="modalTitle">Get Your Sheet Fixed</h3>
+        <p class="modal-sub" data-i18n="modalSub">Tell us about your sheet and we'll reply within 2 hours with an upfront NDA and intake link.</p>
       </div>
 
       <form id="simpleBookingForm" class="modal-form">
         <div class="input-wrap">
-          <label for="clientName">Your Name</label>
+          <label for="clientName" data-i18n="modalNameLabel">Your Name</label>
           <input type="text" id="clientName" placeholder="e.g. Sarah Jenkins" required>
         </div>
 
         <div class="input-wrap">
-          <label for="clientEmail">Work Email (Strictly Confidential)</label>
+          <label for="clientEmail" data-i18n="modalEmailLabel">Work Email (Strictly Confidential)</label>
           <input type="email" id="clientEmail" placeholder="sarah@company.com" required>
         </div>
 
         <div class="input-wrap">
-          <label for="sheetNotes">What is wrong with your spreadsheet?</label>
+          <label for="sheetNotes" data-i18n="modalNotesLabel">What is wrong with your spreadsheet?</label>
           <textarea id="sheetNotes" placeholder="e.g. 5 tabs, broken #REF! formulas in the budget model, file freezes when saving..." rows="3" required></textarea>
         </div>
 
-        <button type="submit" class="btn-hero-primary" style="width: 100%; justify-content: center;">
+        <button type="submit" class="btn-hero-primary" style="width: 100%; justify-content: center;" data-i18n="modalSubmitBtn">
           Send Intake Request ➔
         </button>
       </form>
 
       <div id="modalSuccessMsg" class="modal-success-box" style="display: none;">
         <div class="success-icon">✅</div>
-        <h4>Request Received!</h4>
-        <p>A senior Excel architect has been assigned to your request. We will email you within 2 hours with our mutual NDA and secure file link.</p>
+        <h4 data-i18n="modalSuccessTitle">Request Received!</h4>
+        <p data-i18n="modalSuccessText">A senior Excel architect has been assigned to your request. We will email you within 2 hours with our mutual NDA and secure file link.</p>
       </div>
     </div>
   </div>
@@ -385,6 +393,7 @@
   <script src="vendor/three.min.js"></script>
   <script src="js/audio.js"></script>
   <script src="js/three_scene.js"></script>
+  <script src="js/translations.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

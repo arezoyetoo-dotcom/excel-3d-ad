@@ -1,15 +1,80 @@
 /**
- * SheetFix 3D - Streamlined Application Controller
+ * SheetFix 3D - Streamlined Application Controller with Bilingual Support (EN / FA)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Initialize 3D Scene
+  // 1. Language State
+  let currentLang = localStorage.getItem('sheetfix_lang') || (window.location.pathname.endsWith('fa.html') ? 'fa' : 'en');
+
+  function setLanguage(lang) {
+    currentLang = lang;
+    try {
+      localStorage.setItem('sheetfix_lang', lang);
+    } catch(e) {}
+
+    const dict = window.SHEETFIX_I18N ? window.SHEETFIX_I18N[lang] : null;
+    if (!dict) return;
+
+    // Document attributes
+    document.documentElement.setAttribute('lang', lang);
+    document.documentElement.setAttribute('dir', lang === 'fa' ? 'rtl' : 'ltr');
+    if (dict.siteTitle) document.title = dict.siteTitle;
+
+    // Update text nodes
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (dict[key] !== undefined) {
+        el.textContent = dict[key];
+      }
+    });
+
+    // Update HTML nodes (for formatting like <code> or <br>)
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+      const key = el.dataset.i18nHtml;
+      if (dict[key] !== undefined) {
+        el.innerHTML = dict[key];
+      }
+    });
+
+    // Update input placeholders
+    const nameInput = document.getElementById('clientName');
+    const emailInput = document.getElementById('clientEmail');
+    const notesInput = document.getElementById('sheetNotes');
+
+    if (nameInput && dict.modalNamePlaceholder) nameInput.placeholder = dict.modalNamePlaceholder;
+    if (emailInput && dict.modalEmailPlaceholder) emailInput.placeholder = dict.modalEmailPlaceholder;
+    if (notesInput && dict.modalNotesPlaceholder) notesInput.placeholder = dict.modalNotesPlaceholder;
+
+    // Update Language Toggle Button Label
+    const langBtnText = document.getElementById('langText');
+    if (langBtnText) {
+      langBtnText.textContent = (lang === 'fa' ? 'English (EN)' : 'فارسی (FA)');
+    }
+
+    // Update Sound Button Label
+    const soundBtn = document.getElementById('soundToggle');
+    if (soundBtn && window.soundEngine) {
+      soundBtn.textContent = window.soundEngine.isMuted ? dict.soundOff : dict.soundOn;
+    }
+  }
+
+  // Language Toggle Button Click
+  const langToggleBtn = document.getElementById('langToggle');
+  if (langToggleBtn) {
+    langToggleBtn.addEventListener('click', () => {
+      const nextLang = (currentLang === 'fa' ? 'en' : 'fa');
+      setLanguage(nextLang);
+      if (window.soundEngine) window.soundEngine.playClick();
+    });
+  }
+
+  // 2. Initialize 3D Scene
   let scene3D = null;
   if (typeof SimpleSpreadsheet3D === 'function') {
     scene3D = new SimpleSpreadsheet3D('simple3dCanvas');
   }
 
-  // 2. 3D Mode Toggle (Chaos vs Clean)
+  // 3. 3D Mode Toggle (Chaos vs Clean)
   const chaosBtn = document.getElementById('modeChaosBtn');
   const cleanBtn = document.getElementById('modeCleanBtn');
 
@@ -27,21 +92,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 3. Sound Toggle
+  // 4. Sound Toggle
   const soundBtn = document.getElementById('soundToggle');
   if (soundBtn && window.soundEngine) {
-    const renderSoundLabel = () => {
-      soundBtn.textContent = window.soundEngine.isMuted ? '🔇 Sound: OFF' : '🔊 Sound: ON';
-    };
-    renderSoundLabel();
-
     soundBtn.addEventListener('click', () => {
       window.soundEngine.toggleMute();
-      renderSoundLabel();
+      const dict = window.SHEETFIX_I18N ? window.SHEETFIX_I18N[currentLang] : null;
+      if (dict) {
+        soundBtn.textContent = window.soundEngine.isMuted ? dict.soundOff : dict.soundOn;
+      }
     });
   }
 
-  // 4. Modal Open & Close
+  // 5. Modal Open & Close
   const modal = document.getElementById('bookingModal');
   const closeBtn = document.getElementById('closeModalBtn');
   const openBtns = document.querySelectorAll('.open-modal-btn');
@@ -54,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const plan = btn.dataset.plan;
       const notesInput = document.getElementById('sheetNotes');
       if (notesInput && plan) {
-        notesInput.value = `Selected Package: ${plan}. `;
+        notesInput.value = (currentLang === 'fa' ? `بسته انتخابی: ${plan}. ` : `Selected Package: ${plan}. `);
       }
       if (modal) {
         modal.classList.add('open');
@@ -78,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 5. Form Submit
+  // 6. Form Submit
   if (form) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -88,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 6. Smooth Scroll
+  // 7. Smooth Scroll
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', function(e) {
       const targetId = this.getAttribute('href');
@@ -101,4 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // Apply initial language
+  setLanguage(currentLang);
 });

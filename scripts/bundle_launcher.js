@@ -14,6 +14,7 @@ const indexHtml = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 const cssStyle = fs.readFileSync(path.join(ROOT, 'css/style.css'), 'utf8');
 const audioJs = fs.readFileSync(path.join(ROOT, 'js/audio.js'), 'utf8');
 const threeSceneJs = fs.readFileSync(path.join(ROOT, 'js/three_scene.js'), 'utf8');
+const transJs = fs.readFileSync(path.join(ROOT, 'js/translations.js'), 'utf8');
 const appJs = fs.readFileSync(path.join(ROOT, 'js/app.js'), 'utf8');
 
 // Top Launcher Bar
@@ -50,6 +51,7 @@ let bundled = indexHtml
   .replace('<script src="vendor/three.min.js"></script>', threeJsCdn)
   .replace('<script src="js/audio.js"></script>', `<script>\n${audioJs}\n</script>`)
   .replace('<script src="js/three_scene.js"></script>', `<script>\n${threeSceneJs}\n</script>`)
+  .replace('<script src="js/translations.js"></script>', `<script>\n${transJs}\n</script>`)
   .replace('<script src="js/app.js"></script>', `<script>\n${appJs}\n</script>`);
 
 fs.mkdirSync(LAUNCHER_DIR, { recursive: true });
