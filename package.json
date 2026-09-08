@@ -1,0 +1,24 @@
+{
+  "name": "excel-3d-ad",
+  "version": "1.0.0",
+  "description": "GridCraft 3D - High-Impact 3D Advertisement & Showcase Website for Bespoke Excel Organizing & Spreadsheet Architecture Services",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "bundle": "node scripts/bundle_launcher.js"
+  },
+  "keywords": [
+    "excel",
+    "spreadsheet",
+    "3d",
+    "threejs",
+    "data-organization",
+    "financial-modeling",
+    "agency",
+    "consulting"
+  ],
+  "author": "arezoyetoo-dotcom",
+  "license": "MIT"
+}
