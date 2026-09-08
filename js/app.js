@@ -1,193 +1,103 @@
 /**
- * GridCraft 3D - Master Controller & Application Orchestrator
+ * SheetFix 3D - Streamlined Application Controller
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Initialize 3D WebGL Monolith Scene
+  // 1. Initialize 3D Scene
   let scene3D = null;
-  if (typeof Spreadsheet3DScene === 'function') {
-    scene3D = new Spreadsheet3DScene('hero3dCanvasContainer');
+  if (typeof SimpleSpreadsheet3D === 'function') {
+    scene3D = new SimpleSpreadsheet3D('simple3dCanvas');
   }
 
-  // 2. 3D Controls Hookup
-  // State Buttons (Chaos vs Pristine)
-  const stateChaosBtn = document.getElementById('btnStateChaos');
-  const statePristineBtn = document.getElementById('btnStatePristine');
+  // 2. 3D Mode Toggle (Chaos vs Clean)
+  const chaosBtn = document.getElementById('modeChaosBtn');
+  const cleanBtn = document.getElementById('modeCleanBtn');
 
-  if (stateChaosBtn && statePristineBtn && scene3D) {
-    stateChaosBtn.addEventListener('click', () => {
-      stateChaosBtn.classList.add('active');
-      statePristineBtn.classList.remove('active');
-      scene3D.setState('chaos');
-      updateStatusBadge('💥 Raw Chaotic State (#REF! Cascades)');
+  if (chaosBtn && cleanBtn && scene3D) {
+    chaosBtn.addEventListener('click', () => {
+      chaosBtn.classList.add('active');
+      cleanBtn.classList.remove('active');
+      scene3D.setMode('chaos');
     });
 
-    statePristineBtn.addEventListener('click', () => {
-      statePristineBtn.classList.add('active');
-      stateChaosBtn.classList.remove('active');
-      scene3D.setState('pristine');
-      updateStatusBadge('✨ Engineered Pristine Architecture');
+    cleanBtn.addEventListener('click', () => {
+      cleanBtn.classList.add('active');
+      chaosBtn.classList.remove('active');
+      scene3D.setMode('clean');
     });
   }
 
-  function updateStatusBadge(text) {
-    const badge = document.getElementById('hudModeStatus');
-    if (badge) badge.textContent = text;
-  }
-
-  // View Mode Buttons (Unified / Exploded / Wireframe)
-  document.querySelectorAll('.btn-view-mode').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      document.querySelectorAll('.btn-view-mode').forEach(b => b.classList.remove('active'));
-      const targetBtn = e.currentTarget;
-      targetBtn.classList.add('active');
-      const mode = targetBtn.dataset.view;
-      if (scene3D) scene3D.setViewMode(mode);
-    });
-  });
-
-  // Camera Presets
-  document.querySelectorAll('.btn-camera-preset').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      document.querySelectorAll('.btn-camera-preset').forEach(b => b.classList.remove('active'));
-      const targetBtn = e.currentTarget;
-      targetBtn.classList.add('active');
-      const preset = targetBtn.dataset.camera;
-      if (scene3D) scene3D.setCameraPreset(preset);
-      window.soundEngine.playClick();
-    });
-  });
-
-  // Auto-Rotate Button
-  const autoRotateBtn = document.getElementById('btnToggleRotate');
-  if (autoRotateBtn && scene3D) {
-    autoRotateBtn.addEventListener('click', () => {
-      const isRotating = scene3D.toggleAutoRotate();
-      autoRotateBtn.classList.toggle('active', isRotating);
-      autoRotateBtn.innerHTML = isRotating ? '<span>🔄</span> Auto-Orbit: ON' : '<span>⏸️</span> Auto-Orbit: PAUSED';
-      window.soundEngine.playClick();
-    });
-  }
-
-  // 3. Audio Mute Toggle Button
-  const audioToggleBtn = document.getElementById('btnAudioToggle');
-  if (audioToggleBtn) {
-    const updateAudioIcon = () => {
-      audioToggleBtn.innerHTML = window.soundEngine.isMuted ? '<span>🔇</span> Audio: Muted' : '<span>🔊</span> Audio: ON';
-      audioToggleBtn.classList.toggle('muted', window.soundEngine.isMuted);
+  // 3. Sound Toggle
+  const soundBtn = document.getElementById('soundToggle');
+  if (soundBtn && window.soundEngine) {
+    const renderSoundLabel = () => {
+      soundBtn.textContent = window.soundEngine.isMuted ? '🔇 Sound: OFF' : '🔊 Sound: ON';
     };
-    updateAudioIcon();
+    renderSoundLabel();
 
-    audioToggleBtn.addEventListener('click', () => {
+    soundBtn.addEventListener('click', () => {
       window.soundEngine.toggleMute();
-      updateAudioIcon();
+      renderSoundLabel();
     });
   }
 
-  // 4. Interactive "Before vs After" Comparison Split Slider
-  const comparisonContainer = document.getElementById('comparisonContainer');
-  const comparisonSlider = document.getElementById('comparisonSlider');
-  const comparisonBefore = document.getElementById('comparisonBefore');
+  // 4. Modal Open & Close
+  const modal = document.getElementById('bookingModal');
+  const closeBtn = document.getElementById('closeModalBtn');
+  const openBtns = document.querySelectorAll('.open-modal-btn');
+  const form = document.getElementById('simpleBookingForm');
+  const successBox = document.getElementById('modalSuccessMsg');
 
-  if (comparisonContainer && comparisonSlider && comparisonBefore) {
-    let isSliding = false;
-
-    const setPosition = (clientX) => {
-      const rect = comparisonContainer.getBoundingClientRect();
-      const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
-      const percentage = (x / rect.width) * 100;
-      comparisonSlider.style.left = `${percentage}%`;
-      comparisonBefore.style.clipPath = `polygon(0 0, ${percentage}% 0, ${percentage}% 100%, 0 100%)`;
-    };
-
-    comparisonSlider.addEventListener('mousedown', () => isSliding = true);
-    window.addEventListener('mouseup', () => isSliding = false);
-    window.addEventListener('mousemove', (e) => {
-      if (isSliding) setPosition(e.clientX);
-    });
-
-    // Touch support
-    comparisonSlider.addEventListener('touchstart', () => isSliding = true);
-    window.addEventListener('touchend', () => isSliding = false);
-    window.addEventListener('touchmove', (e) => {
-      if (isSliding && e.touches[0]) setPosition(e.touches[0].clientX);
-    });
-  }
-
-  // 5. Initialize ROI Calculator & 60-Sec Diagnostic
-  if (typeof SpreadsheetRoiCalculator === 'function') {
-    new SpreadsheetRoiCalculator();
-  }
-  if (typeof SpreadsheetDiagnostic === 'function') {
-    new SpreadsheetDiagnostic();
-  }
-
-  // 6. Booking & Consultation Modal Management
-  const bookingModal = document.getElementById('bookingModal');
-  const openModalBtns = document.querySelectorAll('.btn-open-booking');
-  const closeModalBtn = document.getElementById('closeBookingModal');
-  const bookingForm = document.getElementById('bookingForm');
-  const bookingSuccess = document.getElementById('bookingSuccess');
-
-  openModalBtns.forEach(btn => {
+  openBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      const tier = btn.dataset.tier || '';
-      const notesField = document.getElementById('bookNotes');
-      if (notesField && tier) {
-        notesField.value = `Interested in ${tier}. Requesting 20-min confidential sheet audit.`;
+      const plan = btn.dataset.plan;
+      const notesInput = document.getElementById('sheetNotes');
+      if (notesInput && plan) {
+        notesInput.value = `Selected Package: ${plan}. `;
       }
-      if (bookingModal) {
-        bookingModal.classList.add('open');
-        window.soundEngine.playClick();
+      if (modal) {
+        modal.classList.add('open');
+        if (window.soundEngine) window.soundEngine.playClick();
       }
     });
   });
 
-  if (closeModalBtn && bookingModal) {
-    closeModalBtn.addEventListener('click', () => {
-      bookingModal.classList.remove('open');
-      window.soundEngine.playClick();
+  if (closeBtn && modal) {
+    closeBtn.addEventListener('click', () => {
+      modal.classList.remove('open');
+      if (window.soundEngine) window.soundEngine.playClick();
     });
   }
 
-  if (bookingModal) {
-    bookingModal.addEventListener('click', (e) => {
-      if (e.target === bookingModal) {
-        bookingModal.classList.remove('open');
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('open');
       }
     });
   }
 
-  if (bookingForm) {
-    bookingForm.addEventListener('submit', (e) => {
+  // 5. Form Submit
+  if (form) {
+    form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const name = document.getElementById('bookName')?.value || 'Leader';
-      const company = document.getElementById('bookCompany')?.value || 'Organization';
-
-      // Simulate instant booking registration
-      window.soundEngine.playSuccess();
-      if (bookingForm) bookingForm.style.display = 'none';
-      if (bookingSuccess) {
-        bookingSuccess.style.display = 'flex';
-        const confirmText = document.getElementById('bookingConfirmSummary');
-        if (confirmText) {
-          confirmText.textContent = `Priority triage confirmed for ${name} at ${company}. NDA and secure upload vault link sent to your inbox.`;
-        }
-      }
+      if (window.soundEngine) window.soundEngine.playSuccess();
+      form.style.display = 'none';
+      if (successBox) successBox.style.display = 'flex';
     });
   }
 
-  // 7. Smooth Scroll for Navbar Links
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
+  // 6. Smooth Scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e) {
       const targetId = this.getAttribute('href');
       if (targetId === '#') return;
-      const targetElement = document.querySelector(targetId);
-      if (targetElement) {
+      const el = document.querySelector(targetId);
+      if (el) {
         e.preventDefault();
-        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        window.soundEngine.playClick();
+        el.scrollIntoView({ behavior: 'smooth' });
+        if (window.soundEngine) window.soundEngine.playClick();
       }
     });
   });

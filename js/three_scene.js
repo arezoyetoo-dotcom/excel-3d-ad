@@ -1,10 +1,9 @@
 /**
- * GridCraft 3D - Interactive WebGL Spreadsheet Monolith
- * Built with Three.js. Supports Chaos vs Pristine Morphing, Layer Explosion,
- * 3D Bar Chart Pillars, Formula Energy Conduits, and Mouse Parallax.
+ * SheetFix 3D - Ultra-Clean Interactive 3D Spreadsheet Experience
+ * Simple, dramatic, and satisfying: Messy vs. Clean Excel Spreadsheet.
  */
 
-class Spreadsheet3DScene {
+class SimpleSpreadsheet3D {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
     if (!this.container) return;
@@ -12,448 +11,263 @@ class Spreadsheet3DScene {
     this.scene = null;
     this.camera = null;
     this.renderer = null;
-    this.controls = null;
-    this.raycaster = new THREE.Raycaster();
-    this.mouse = new THREE.Vector2(-999, -999);
-
-    // State Variables
-    this.state = 'pristine'; // 'pristine' | 'chaos'
-    this.viewMode = 'unified'; // 'unified' | 'exploded' | 'wireframe'
-    this.morphProgress = 1.0; // 0 = complete chaos, 1 = complete pristine
-    this.targetMorph = 1.0;
-    this.explodeProgress = 0.0; // 0 = unified, 1 = fully exploded
-    this.targetExplode = 0.0;
-    this.isAutoRotating = true;
-    this.hoveredCell = null;
-
-    // Object Collections
-    this.layers = [];
     this.cells = [];
-    this.barPillars = [];
-    this.chaosBadges = [];
-    this.pristineBadges = [];
-    this.conduitCurves = [];
-    this.particleSystem = null;
+    this.bars = [];
+    this.chaosTokens = [];
+    this.cleanTokens = [];
+
+    // Simple 0 (Messy) to 1 (Clean) progress
+    this.cleanProgress = 1.0;
+    this.targetClean = 1.0;
+    this.isDragging = false;
+    this.previousMouseX = 0;
+    this.rotationY = 0.5;
+    this.targetRotationY = 0.5;
 
     this.init();
-    this.buildWorld();
+    this.buildSheet();
     this.setupEvents();
     this.animate();
   }
 
   init() {
-    const width = this.container.clientWidth || 800;
-    const height = this.container.clientHeight || 550;
+    const width = this.container.clientWidth || 700;
+    const height = this.container.clientHeight || 450;
 
-    // Scene
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x060911);
-    this.scene.fog = new THREE.FogExp2(0x060911, 0.025);
 
-    // Camera - Isometric 45° Perspective
-    this.camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
-    this.setCameraPreset('isometric');
+    // Camera
+    this.camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+    this.camera.position.set(0, 7.5, 11);
+    this.camera.lookAt(0, 0, 0);
 
     // Renderer
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
+    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     this.renderer.setSize(width, height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.container.appendChild(this.renderer.domElement);
 
-    // Controls
-    if (typeof THREE.OrbitControls === 'function') {
-      this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
-      this.controls.enableDamping = true;
-      this.controls.dampingFactor = 0.05;
-      this.controls.maxPolarAngle = Math.PI / 2.1;
-      this.controls.minDistance = 8;
-      this.controls.maxDistance = 28;
-    }
-
-    // Lights
-    const ambientLight = new THREE.AmbientLight(0x1e293b, 1.2);
+    // Soft Studio Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
     this.scene.add(ambientLight);
 
-    this.keyLight = new THREE.DirectionalLight(0x38bdf8, 2.0);
-    this.keyLight.position.set(12, 18, 14);
-    this.keyLight.castShadow = true;
-    this.keyLight.shadow.mapSize.width = 1024;
-    this.keyLight.shadow.mapSize.height = 1024;
+    this.keyLight = new THREE.DirectionalLight(0x38bdf8, 1.8);
+    this.keyLight.position.set(8, 12, 8);
     this.scene.add(this.keyLight);
 
-    this.emeraldLight = new THREE.SpotLight(0x10b981, 3.5, 30, Math.PI / 4, 0.3);
-    this.emeraldLight.position.set(-10, 15, -8);
-    this.scene.add(this.emeraldLight);
+    this.greenLight = new THREE.PointLight(0x10b981, 2.5, 20);
+    this.greenLight.position.set(-6, 8, 4);
+    this.scene.add(this.greenLight);
 
-    this.rubyWarningLight = new THREE.PointLight(0xef4444, 0.0, 15);
-    this.rubyWarningLight.position.set(0, 3, 0);
-    this.scene.add(this.rubyWarningLight);
+    this.redWarningLight = new THREE.PointLight(0xef4444, 0, 20);
+    this.redWarningLight.position.set(0, 4, 0);
+    this.scene.add(this.redWarningLight);
   }
 
-  buildWorld() {
-    this.rootGroup = new THREE.Group();
-    this.scene.add(this.rootGroup);
+  buildSheet() {
+    this.sheetGroup = new THREE.Group();
+    this.scene.add(this.sheetGroup);
 
-    // 1. Floating Particle Grid in Background
-    this.createBackgroundParticles();
+    // 4x5 Excel Grid
+    const rows = 4;
+    const cols = 5;
+    const cellW = 1.3;
+    const cellH = 0.25;
+    const cellD = 1.0;
+    const gap = 0.12;
 
-    // 2. Build 4 Spreadsheet Architectural Layers
-    // Layer 0: Raw Ingestion Base (Charcoal Slate)
-    // Layer 1: Data Normalization (Emerald Glass)
-    // Layer 2: Formula & Logic Pipeline (Cyan Obsidian)
-    // Layer 3: Executive KPI Dashboard (Elevated 3D Bar Columns)
-    this.createLayer(0, -1.2, 'Raw Data Ingestion & Sanitizer', 0x1e293b, 0x334155);
-    this.createLayer(1, -0.4, 'Normalization & Schema Modeling', 0x064e3b, 0x10b981);
-    this.createLayer(2, 0.4, 'Formula & Automation Pipeline', 0x0c4a6e, 0x0284c7);
-    this.createLayer(3, 1.2, 'Executive 3D KPI Dashboard', 0x0f172a, 0x34d399, true);
+    const startX = -((cols * (cellW + gap)) / 2) + cellW / 2;
+    const startZ = -((rows * (cellD + gap)) / 2) + cellD / 2;
 
-    // 3. Build Floating 3D Error / Chaos Badges
-    this.createErrorBadges();
+    const boxGeo = new THREE.BoxGeometry(cellW, cellH, cellD);
 
-    // 4. Build Floating 3D Metric / Pristine Badges
-    this.createPristineBadges();
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const cleanX = startX + c * (cellW + gap);
+        const cleanZ = startZ + r * (cellD + gap);
 
-    // 5. Build Formula Energy Conduits
-    this.createFormulaConduits();
-  }
-
-  createBackgroundParticles() {
-    const count = 350;
-    const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(count * 3);
-    const colors = new Float32Array(count * 3);
-
-    for (let i = 0; i < count * 3; i += 3) {
-      positions[i] = (Math.random() - 0.5) * 36;
-      positions[i + 1] = (Math.random() - 0.5) * 24;
-      positions[i + 2] = (Math.random() - 0.5) * 36;
-
-      const isEmerald = Math.random() > 0.5;
-      colors[i] = isEmerald ? 0.06 : 0.02;
-      colors[i + 1] = isEmerald ? 0.72 : 0.52;
-      colors[i + 2] = isEmerald ? 0.5 : 0.96;
-    }
-
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-    const material = new THREE.PointsMaterial({
-      size: 0.12,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.6
-    });
-
-    this.particleSystem = new THREE.Points(geometry, material);
-    this.scene.add(this.particleSystem);
-  }
-
-  createLayer(layerIndex, baseHeight, title, fillColor, edgeColor, isTopKPI = false) {
-    const layerGroup = new THREE.Group();
-    layerGroup.userData = {
-      index: layerIndex,
-      baseY: baseHeight,
-      explodedY: (layerIndex - 1.5) * 3.8,
-      title: title
-    };
-    layerGroup.position.y = baseHeight;
-
-    const gridSize = 5;
-    const cellWidth = 1.1;
-    const cellSpacing = 0.15;
-    const totalSpan = (gridSize * cellWidth) + ((gridSize - 1) * cellSpacing);
-    const startOffset = -totalSpan / 2 + cellWidth / 2;
-
-    const boxGeo = new THREE.BoxGeometry(cellWidth, 0.28, cellWidth);
-
-    for (let r = 0; r < gridSize; r++) {
-      for (let c = 0; c < gridSize; c++) {
-        const posX = startOffset + c * (cellWidth + cellSpacing);
-        const posZ = startOffset + r * (cellWidth + cellSpacing);
+        const isHeader = (r === 0);
+        const baseColor = isHeader ? 0x059669 : 0x1e293b;
 
         const mat = new THREE.MeshStandardMaterial({
-          color: fillColor,
-          roughness: 0.25,
-          metalness: 0.4,
-          transparent: true,
-          opacity: 0.9
+          color: baseColor,
+          roughness: 0.3,
+          metalness: 0.2
         });
 
         const cell = new THREE.Mesh(boxGeo, mat);
-        cell.position.set(posX, 0, posZ);
-        cell.castShadow = true;
-        cell.receiveShadow = true;
+        cell.position.set(cleanX, 0, cleanZ);
 
-        // Wireframe Outlines
+        // Edge outlines
         const wireGeo = new THREE.EdgesGeometry(boxGeo);
-        const wireMat = new THREE.LineBasicMaterial({ color: edgeColor, linewidth: 1.5, transparent: true, opacity: 0.7 });
+        const wireMat = new THREE.LineBasicMaterial({
+          color: isHeader ? 0x34d399 : 0x38bdf8,
+          transparent: true,
+          opacity: 0.8
+        });
         const wire = new THREE.LineSegments(wireGeo, wireMat);
         cell.add(wire);
 
-        // Pre-compute chaotic jitter coordinates for this cell
-        const angle = Math.random() * Math.PI * 2;
-        const chaosRotX = (Math.random() - 0.5) * 0.45;
-        const chaosRotY = (Math.random() - 0.5) * 0.55;
-        const chaosRotZ = (Math.random() - 0.5) * 0.45;
-        const chaosOffsetX = (Math.random() - 0.5) * 0.7;
-        const chaosOffsetY = (Math.random() - 0.5) * 0.6;
-        const chaosOffsetZ = (Math.random() - 0.5) * 0.7;
+        // Chaotic shattered coordinates
+        const chaosAngle = Math.random() * Math.PI * 2;
+        const chaosX = cleanX + (Math.random() - 0.5) * 1.8;
+        const chaosY = (Math.random() - 0.5) * 1.4;
+        const chaosZ = cleanZ + (Math.random() - 0.5) * 1.8;
+
+        const chaosRotX = (Math.random() - 0.5) * 0.7;
+        const chaosRotY = (Math.random() - 0.5) * 0.9;
+        const chaosRotZ = (Math.random() - 0.5) * 0.7;
 
         cell.userData = {
-          layerIndex: layerIndex,
-          row: r,
-          col: c,
-          cellName: String.fromCharCode(65 + c) + (r + 1 + layerIndex * 10),
-          pristinePos: new THREE.Vector3(posX, 0, posZ),
-          pristineRot: new THREE.Euler(0, 0, 0),
-          chaosPos: new THREE.Vector3(posX + chaosOffsetX, chaosOffsetY, posZ + chaosOffsetZ),
+          cleanPos: new THREE.Vector3(cleanX, 0, cleanZ),
+          cleanRot: new THREE.Euler(0, 0, 0),
+          chaosPos: new THREE.Vector3(chaosX, chaosY, chaosZ),
           chaosRot: new THREE.Euler(chaosRotX, chaosRotY, chaosRotZ),
-          defaultColor: fillColor,
-          edgeColor: edgeColor,
-          isCorrupt: (Math.random() > 0.65),
-          cleanFormula: `=XLOOKUP(${String.fromCharCode(65 + c)}${r + 1}, DataMaster, Target, 0)`
+          cleanColor: baseColor,
+          chaosColor: 0x7f1d1d, // Dark burnt red
+          isBroken: Math.random() > 0.5
         };
 
-        layerGroup.add(cell);
+        this.sheetGroup.add(cell);
         this.cells.push(cell);
-
-        // If top layer, place 4 interactive 3D financial KPI bar pillars!
-        if (isTopKPI && ((r === 1 && c === 1) || (r === 1 && c === 3) || (r === 3 && c === 1) || (r === 3 && c === 3))) {
-          this.createKPIPillar(layerGroup, posX, posZ, r, c);
-        }
       }
     }
 
-    this.layers.push(layerGroup);
-    this.rootGroup.add(layerGroup);
-  }
-
-  createKPIPillar(layerGroup, posX, posZ, r, c) {
-    const kpiConfigs = {
-      '1,1': { label: 'Net Revenue', targetHeight: 2.8, color: 0x38bdf8, val: '$4.8M' },
-      '1,3': { label: 'Gross Margin', targetHeight: 3.9, color: 0x10b981, val: '84.2%' },
-      '3,1': { label: 'Burn Multiple', targetHeight: 2.2, color: 0x818cf8, val: '0.8x' },
-      '3,3': { label: 'EBITDA Forecast', targetHeight: 4.8, color: 0x34d399, val: '+$1.6M' }
-    };
-
-    const conf = kpiConfigs[`${r},${c}`] || { label: 'Metric', targetHeight: 3.0, color: 0x10b981, val: '100%' };
-    const pillarGeo = new THREE.CylinderGeometry(0.38, 0.44, 1, 16);
-    const pillarMat = new THREE.MeshStandardMaterial({
-      color: conf.color,
-      roughness: 0.15,
-      metalness: 0.7,
-      transparent: true,
-      opacity: 0.95
-    });
-
-    const pillar = new THREE.Mesh(pillarGeo, pillarMat);
-    pillar.position.set(posX, 0.5, posZ);
-    pillar.castShadow = true;
-
-    // Glowing Cap
-    const capGeo = new THREE.CylinderGeometry(0.4, 0.4, 0.08, 16);
-    const capMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    const cap = new THREE.Mesh(capGeo, capMat);
-    cap.position.y = 0.5;
-    pillar.add(cap);
-
-    pillar.userData = {
-      targetHeight: conf.targetHeight,
-      label: conf.label,
-      val: conf.val,
-      baseY: 0.5,
-      color: conf.color
-    };
-
-    layerGroup.add(pillar);
-    this.barPillars.push(pillar);
-  }
-
-  createErrorBadges() {
-    const errorTokens = ['#REF!', '#DIV/0!', '#VALUE!', '#NAME?', 'CIRCULAR!', 'CORRUPT'];
-    const badgeGroup = new THREE.Group();
-
-    errorTokens.forEach((tok, idx) => {
-      const sprite = this.createTextSprite(tok, '#EF4444', 'rgba(239, 68, 68, 0.25)');
-      const angle = (idx / errorTokens.length) * Math.PI * 2;
-      const radius = 3.8 + Math.random() * 0.8;
-      sprite.position.set(Math.cos(angle) * radius, (Math.random() - 0.5) * 3 + 1, Math.sin(angle) * radius);
-      sprite.userData = {
-        basePos: sprite.position.clone(),
-        floatSpeed: 1.5 + Math.random(),
-        floatOffset: Math.random() * 5
-      };
-      badgeGroup.add(sprite);
-      this.chaosBadges.push(sprite);
-    });
-
-    this.rootGroup.add(badgeGroup);
-  }
-
-  createPristineBadges() {
-    const metrics = ['✓ 0.18s Calc Speed', '✓ Zero Formula Errors', '✓ Dynamic XLOOKUP', '✓ 100% Automated'];
-    const badgeGroup = new THREE.Group();
-
-    metrics.forEach((txt, idx) => {
-      const sprite = this.createTextSprite(txt, '#10B981', 'rgba(16, 185, 129, 0.25)');
-      const angle = (idx / metrics.length) * Math.PI * 2 + Math.PI / 4;
-      const radius = 4.2;
-      sprite.position.set(Math.cos(angle) * radius, 2.8 + (idx % 2) * 0.8, Math.sin(angle) * radius);
-      sprite.userData = {
-        basePos: sprite.position.clone(),
-        floatSpeed: 1.2 + Math.random(),
-        floatOffset: Math.random() * 5
-      };
-      badgeGroup.add(sprite);
-      this.pristineBadges.push(sprite);
-    });
-
-    this.rootGroup.add(badgeGroup);
-  }
-
-  createFormulaConduits() {
-    // Elegant Bezier curves with glowing pulsing light packets
-    const conduitCoords = [
-      [new THREE.Vector3(-2, 0.5, -2), new THREE.Vector3(0, 2.5, 0), new THREE.Vector3(2, 2.5, 2)],
-      [new THREE.Vector3(2, 0.5, -2), new THREE.Vector3(1, 2.0, 0), new THREE.Vector3(-2, 2.5, 2)],
-      [new THREE.Vector3(-2, -1, 0), new THREE.Vector3(-0.5, 0.8, 1), new THREE.Vector3(2, 2.8, -1)]
+    // Add 3 Rising 3D Bar Chart Pillars in Clean Mode
+    const barConfigs = [
+      { x: startX + 1 * (cellW + gap), z: startZ + 2 * (cellD + gap), h: 2.2, color: 0x38bdf8 },
+      { x: startX + 2 * (cellW + gap), z: startZ + 2 * (cellD + gap), h: 3.5, color: 0x10b981 },
+      { x: startX + 3 * (cellW + gap), z: startZ + 2 * (cellD + gap), h: 2.8, color: 0x34d399 }
     ];
 
-    conduitCoords.forEach(points => {
-      const curve = new THREE.QuadraticBezierCurve3(points[0], points[1], points[2]);
-      const tubeGeo = new THREE.TubeGeometry(curve, 32, 0.035, 8, false);
-      const tubeMat = new THREE.MeshBasicMaterial({ color: 0x06b6d4, transparent: true, opacity: 0.65 });
-      const tube = new THREE.Mesh(tubeGeo, tubeMat);
+    barConfigs.forEach(conf => {
+      const geo = new THREE.CylinderGeometry(0.35, 0.4, 1, 16);
+      const mat = new THREE.MeshStandardMaterial({
+        color: conf.color,
+        roughness: 0.2,
+        metalness: 0.5
+      });
+      const bar = new THREE.Mesh(geo, mat);
+      bar.position.set(conf.x, 0.5, conf.z);
+      bar.userData = { targetHeight: conf.h };
 
-      // Energy Pulse Bead
-      const beadGeo = new THREE.SphereGeometry(0.09, 8, 8);
-      const beadMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-      const bead = new THREE.Mesh(beadGeo, beadMat);
+      // Glowing white cap
+      const capGeo = new THREE.CylinderGeometry(0.36, 0.36, 0.08, 16);
+      const capMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+      const cap = new THREE.Mesh(capGeo, capMat);
+      cap.position.y = 0.5;
+      bar.add(cap);
 
-      this.rootGroup.add(tube);
-      this.rootGroup.add(bead);
+      this.sheetGroup.add(bar);
+      this.bars.push(bar);
+    });
 
-      this.conduitCurves.push({ curve, tube, bead, progress: Math.random() });
+    // Floating Error Tokens for Chaos Mode
+    const errors = ['#REF!', '#DIV/0!', '#VALUE!', 'BROKEN!'];
+    errors.forEach((txt, idx) => {
+      const sprite = this.createLabel(txt, '#EF4444', 'rgba(239, 68, 68, 0.35)');
+      const angle = (idx / errors.length) * Math.PI * 2;
+      sprite.position.set(Math.cos(angle) * 3.4, 1.8 + Math.sin(idx) * 0.6, Math.sin(angle) * 3.4);
+      this.sheetGroup.add(sprite);
+      this.chaosTokens.push(sprite);
+    });
+
+    // Floating Clean Badges for Clean Mode
+    const cleanLabels = ['✓ 100% Clean', '✓ 0.1s Load Speed', '✓ Error-Free'];
+    cleanLabels.forEach((txt, idx) => {
+      const sprite = this.createLabel(txt, '#10B981', 'rgba(16, 185, 129, 0.35)');
+      const angle = (idx / cleanLabels.length) * Math.PI * 2 + 0.8;
+      sprite.position.set(Math.cos(angle) * 3.6, 2.6, Math.sin(angle) * 3.6);
+      this.sheetGroup.add(sprite);
+      this.cleanTokens.push(sprite);
     });
   }
 
-  createTextSprite(text, color, bgColor) {
+  createLabel(text, color, bgColor) {
     const canvas = document.createElement('canvas');
     canvas.width = 256;
-    canvas.height = 72;
+    canvas.height = 64;
     const ctx = canvas.getContext('2d');
 
-    // Rounded Box
     ctx.fillStyle = bgColor;
     ctx.strokeStyle = color;
     ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.roundRect(4, 4, 248, 64, 14);
+    ctx.roundRect(4, 4, 248, 56, 12);
     ctx.fill();
     ctx.stroke();
 
-    // Text
-    ctx.font = 'bold 24px "JetBrains Mono", Consolas, monospace';
+    ctx.font = 'bold 26px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
     ctx.fillStyle = color;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(text, 128, 36);
+    ctx.fillText(text, 128, 32);
 
     const texture = new THREE.CanvasTexture(canvas);
-    texture.minFilter = THREE.LinearFilter;
-    const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true });
-    const sprite = new THREE.Sprite(spriteMat);
-    sprite.scale.set(2.0, 0.58, 1.0);
+    const mat = new THREE.SpriteMaterial({ map: texture, transparent: true });
+    const sprite = new THREE.Sprite(mat);
+    sprite.scale.set(1.9, 0.48, 1);
     return sprite;
   }
 
   setupEvents() {
-    // Resize Listener
-    window.addEventListener('resize', () => this.handleResize());
+    window.addEventListener('resize', () => this.onResize());
 
-    // Mouse Tracking for Raycasting & Tooltips
-    this.renderer.domElement.addEventListener('mousemove', (e) => {
-      const rect = this.renderer.domElement.getBoundingClientRect();
-      this.mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      this.mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+    // Simple Drag to Rotate
+    const dom = this.renderer.domElement;
+    dom.addEventListener('mousedown', (e) => {
+      this.isDragging = true;
+      this.previousMouseX = e.clientX;
     });
 
-    this.renderer.domElement.addEventListener('mouseleave', () => {
-      this.mouse.x = -999;
-      this.mouse.y = -999;
-      this.hideTooltip();
+    window.addEventListener('mouseup', () => {
+      this.isDragging = false;
     });
 
-    // Tap / Click to interact with cells
-    this.renderer.domElement.addEventListener('click', () => {
-      if (this.hoveredCell) {
-        window.soundEngine.playClick();
-        this.inspectCell(this.hoveredCell);
+    window.addEventListener('mousemove', (e) => {
+      if (!this.isDragging) return;
+      const deltaX = e.clientX - this.previousMouseX;
+      this.targetRotationY += deltaX * 0.008;
+      this.previousMouseX = e.clientX;
+    });
+
+    // Touch support for mobile/tablets
+    dom.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 0) {
+        this.isDragging = true;
+        this.previousMouseX = e.touches[0].clientX;
       }
     });
-  }
 
-  handleResize() {
-    if (!this.container || !this.renderer || !this.camera) return;
-    const width = this.container.clientWidth;
-    const height = this.container.clientHeight;
-    this.camera.aspect = width / height;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(width, height);
-  }
-
-  setCameraPreset(preset) {
-    if (!this.camera) return;
-
-    if (preset === 'isometric') {
-      this.camera.position.set(13, 11, 14);
-      this.camera.lookAt(0, 0, 0);
-    } else if (preset === 'executive') {
-      this.camera.position.set(4, 8, 12);
-      this.camera.lookAt(0, 1.5, 0);
-    } else if (preset === 'topdown') {
-      this.camera.position.set(0, 18, 0.1);
-      this.camera.lookAt(0, 0, 0);
-    }
-
-    if (this.controls) {
-      this.controls.target.set(0, 0.5, 0);
-      this.controls.update();
-    }
-  }
-
-  setState(state) {
-    this.state = state;
-    this.targetMorph = (state === 'pristine') ? 1.0 : 0.0;
-
-    if (state === 'pristine') {
-      window.soundEngine.playChime();
-    } else {
-      window.soundEngine.playGlitch();
-    }
-  }
-
-  setViewMode(mode) {
-    this.viewMode = mode;
-    this.targetExplode = (mode === 'exploded') ? 1.0 : 0.0;
-
-    const isWire = (mode === 'wireframe');
-    this.cells.forEach(c => {
-      c.material.wireframe = isWire;
+    window.addEventListener('touchend', () => {
+      this.isDragging = false;
     });
 
-    if (mode === 'exploded') {
-      window.soundEngine.playExplode();
-    } else {
-      window.soundEngine.playClick();
-    }
+    window.addEventListener('touchmove', (e) => {
+      if (!this.isDragging || !e.touches[0]) return;
+      const deltaX = e.touches[0].clientX - this.previousMouseX;
+      this.targetRotationY += deltaX * 0.008;
+      this.previousMouseX = e.touches[0].clientX;
+    });
   }
 
-  toggleAutoRotate() {
-    this.isAutoRotating = !this.isAutoRotating;
-    return this.isAutoRotating;
+  onResize() {
+    if (!this.container || !this.renderer || !this.camera) return;
+    const w = this.container.clientWidth;
+    const h = this.container.clientHeight;
+    this.camera.aspect = w / h;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(w, h);
+  }
+
+  setMode(mode) {
+    if (mode === 'clean') {
+      this.targetClean = 1.0;
+      if (window.soundEngine) window.soundEngine.playChime();
+    } else {
+      this.targetClean = 0.0;
+      if (window.soundEngine) window.soundEngine.playGlitch();
+    }
   }
 
   animate() {
@@ -461,154 +275,62 @@ class Spreadsheet3DScene {
 
     const time = performance.now() * 0.001;
 
-    // 1. Morph Interpolation (Chaos <-> Pristine)
-    this.morphProgress += (this.targetMorph - this.morphProgress) * 0.08;
+    // Smooth Morph
+    this.cleanProgress += (this.targetClean - this.cleanProgress) * 0.09;
 
-    // 2. Explode Interpolation (Unified <-> Exploded)
-    this.explodeProgress += (this.targetExplode - this.explodeProgress) * 0.08;
+    // Smooth Rotation
+    this.rotationY += (this.targetRotationY - this.rotationY) * 0.1;
+    if (!this.isDragging) {
+      this.targetRotationY += 0.004; // subtle idle spin
+    }
+    if (this.sheetGroup) {
+      this.sheetGroup.rotation.y = this.rotationY;
+    }
 
-    // 3. Update Layers Height based on Explode Progress
-    this.layers.forEach(layer => {
-      const targetY = THREE.MathUtils.lerp(layer.userData.baseY, layer.userData.explodedY, this.explodeProgress);
-      layer.position.y += (targetY - layer.position.y) * 0.1;
-    });
-
-    // 4. Update Cells: Position, Rotation, Materials, Color
-    const isPristine = (this.morphProgress > 0.5);
+    // Animate Cells
     this.cells.forEach(cell => {
-      // Interpolate between chaotic pose and pristine aligned pose
-      cell.position.lerpVectors(cell.userData.chaosPos, cell.userData.pristinePos, this.morphProgress);
+      cell.position.lerpVectors(cell.userData.chaosPos, cell.userData.cleanPos, this.cleanProgress);
+      cell.rotation.x = THREE.MathUtils.lerp(cell.userData.chaosRot.x, cell.userData.cleanRot.x, this.cleanProgress);
+      cell.rotation.y = THREE.MathUtils.lerp(cell.userData.chaosRot.y, cell.userData.cleanRot.y, this.cleanProgress);
+      cell.rotation.z = THREE.MathUtils.lerp(cell.userData.chaosRot.z, cell.userData.cleanRot.z, this.cleanProgress);
 
-      cell.rotation.x = THREE.MathUtils.lerp(cell.userData.chaosRot.x, cell.userData.pristineRot.x, this.morphProgress);
-      cell.rotation.y = THREE.MathUtils.lerp(cell.userData.chaosRot.y, cell.userData.pristineRot.y, this.morphProgress);
-      cell.rotation.z = THREE.MathUtils.lerp(cell.userData.chaosRot.z, cell.userData.pristineRot.z, this.morphProgress);
-
-      // Color Shift
-      if (cell.userData.isCorrupt) {
-        const errorColor = new THREE.Color(0xef4444);
-        const cleanColor = new THREE.Color(cell.userData.defaultColor);
-        cell.material.color.lerpColors(errorColor, cleanColor, this.morphProgress);
+      if (cell.userData.isBroken) {
+        const errCol = new THREE.Color(cell.userData.chaosColor);
+        const clnCol = new THREE.Color(cell.userData.cleanColor);
+        cell.material.color.lerpColors(errCol, clnCol, this.cleanProgress);
       }
     });
 
-    // 5. Update KPI Bar Chart Pillars
-    this.barPillars.forEach(p => {
-      const targetScaleY = THREE.MathUtils.lerp(0.15, p.userData.targetHeight, this.morphProgress);
-      p.scale.y += (targetScaleY - p.scale.y) * 0.1;
-      p.position.y = p.scale.y / 2 + 0.14;
+    // Animate Bars
+    this.bars.forEach(bar => {
+      const h = THREE.MathUtils.lerp(0.05, bar.userData.targetHeight, this.cleanProgress);
+      bar.scale.y = h;
+      bar.position.y = h / 2;
     });
 
-    // 6. Update Floating Badges Visibility and Gentle Floating
-    this.chaosBadges.forEach(b => {
-      b.visible = (this.morphProgress < 0.85);
-      b.material.opacity = 1.0 - this.morphProgress;
-      b.position.y = b.userData.basePos.y + Math.sin(time * b.userData.floatSpeed + b.userData.floatOffset) * 0.15;
+    // Animate Floating Badges
+    this.chaosTokens.forEach((tok, i) => {
+      tok.visible = (this.cleanProgress < 0.7);
+      tok.material.opacity = (1.0 - this.cleanProgress);
+      tok.position.y += Math.sin(time * 2 + i) * 0.003;
     });
 
-    this.pristineBadges.forEach(b => {
-      b.visible = (this.morphProgress > 0.15);
-      b.material.opacity = this.morphProgress;
-      b.position.y = b.userData.basePos.y + Math.sin(time * b.userData.floatSpeed + b.userData.floatOffset) * 0.15;
+    this.cleanTokens.forEach((tok, i) => {
+      tok.visible = (this.cleanProgress > 0.3);
+      tok.material.opacity = this.cleanProgress;
+      tok.position.y += Math.sin(time * 2 + i) * 0.003;
     });
 
-    // 7. Update Formula Conduits & Flowing Energy Packets
-    this.conduitCurves.forEach(c => {
-      c.progress = (c.progress + 0.008) % 1.0;
-      const pt = c.curve.getPoint(c.progress);
-      c.bead.position.copy(pt);
-      c.tube.visible = (this.morphProgress > 0.25);
-      c.bead.visible = (this.morphProgress > 0.25);
-    });
-
-    // 8. Warning Light Pulsing in Chaos
-    if (this.rubyWarningLight) {
-      this.rubyWarningLight.intensity = (1.0 - this.morphProgress) * (2.5 + Math.sin(time * 6) * 1.5);
+    // Lights
+    if (this.redWarningLight) {
+      this.redWarningLight.intensity = (1.0 - this.cleanProgress) * 3.5;
     }
-
-    // 9. Particle Drift
-    if (this.particleSystem) {
-      this.particleSystem.rotation.y = time * 0.03;
-    }
-
-    // 10. Auto-Rotation
-    if (this.isAutoRotating && this.rootGroup) {
-      this.rootGroup.rotation.y += 0.0035;
-    }
-
-    // 11. Raycasting for Mouse Cell Hover
-    this.performRaycast();
-
-    // 12. Update OrbitControls & Render
-    if (this.controls) {
-      this.controls.update();
+    if (this.greenLight) {
+      this.greenLight.intensity = this.cleanProgress * 2.8;
     }
 
     this.renderer.render(this.scene, this.camera);
   }
-
-  performRaycast() {
-    if (this.mouse.x === -999) return;
-
-    this.raycaster.setFromCamera(this.mouse, this.camera);
-    const intersects = this.raycaster.intersectObjects(this.cells);
-
-    if (intersects.length > 0) {
-      const hit = intersects[0].object;
-      if (this.hoveredCell !== hit) {
-        this.hoveredCell = hit;
-        this.showTooltip(hit);
-      }
-    } else {
-      if (this.hoveredCell) {
-        this.hoveredCell = null;
-        this.hideTooltip();
-      }
-    }
-  }
-
-  showTooltip(cell) {
-    const tooltip = document.getElementById('sceneCellTooltip');
-    if (!tooltip) return;
-
-    const data = cell.userData;
-    const isClean = this.morphProgress > 0.5;
-
-    let statusHtml = '';
-    if (!isClean && data.isCorrupt) {
-      statusHtml = `
-        <span class="cell-status-pill error">⚠️ #REF! Corrupted</span>
-        <div class="cell-detail">Circular dependency detected across 18 unindexed tabs.</div>
-      `;
-    } else {
-      statusHtml = `
-        <span class="cell-status-pill clean">✨ Engineered Pristine</span>
-        <div class="cell-detail">${data.cleanFormula}</div>
-      `;
-    }
-
-    tooltip.innerHTML = `
-      <div class="tooltip-header">
-        <strong>Cell ${data.cellName}</strong>
-        <span class="tooltip-layer">L${data.layerIndex}: ${this.layers[data.layerIndex]?.userData.title || ''}</span>
-      </div>
-      <div class="tooltip-body">${statusHtml}</div>
-    `;
-
-    tooltip.classList.add('visible');
-  }
-
-  hideTooltip() {
-    const tooltip = document.getElementById('sceneCellTooltip');
-    if (tooltip) tooltip.classList.remove('visible');
-  }
-
-  inspectCell(cell) {
-    const data = cell.userData;
-    const hudStatus = document.getElementById('hudSelectedCell');
-    if (hudStatus) {
-      hudStatus.textContent = `${data.cellName} (${this.morphProgress > 0.5 ? 'Engineered' : 'Disorganized'})`;
-    }
-  }
 }
 
-window.Spreadsheet3DScene = Spreadsheet3DScene;
+window.SimpleSpreadsheet3D = SimpleSpreadsheet3D;

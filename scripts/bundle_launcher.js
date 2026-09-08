@@ -8,15 +8,12 @@ const ROOT = path.join(__dirname, '..');
 const LAUNCHER_DIR = '/home/rasaec/launchers/apps';
 const LAUNCHER_FILE = path.join(LAUNCHER_DIR, 'excel-3d-ad.html');
 
-console.log('⚡ Building Standalone Windows Launcher for GridCraft 3D...');
+console.log('⚡ Building Standalone Windows Launcher for SheetFix 3D...');
 
 const indexHtml = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 const cssStyle = fs.readFileSync(path.join(ROOT, 'css/style.css'), 'utf8');
-const cssComponents = fs.readFileSync(path.join(ROOT, 'css/components.css'), 'utf8');
 const audioJs = fs.readFileSync(path.join(ROOT, 'js/audio.js'), 'utf8');
 const threeSceneJs = fs.readFileSync(path.join(ROOT, 'js/three_scene.js'), 'utf8');
-const calcJs = fs.readFileSync(path.join(ROOT, 'js/calculator.js'), 'utf8');
-const diagJs = fs.readFileSync(path.join(ROOT, 'js/diagnostic.js'), 'utf8');
 const appJs = fs.readFileSync(path.join(ROOT, 'js/app.js'), 'utf8');
 
 // Top Launcher Bar
@@ -25,7 +22,7 @@ const launcherBar = `
   <div style="background: #030712; border-bottom: 2px solid #10B981; padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.85rem; color: #9CA3AF; z-index: 999; position: relative;">
     <div style="display: flex; align-items: center; gap: 10px;">
       <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981;"></span>
-      <strong style="color: #F9FAFB;">GridCraft 3D • Bespoke Excel Architecture Agency</strong>
+      <strong style="color: #F9FAFB;">SheetFix 3D • The Excel Organizing Service</strong>
       <span style="color: #6B7280;">(Local Port 5426)</span>
     </div>
     <div style="display: flex; align-items: center; gap: 12px;">
@@ -45,19 +42,14 @@ const launcherBar = `
 // Three.js CDN Fallback for Standalone launcher
 const threeJsCdn = `
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 `;
 
 let bundled = indexHtml
   .replace('<link rel="stylesheet" href="css/style.css">', `<style>\n${cssStyle}\n</style>`)
-  .replace('<link rel="stylesheet" href="css/components.css">', `<style>\n${cssComponents}\n</style>`)
-  .replace('<header class="header-nav">', `${launcherBar}\n<header class="header-nav">`)
+  .replace('<header class="site-header">', `${launcherBar}\n<header class="site-header">`)
   .replace('<script src="vendor/three.min.js"></script>', threeJsCdn)
-  .replace('<script src="vendor/OrbitControls.js"></script>', '')
   .replace('<script src="js/audio.js"></script>', `<script>\n${audioJs}\n</script>`)
   .replace('<script src="js/three_scene.js"></script>', `<script>\n${threeSceneJs}\n</script>`)
-  .replace('<script src="js/calculator.js"></script>', `<script>\n${calcJs}\n</script>`)
-  .replace('<script src="js/diagnostic.js"></script>', `<script>\n${diagJs}\n</script>`)
   .replace('<script src="js/app.js"></script>', `<script>\n${appJs}\n</script>`);
 
 fs.mkdirSync(LAUNCHER_DIR, { recursive: true });

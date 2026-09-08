@@ -1,880 +1,390 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GridCraft 3D • Bespoke Excel Architecture & Spreadsheet Rescue Agency</title>
-  <meta name="description" content="We transform broken, bloated, slow Excel workbooks into immaculate 3D-grade executive models and automated dashboards in 48 hours.">
+  <title>SheetFix 3D • We Fix & Organize Your Messy Excel Sheets in 24h</title>
+  <meta name="description" content="Send us your broken, slow, chaotic spreadsheets. We clean, restructure, and automate them into fast, beautiful models in 24 hours.">
 
   <!-- Favicon -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2310B981'/><text y='.75em' x='50%' text-anchor='middle' font-size='65' fill='%23000' font-family='sans-serif' font-weight='900'>3D</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2310B981'/><text y='.72em' x='50%' text-anchor='middle' font-size='60' fill='%23000' font-family='sans-serif' font-weight='900'>XLS</text></svg>">
 
-  <!-- Google Fonts & Fallbacks -->
+  <!-- Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
 
-  <!-- Stylesheets -->
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
 
   <!-- =============================================================
-       Header Navigation
+       Clean Header
   ============================================================= -->
-  <header class="header-nav">
-    <div class="container nav-wrapper">
-      <a href="#" class="brand-logo">
-        <div class="brand-3d-badge">⚡</div>
-        <span>GridCraft <span class="gradient-text-emerald">3D</span></span>
+  <header class="site-header">
+    <div class="header-container">
+      <a href="#" class="site-logo">
+        <span class="logo-icon">📊</span>
+        <span class="logo-text">SheetFix <strong>3D</strong></span>
       </a>
 
-      <ul class="nav-links">
-        <li><a href="#hero3d">3D Monolith</a></li>
-        <li><a href="#comparison">Before & After</a></li>
-        <li><a href="#services">Services & Pricing</a></li>
-        <li><a href="#calculator">ROI Calculator</a></li>
-        <li><a href="#audit">60s Audit Tool</a></li>
-        <li><a href="#cases">Case Studies</a></li>
-      </ul>
+      <nav class="site-nav">
+        <a href="#how-it-works">How It Works</a>
+        <a href="#what-we-fix">What We Fix</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#guarantee">Guarantee</a>
+      </nav>
 
-      <div class="nav-actions">
-        <button id="btnAudioToggle" class="btn-audio" title="Toggle Synthesized Audio Feedback">
-          <span>🔊</span> Audio: ON
+      <div class="header-cta-group">
+        <button id="soundToggle" class="btn-sound" title="Toggle Sound">
+          🔊 Sound: ON
         </button>
-        <button class="btn-primary btn-open-booking" data-tier="Free 20-Min Audit">
-          Book Free Audit <span>➔</span>
+        <button class="btn-nav-action open-modal-btn">
+          Fix My Sheet in 24h ➔
         </button>
       </div>
     </div>
   </header>
 
   <!-- =============================================================
-       Hero Section with Interactive 3D Canvas
+       Hero Section (Clean, Big & 3D)
   ============================================================= -->
-  <section id="hero3d" class="hero-section">
-    <div class="container hero-grid">
+  <section class="hero-section">
+    <div class="hero-container">
       
-      <!-- Left Copy Column -->
-      <div class="hero-copy">
-        <div class="hero-tag">
-          <span class="hero-tag-pulse"></span>
-          <span>48-Hour Bespoke Spreadsheet Engineering</span>
-        </div>
-
-        <h1 class="hero-title">
-          Stop letting chaotic spreadsheets sabotage <span class="gradient-text-emerald">7-figure decisions</span>.
+      <!-- Headline & Tagline -->
+      <div class="hero-heading-block">
+        <div class="hero-badge">⚡ 24-Hour Turnaround • 100% Fixed-Price</div>
+        <h1 class="hero-main-title">
+          Your Excel sheets are a mess.<br>
+          <span class="highlight-emerald">We fix them in 24 hours.</span>
         </h1>
-
-        <p class="hero-description">
-          We rescue, restructure, and automate broken, bloated Excel workbooks into immaculate 3D-grade executive models, dynamic financial forecasts, and zero-manual-labor pipelines.
+        <p class="hero-subline">
+          Send us your broken formulas, freezing files, and chaotic spreadsheets.<br>
+          We rebuild, clean, and automate them into fast, beautiful models.
         </p>
+      </div>
 
-        <div class="hero-metrics-strip">
-          <div class="metric-item">
-            <span class="metric-number">0.18s</span>
-            <span class="metric-label">Calc Speed</span>
-          </div>
-          <div class="metric-item">
-            <span class="metric-number">85%</span>
-            <span class="metric-label">Labor Reclaimed</span>
-          </div>
-          <div class="metric-item">
-            <span class="metric-number">100%</span>
-            <span class="metric-label">Audit Accuracy</span>
-          </div>
-        </div>
+      <!-- 3D Interactive Stage -->
+      <div class="hero-3d-wrapper">
+        
+        <!-- 3D Canvas -->
+        <div id="simple3dCanvas" class="simple-3d-canvas"></div>
 
-        <div class="hero-cta-cluster">
-          <button class="btn-primary btn-open-booking" data-tier="Priority Triage">
-            Claim 20-Min Triage Audit <span>⚡</span>
+        <!-- Single Prominent 3D Toggle -->
+        <div class="mode-toggle-bar">
+          <button id="modeChaosBtn" class="toggle-pill pill-chaos">
+            <span>💥</span> Messy & Broken (#REF!)
           </button>
-          <a href="#comparison" class="btn-secondary">
-            Inspect Before vs After <span>↓</span>
-          </a>
+          <button id="modeCleanBtn" class="toggle-pill pill-clean active">
+            <span>✨</span> Clean & Organized (Fixed)
+          </button>
         </div>
 
-        <div class="guarantee-note">
-          <span>🔒</span> Strict NDA upfront before file review. 100% Money-Back Performance Guarantee.
+        <div class="canvas-drag-hint">
+          <span>👆 Click & drag with mouse to spin in 3D</span>
         </div>
       </div>
 
-      <!-- Right Column: Interactive 3D WebGL Canvas -->
-      <div class="hero-3d-stage">
+      <!-- Hero Actions -->
+      <div class="hero-action-row">
+        <button class="btn-hero-primary open-modal-btn">
+          Get My Sheet Fixed ➔
+        </button>
+        <a href="#how-it-works" class="btn-hero-secondary">
+          See How It Works ↓
+        </a>
+      </div>
+
+      <div class="hero-trust-note">
+        <span>🔒 Mutual NDA signed upfront. If you don't love your fixed spreadsheet, you pay $0.</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =============================================================
+       How It Works in 3 Simple Steps
+  ============================================================= -->
+  <section id="how-it-works" class="content-section">
+    <div class="content-container">
+      <div class="section-title-wrap">
+        <span class="pill-label">Simple 3-Step Process</span>
+        <h2 class="section-heading">How SheetFix Works</h2>
+        <p class="section-subtext">No complex software to learn. No endless meetings. Just send your file and get it back clean.</p>
+      </div>
+
+      <div class="steps-grid">
         
-        <!-- Top HUD -->
-        <div class="stage-hud-top">
-          <div id="hudModeStatus" class="hud-status-badge">
-            ✨ Engineered Pristine Architecture
-          </div>
-          <div class="hud-actions">
-            <button id="btnToggleRotate" class="btn-hud active" title="Toggle Auto-Orbit Rotation">
-              <span>🔄</span> Auto-Orbit: ON
-            </button>
-          </div>
+        <div class="step-card">
+          <div class="step-num">01</div>
+          <div class="step-icon">📤</div>
+          <h3 class="step-title">Upload Your Sheet</h3>
+          <p class="step-desc">
+            Upload your messy Excel file or Google Sheet. We sign a mutual non-disclosure agreement (NDA) before opening it.
+          </p>
         </div>
 
-        <!-- WebGL Mount Point -->
-        <div id="hero3dCanvasContainer"></div>
-
-        <!-- 3D Cell Telemetry Tooltip -->
-        <div id="sceneCellTooltip" class="scene-cell-tooltip">
-          <!-- Populated by Three.js Raycaster -->
+        <div class="step-card">
+          <div class="step-num">02</div>
+          <div class="step-icon">⚡</div>
+          <h3 class="step-title">We Fix Everything</h3>
+          <p class="step-desc">
+            Our senior Excel architects fix broken formulas, eliminate lag, remove duplicates, and build clean dashboards.
+          </p>
         </div>
 
-        <!-- Bottom HUD Controls -->
-        <div class="stage-hud-bottom">
-          
-          <!-- Master Morph Toggle -->
-          <div class="hud-state-toggle-cluster">
-            <button id="btnStateChaos" class="btn-state-morph btn-chaos" title="Switch to Disorganized / Broken State">
-              <span>💥</span> Chaotic Sheets (#REF!)
-            </button>
-            <button id="btnStatePristine" class="btn-state-morph btn-pristine active" title="Switch to Engineered Pristine Architecture">
-              <span>✨</span> Engineered Architecture
-            </button>
-          </div>
-
-          <!-- Secondary 3D View & Camera Presets -->
-          <div class="hud-subcontrols">
-            
-            <div class="view-mode-group">
-              <button class="btn-view-mode active" data-view="unified" title="Compact Monolith">Stacked 3D</button>
-              <button class="btn-view-mode" data-view="exploded" title="Explode the 4 Architectural Layers">Explode Layers 💥</button>
-              <button class="btn-view-mode" data-view="wireframe" title="Formula Route Wireframe">Wireframe</button>
-            </div>
-
-            <div class="camera-preset-group">
-              <button class="btn-camera-preset active" data-camera="isometric">Isometric 45°</button>
-              <button class="btn-camera-preset" data-camera="executive">Executive</button>
-              <button class="btn-camera-preset" data-camera="topdown">Top-Down</button>
-            </div>
-
-          </div>
-
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <div class="step-icon">💎</div>
+          <h3 class="step-title">Delivered in 24 Hours</h3>
+          <p class="step-desc">
+            Receive an immaculate, error-free, lightning-fast spreadsheet with a 3-minute video explaining all improvements.
+          </p>
         </div>
 
-      </div>
-
-    </div>
-  </section>
-
-  <!-- =============================================================
-       Trust & Social Proof Bar
-  ============================================================= -->
-  <section class="trust-strip">
-    <div class="container trust-wrapper">
-      <span class="trust-title">Engineered For Critical Decision-Makers In:</span>
-      <div class="trust-logos">
-        <span class="trust-pill">🚀 Series A/B SaaS</span>
-        <span class="trust-pill">🏢 Real Estate Funds</span>
-        <span class="trust-pill">📈 Private Equity</span>
-        <span class="trust-pill">🏥 MedTech Telemetry</span>
-        <span class="trust-pill">📦 Global Logistics</span>
       </div>
     </div>
   </section>
 
   <!-- =============================================================
-       Interactive "Before vs After" Comparison Split Slider
+       What We Fix (Concrete & Visual)
   ============================================================= -->
-  <section id="comparison" class="section">
-    <div class="container">
-      
-      <div class="section-header">
-        <span class="section-eyebrow">Interactive Forensic Comparison</span>
-        <h2 class="section-title">The Difference Between a Nightmare and an Asset</h2>
-        <p class="section-subtitle">
-          Drag the center divider to compare an unorganized operational sheet with our re-architected executive model.
-        </p>
+  <section id="what-we-fix" class="content-section bg-contrast">
+    <div class="content-container">
+      <div class="section-title-wrap">
+        <span class="pill-label">Common Headaches We Solve</span>
+        <h2 class="section-heading">What We Fix Every Day</h2>
+        <p class="section-subtext">Stop losing sleep over fragile spreadsheets.</p>
       </div>
 
-      <div class="comparison-wrapper">
-        <div id="comparisonContainer" class="comparison-container">
-          
-          <!-- After (Engineered Pristine) Pane (Background) -->
-          <div class="comparison-pane after-pane">
-            <div class="pane-badge">✨ Engineered by GridCraft (0.18s Calc • Dynamic XLOOKUP)</div>
-            
-            <table class="pane-table-mockup">
-              <thead>
-                <tr>
-                  <th>Client Name</th>
-                  <th>Contract ARR</th>
-                  <th>Gross Margin</th>
-                  <th>Health Status</th>
-                  <th>Formula Logic</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Acme Logistics Corp</td>
-                  <td class="cell-clean">$142,500</td>
-                  <td class="cell-clean">82.4%</td>
-                  <td><span class="cell-pill">Active / Healthy</span></td>
-                  <td><code>=XLOOKUP(A2, MasterData, ARR)</code></td>
-                </tr>
-                <tr>
-                  <td>Zenith Health Labs</td>
-                  <td class="cell-clean">$280,000</td>
-                  <td class="cell-clean">79.1%</td>
-                  <td><span class="cell-pill">Tier 1 Enterprise</span></td>
-                  <td><code>=SUMIFS(Ledger[Amt], Ledger[ID], A3)</code></td>
-                </tr>
-                <tr>
-                  <td>Vortex Robotics AG</td>
-                  <td class="cell-clean">$89,200</td>
-                  <td class="cell-clean">91.0%</td>
-                  <td><span class="cell-pill">Active / Healthy</span></td>
-                  <td><code>=LET(rev, B4, cost, C4, (rev-cost)/rev)</code></td>
-                </tr>
-                <tr>
-                  <td>Hyperion Retail Group</td>
-                  <td class="cell-clean">$510,000</td>
-                  <td class="cell-clean">74.8%</td>
-                  <td><span class="cell-pill">Tier 1 Enterprise</span></td>
-                  <td><code>=INDEX(PriceGrid, MATCH(A5, Keys, 0))</code></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Before (Chaotic & Corrupted) Pane (Foreground, Clipped) -->
-          <div id="comparisonBefore" class="comparison-pane before-pane">
-            <div class="pane-badge">💥 Chaotic Sheet (Corrupted Cache • 12-Second Lag)</div>
-            
-            <table class="pane-table-mockup">
-              <thead>
-                <tr>
-                  <th>client_name</th>
-                  <th>REV_TOTAL</th>
-                  <th>MARGIN_%</th>
-                  <th>STATUS</th>
-                  <th>CALC_ERR</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>acme logistics (v2)</td>
-                  <td class="cell-error">#REF!</td>
-                  <td>0.824192</td>
-                  <td>UNKNOWN??</td>
-                  <td class="cell-error">=VLOOKUP(A2,Sheet2!$A:$Z,99,FALSE)</td>
-                </tr>
-                <tr>
-                  <td>Zenith health [OLD]</td>
-                  <td>280000</td>
-                  <td class="cell-error">#DIV/0!</td>
-                  <td>ACTIVE (duplicate)</td>
-                  <td class="cell-error">=E2/(C2-C2)</td>
-                </tr>
-                <tr>
-                  <td>vortex robotics</td>
-                  <td>$89,200.00</td>
-                  <td>91%</td>
-                  <td>Check with Dave</td>
-                  <td class="cell-error">CIRCULAR_REF</td>
-                </tr>
-                <tr>
-                  <td>HYPERION RETAIL GROUP</td>
-                  <td class="cell-error">#VALUE!</td>
-                  <td>74.8%</td>
-                  <td>Needs Update</td>
-                  <td class="cell-error">=SUM(B5+"N/A")</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Draggable Split Handle -->
-          <div id="comparisonSlider" class="comparison-slider-handle">
-            <div class="slider-knob">⬌</div>
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- =============================================================
-       Anatomy of Spreadsheet Rot (Feature Grid)
-  ============================================================= -->
-  <section class="section">
-    <div class="container">
-      
-      <div class="section-header">
-        <span class="section-eyebrow">The 6 Failure Modes</span>
-        <h2 class="section-title">The Anatomy of Spreadsheet Rot</h2>
-        <p class="section-subtitle">
-          Spreadsheets don't fail all at once. They decay gradually until a critical decision is made on flawed numbers.
-        </p>
-      </div>
-
-      <div class="features-grid">
+      <div class="fixes-grid">
         
-        <div class="feature-card">
-          <div class="feature-icon-box">💥</div>
-          <h3 class="feature-title">#REF! Cascade Failures</h3>
-          <p class="feature-desc">
-            One deleted column or moved tab detonates 40 downstream formulas, causing silent data corruption across quarterly filings.
+        <div class="fix-box">
+          <div class="fix-header">
+            <span class="fix-tag tag-bad">Before</span>
+            <span class="fix-arrow">➔</span>
+            <span class="fix-tag tag-good">After SheetFix</span>
+          </div>
+          <h3 class="fix-title">Broken Formulas & #REF! Errors</h3>
+          <p class="fix-desc">
+            Replaced fragile old VLOOKUPs and broken links with modern, bulletproof <code>=XLOOKUP</code> and dynamic arrays that never break when rows move.
           </p>
         </div>
 
-        <div class="feature-card">
-          <div class="feature-icon-box">⏳</div>
-          <h3 class="feature-title">The 180MB File Freeze</h3>
-          <p class="feature-desc">
-            Accumulated phantom styles, corrupted pivot caches, and whole-column references freeze Excel for 10 minutes every time you hit Enter.
+        <div class="fix-box">
+          <div class="fix-header">
+            <span class="fix-tag tag-bad">Before</span>
+            <span class="fix-arrow">➔</span>
+            <span class="fix-tag tag-good">After SheetFix</span>
+          </div>
+          <h3 class="fix-title">120MB File Freezing for 5 Minutes</h3>
+          <p class="fix-desc">
+            We strip phantom styles, corrupted caches, and bloated ranges to shrink your file down to 3MB so it opens and calculates in under 1 second.
           </p>
         </div>
 
-        <div class="feature-card">
-          <div class="feature-icon-box">🔀</div>
-          <h3 class="feature-title">Version Hell Chaos</h3>
-          <p class="feature-desc">
-            Four executives working in <code>Model_v3_FINAL_FINAL2_david.xlsx</code> with zero audit trail or centralized input locking.
+        <div class="fix-box">
+          <div class="fix-header">
+            <span class="fix-tag tag-bad">Before</span>
+            <span class="fix-arrow">➔</span>
+            <span class="fix-tag tag-good">After SheetFix</span>
+          </div>
+          <h3 class="fix-title">Hours of Weekly Copy-Pasting</h3>
+          <p class="fix-desc">
+            We build automated 1-click import buttons and PowerQuery connections so your weekly reports update automatically in 2 seconds.
           </p>
         </div>
 
-        <div class="feature-card">
-          <div class="feature-icon-box">🩸</div>
-          <h3 class="feature-title">Manual Data Bleed</h3>
-          <p class="feature-desc">
-            Senior analysts burning 15 hours every week manually stitching together CSV exports instead of analyzing strategic growth.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon-box">🙈</div>
-          <h3 class="feature-title">Executive Blindspots</h3>
-          <p class="feature-desc">
-            Unreadable walls of raw numbers with no drill-down capability, scenario toggles (Base/Best/Worst case), or visual variance alerts.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon-box">🛡️</div>
-          <h3 class="feature-title">Zero Security & Validation</h3>
-          <p class="feature-desc">
-            Unprotected input cells where a junior staffer can accidentally overwrite your core valuation multiplier with a single typo.
+        <div class="fix-box">
+          <div class="fix-header">
+            <span class="fix-tag tag-bad">Before</span>
+            <span class="fix-arrow">➔</span>
+            <span class="fix-tag tag-good">After SheetFix</span>
+          </div>
+          <h3 class="fix-title">Ugly, Unreadable Wall of Plain Numbers</h3>
+          <p class="fix-desc">
+            We design an executive-ready visual dashboard with clear KPI cards, drill-downs, and clean formatting your investors and boss will love.
           </p>
         </div>
 
       </div>
-
     </div>
   </section>
 
   <!-- =============================================================
-       Interactive ROI & Waste Calculator
+       Simple, Clear Pricing
   ============================================================= -->
-  <section id="calculator" class="section">
-    <div class="container">
-      
-      <div class="section-header">
-        <span class="section-eyebrow">Interactive Financial Diagnostics</span>
-        <h2 class="section-title">Calculate Your Spreadsheet Waste</h2>
-        <p class="section-subtitle">
-          See exactly how much capital your company bleeds every month on manual spreadsheet friction.
-        </p>
+  <section id="pricing" class="content-section">
+    <div class="content-container">
+      <div class="section-title-wrap">
+        <span class="pill-label">Transparent Fixed Pricing</span>
+        <h2 class="section-heading">Pick Your Package</h2>
+        <p class="section-subtext">No hourly surprises. Guaranteed delivery times. 100% money-back guarantee.</p>
       </div>
 
-      <div class="calculator-card">
+      <div class="pricing-deck">
         
-        <!-- Left: Sliders -->
-        <div class="calc-inputs">
-          
-          <div class="slider-group">
-            <div class="slider-header">
-              <span class="slider-label">Team Members Working in Excel</span>
-              <span id="calcTeamSizeVal" class="slider-badge">6 analysts / operators</span>
+        <!-- Package 1 -->
+        <div class="price-box">
+          <div class="price-header">
+            <h3 class="price-name">Quick Clean</h3>
+            <p class="price-pitch">For single sheets with broken formulas or messy formatting.</p>
+            <div class="price-figure">
+              <span class="currency">$</span>149
             </div>
-            <input id="calcTeamSize" type="range" min="1" max="50" value="6" class="calc-range-input">
+            <div class="price-speed">⚡ 24-Hour Delivery</div>
           </div>
 
-          <div class="slider-group">
-            <div class="slider-header">
-              <span class="slider-label">Weekly Hours Spent Fixing / Cleaning Data</span>
-              <span id="calcHoursWastedVal" class="slider-badge">7 hrs / week per person</span>
-            </div>
-            <input id="calcHoursWasted" type="range" min="1" max="30" value="7" class="calc-range-input">
-          </div>
-
-          <div class="slider-group">
-            <div class="slider-header">
-              <span class="slider-label">Average Fully-Loaded Hourly Rate</span>
-              <span id="calcHourlyRateVal" class="slider-badge">$75 / hr</span>
-            </div>
-            <input id="calcHourlyRate" type="range" min="30" max="250" value="75" step="5" class="calc-range-input">
-          </div>
-
-        </div>
-
-        <!-- Right: Animated Output Panel -->
-        <div class="calc-results-panel">
-          
-          <div class="result-metric-block">
-            <span class="result-metric-label">Estimated Annual Capital Burned:</span>
-            <div id="calcAnnualWaste" class="result-metric-val danger">$157,500</div>
-          </div>
-
-          <div class="result-metric-block">
-            <span class="result-metric-label">Net Annual Savings With GridCraft:</span>
-            <div id="calcNetSavings" class="result-metric-val success">$133,875</div>
-          </div>
-
-          <div class="result-submetrics-grid">
-            <div>
-              <div id="calcHoursSaved" class="submetric-val">1,785 hrs</div>
-              <div class="submetric-name">Annual Hours Reclaimed</div>
-            </div>
-            <div>
-              <div id="calcPaybackDays" class="submetric-val">7 business days</div>
-              <div class="submetric-name">Service Payback Period</div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- =============================================================
-       3 Core Service Packages & Transparent Pricing
-  ============================================================= -->
-  <section id="services" class="section">
-    <div class="container">
-      
-      <div class="section-header">
-        <span class="section-eyebrow">Turnkey Engineering Packages</span>
-        <h2 class="section-title">Transparent Fixed-Price Architecture</h2>
-        <p class="section-subtitle">
-          No hourly billing surprises. Fixed scopes with guaranteed delivery dates and NDA-backed data protection.
-        </p>
-      </div>
-
-      <div class="pricing-grid">
-        
-        <!-- Tier 1 -->
-        <div class="pricing-card">
-          <div class="pricing-header">
-            <h3 class="pricing-tier-name">Rapid Triage & Cleanup</h3>
-            <p class="pricing-tier-desc">For urgent, broken, crashing, or deadline-critical workbooks.</p>
-            
-            <div class="pricing-amount-cluster">
-              <span class="pricing-currency">$</span>
-              <span class="pricing-price">1,650</span>
-              <span class="pricing-cycle">fixed fee</span>
-            </div>
-
-            <div class="pricing-turnaround-badge">
-              <span>⚡</span> 48-Hour Turnaround
-            </div>
-          </div>
-
-          <ul class="pricing-features-list">
-            <li><span class="check">✓</span> Comprehensive #REF! & #VALUE! audit & repair</li>
-            <li><span class="check">✓</span> 80%+ file size compression (remove cache bloat)</li>
-            <li><span class="check">✓</span> Data normalization (dates, phones, currencies)</li>
-            <li><span class="check">✓</span> Duplicate row extraction & schema stabilization</li>
-            <li><span class="check">✓</span> Up to 5 sheets / 100,000 rows</li>
-            <li><span class="check">✓</span> 14 days post-delivery support</li>
+          <ul class="price-features">
+            <li>✓ Fix all formula errors (#REF!, #DIV/0!)</li>
+            <li>✓ Clean formatting and remove duplicates</li>
+            <li>✓ Speed optimization (reduce file lag)</li>
+            <li>✓ Up to 3 tabs / 20,000 rows</li>
+            <li>✓ 7 days of follow-up support</li>
           </ul>
 
-          <button class="btn-secondary btn-open-booking" data-tier="Rapid Triage Tier ($1,650)">
-            Book Rapid Triage
+          <button class="btn-price-action open-modal-btn" data-plan="Quick Clean ($149)">
+            Choose Quick Clean
           </button>
         </div>
 
-        <!-- Tier 2 (Featured) -->
-        <div class="pricing-card featured">
-          <div class="featured-ribbon">Most Popular Choice</div>
-
-          <div class="pricing-header">
-            <h3 class="pricing-tier-name">Executive Financial & KPI Model</h3>
-            <p class="pricing-tier-desc">End-to-end bespoke model with executive dashboard and scenario toggles.</p>
-            
-            <div class="pricing-amount-cluster">
-              <span class="pricing-currency">$</span>
-              <span class="pricing-price">3,450</span>
-              <span class="pricing-cycle">fixed fee</span>
+        <!-- Package 2 (Featured) -->
+        <div class="price-box price-featured">
+          <div class="popular-ribbon">Most Popular</div>
+          <div class="price-header">
+            <h3 class="price-name">Full Overhaul</h3>
+            <p class="price-pitch">Complete restructure, new executive dashboard & dynamic model.</p>
+            <div class="price-figure">
+              <span class="currency">$</span>349
             </div>
-
-            <div class="pricing-turnaround-badge">
-              <span>🚀</span> 5-7 Business Days
-            </div>
+            <div class="price-speed">🚀 48-Hour Delivery</div>
           </div>
 
-          <ul class="pricing-features-list">
-            <li><span class="check">✓</span> Complete structural re-architecture & relational modeling</li>
-            <li><span class="check">✓</span> 3-Statement financial forecast & cash waterfall</li>
-            <li><span class="check">✓</span> Dynamic Scenario Switcher (Base, Best, Worst case)</li>
-            <li><span class="check">✓</span> High-contrast executive dashboard with variance KPIs</li>
-            <li><span class="check">✓</span> Automated XLOOKUP & LAMBDA dynamic arrays</li>
-            <li><span class="check">✓</span> Full input cell locking & typo-proof validation</li>
-            <li><span class="check">✓</span> 30 days VIP support & live Loom walkthrough</li>
+          <ul class="price-features">
+            <li>✓ Complete sheet restructure & data model</li>
+            <li>✓ Beautiful executive KPI dashboard</li>
+            <li>✓ Dynamic financial forecasts & charts</li>
+            <li>✓ Typo-proof input locking & validation</li>
+            <li>✓ Up to 10 tabs / 100,000 rows</li>
+            <li>✓ 3-minute video walkthrough of your sheet</li>
+            <li>✓ 30 days of free revisions</li>
           </ul>
 
-          <button class="btn-primary btn-open-booking" data-tier="Executive Model Tier ($3,450)">
-            Book Executive Model <span>➔</span>
+          <button class="btn-price-action featured-btn open-modal-btn" data-plan="Full Overhaul ($349)">
+            Choose Full Overhaul ➔
           </button>
         </div>
 
-        <!-- Tier 3 -->
-        <div class="pricing-card">
-          <div class="pricing-header">
-            <h3 class="pricing-tier-name">Full-Stack Automation & ETL</h3>
-            <p class="pricing-tier-desc">Zero manual copy-pasting ever again. Automated data ingestion pipelines.</p>
-            
-            <div class="pricing-amount-cluster">
-              <span class="pricing-currency">$</span>
-              <span class="pricing-price">5,800</span>
-              <span class="pricing-cycle">fixed fee</span>
+        <!-- Package 3 -->
+        <div class="price-box">
+          <div class="price-header">
+            <h3 class="price-name">Automated Pipeline</h3>
+            <p class="price-pitch">Zero manual copy-pasting ever again. Automated data updates.</p>
+            <div class="price-figure">
+              <span class="currency">$</span>799
             </div>
-
-            <div class="pricing-turnaround-badge">
-              <span>🤖</span> 10-14 Business Days
-            </div>
+            <div class="price-speed">🤖 3-5 Days Delivery</div>
           </div>
 
-          <ul class="pricing-features-list">
-            <li><span class="check">✓</span> Automated PowerQuery & Python ingestion pipelines</li>
-            <li><span class="check">✓</span> 1-Click scheduled CSV/API auto-refresh</li>
-            <li><span class="check">✓</span> Multi-source reconciliation & ledger validation</li>
-            <li><span class="check">✓</span> Automated PDF/Slack/Email report generation</li>
-            <li><span class="check">✓</span> Complex VBA / Office Scripts macro suites</li>
-            <li><span class="check">✓</span> Comprehensive engineering documentation</li>
-            <li><span class="check">✓</span> 60 days dedicated technical warranty</li>
+          <ul class="price-features">
+            <li>✓ Automated PowerQuery / CSV data ingestion</li>
+            <li>✓ 1-Click refresh for all weekly reports</li>
+            <li>✓ Custom macros & Python in Excel scripts</li>
+            <li>✓ Automated PDF / email export</li>
+            <li>✓ Unlimited tabs & historical data</li>
+            <li>✓ 60 days of priority technical support</li>
           </ul>
 
-          <button class="btn-secondary btn-open-booking" data-tier="Full-Stack Automation Tier ($5,800)">
-            Book Automation Suite
+          <button class="btn-price-action open-modal-btn" data-plan="Automated Pipeline ($799)">
+            Choose Automation
           </button>
         </div>
 
       </div>
-
     </div>
   </section>
 
   <!-- =============================================================
-       60-Second Interactive Diagnostic & Quote Wizard
+       The Zero-Risk Guarantee
   ============================================================= -->
-  <section id="audit" class="section">
-    <div class="container">
-      
-      <div class="section-header">
-        <span class="section-eyebrow">Instant Self-Assessment</span>
-        <h2 class="section-title">60-Second Spreadsheet Health Audit</h2>
-        <p class="section-subtitle">
-          Answer 3 quick questions to receive a custom architectural diagnosis and exact turnaround timeline.
+  <section id="guarantee" class="content-section bg-contrast">
+    <div class="content-container">
+      <div class="guarantee-banner">
+        <div class="shield-badge">🛡️</div>
+        <h2 class="guarantee-heading">100% Money-Back Performance Guarantee</h2>
+        <p class="guarantee-subtext">
+          If you open the spreadsheet we deliver and you aren't blown away by how clean, fast, and easy to use it is, let us know within 14 days and we will issue an immediate 100% refund. No questions asked.
         </p>
-      </div>
-
-      <div class="diagnostic-box">
-        
-        <div class="diagnostic-progress-bar-container">
-          <div id="diagProgressBar" class="diagnostic-progress-bar"></div>
-        </div>
-
-        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-faint); margin-bottom: 20px;">
-          <span id="diagStepIndicator">Step 1 of 3</span>
-          <span>Confidential Assessment</span>
-        </div>
-
-        <!-- Step 1 -->
-        <div id="diagStep1" class="diagnostic-step active">
-          <h3 class="step-question">1. What is the primary bottleneck plaguing your workbook?</h3>
-          <div class="diag-options-grid">
-            <div class="diag-option-card" data-step="1" data-key="symptom" data-value="formulas">
-              <span class="diag-icon">💥</span>
-              <div class="diag-text">
-                <span class="diag-title">Broken Formulas & #REF!</span>
-                <span class="diag-sub">Cascading error codes, circular links</span>
-              </div>
-            </div>
-            <div class="diag-option-card" data-step="1" data-key="symptom" data-value="sluggish">
-              <span class="diag-icon">⏳</span>
-              <div class="diag-text">
-                <span class="diag-title">Extreme Lag & 100MB+ Bloat</span>
-                <span class="diag-sub">Freezes Excel, takes minutes to save</span>
-              </div>
-            </div>
-            <div class="diag-option-card" data-step="1" data-key="symptom" data-value="manual">
-              <span class="diag-icon">📋</span>
-              <div class="diag-text">
-                <span class="diag-title">Manual Data Entry Hell</span>
-                <span class="diag-sub">Copy-pasting CSVs weekly for hours</span>
-              </div>
-            </div>
-            <div class="diag-option-card" data-step="1" data-key="symptom" data-value="visual">
-              <span class="diag-icon">📊</span>
-              <div class="diag-text">
-                <span class="diag-title">Lack of Executive Visibility</span>
-                <span class="diag-sub">Ugly wall of plain numbers, no dashboard</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 2 -->
-        <div id="diagStep2" class="diagnostic-step">
-          <h3 class="step-question">2. How large and complex is your workbook?</h3>
-          <div class="diag-options-grid">
-            <div class="diag-option-card" data-step="2" data-key="size" data-value="single">
-              <span class="diag-icon">📄</span>
-              <div class="diag-text">
-                <span class="diag-title">1 - 3 Tabs (Small Model)</span>
-                <span class="diag-sub">Under 15,000 rows of transactional data</span>
-              </div>
-            </div>
-            <div class="diag-option-card" data-step="2" data-key="size" data-value="medium">
-              <span class="diag-icon">📑</span>
-              <div class="diag-text">
-                <span class="diag-title">4 - 12 Tabs (Operational Hub)</span>
-                <span class="diag-sub">Cross-sheet lookups, multiple departments</span>
-              </div>
-            </div>
-            <div class="diag-option-card" data-step="2" data-key="size" data-value="enterprise">
-              <span class="diag-icon">📚</span>
-              <div class="diag-text">
-                <span class="diag-title">15+ Tabs (Enterprise Monster)</span>
-                <span class="diag-sub">Historical data, macros, multiple ledgers</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 3 -->
-        <div id="diagStep3" class="diagnostic-step">
-          <h3 class="step-question">3. How urgently do you need the rebuilt model?</h3>
-          <div class="diag-options-grid">
-            <div class="diag-option-card" data-step="3" data-key="speed" data-value="urgent">
-              <span class="diag-icon">🚨</span>
-              <div class="diag-text">
-                <span class="diag-title">Emergency Sprint (24 - 48 Hours)</span>
-                <span class="diag-sub">Board meeting or investment round imminent</span>
-              </div>
-            </div>
-            <div class="diag-option-card" data-step="3" data-key="speed" data-value="standard">
-              <span class="diag-icon">⚡</span>
-              <div class="diag-text">
-                <span class="diag-title">Standard Turnaround (5 - 7 Days)</span>
-                <span class="diag-sub">Complete re-architecture with full testing</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Diagnostic Report Output -->
-        <div id="diagResult" class="diagnostic-result">
-          <div class="result-card-inner">
-            <span id="diagResultBadge" class="result-badge-pill">Severe Formula Fragility</span>
-            <h4 id="diagResultTitle" style="font-size: 1.3rem;">Critical Formula Corruption & Circular Linkage Risk</h4>
-            
-            <p style="font-size: 0.9rem; color: var(--text-muted);">
-              Your sheet requires immediate structural de-escalation: deprecating volatile lookup methods, rebuilding the calculation graph, and isolating raw inputs from formula cells.
-            </p>
-
-            <div class="result-specs-grid">
-              <div class="result-spec-item">
-                <span id="diagResultRec" class="result-spec-val">Executive Model Architecture</span>
-                <span class="result-spec-name">Recommended Package</span>
-              </div>
-              <div class="result-spec-item">
-                <span id="diagResultTimeline" class="result-spec-val">48 - 72 Hours</span>
-                <span class="result-spec-name">Guaranteed Delivery</span>
-              </div>
-              <div class="result-spec-item">
-                <span id="diagResultPrice" class="result-spec-val">$2,800 - $3,500</span>
-                <span class="result-spec-name">Transparent Estimate</span>
-              </div>
-            </div>
-
-            <div style="display: flex; gap: 14px; margin-top: 10px;">
-              <button id="diagClaimBtn" class="btn-primary" style="flex: 1; justify-content: center;">
-                Claim Priority Audit Slot <span>➔</span>
-              </button>
-              <button id="diagRestartBtn" class="btn-secondary">
-                Restart Audit ↺
-              </button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- =============================================================
-       Case Studies & Proven Results
-  ============================================================= -->
-  <section id="cases" class="section">
-    <div class="container">
-      
-      <div class="section-header">
-        <span class="section-eyebrow">Documented Track Record</span>
-        <h2 class="section-title">Tested Under Real Fire</h2>
-        <p class="section-subtitle">
-          Real enterprise spreadsheets overhauled for high-growth operators.
-        </p>
-      </div>
-
-      <div class="cases-grid">
-        
-        <div class="case-card">
-          <div class="case-badge">Series A SaaS ($14M ARR)</div>
-          <h3 class="case-title">140,000-Row Churn & Cohort Waterfall Restructure</h3>
-          <p class="case-summary">
-            A 22-tab financial model taking 14 minutes to recalculate was rebuilt with dynamic arrays. Opening speed dropped to 0.4 seconds.
-          </p>
-          <div class="case-stat-box">
-            <div class="case-stat-number">98.2%</div>
-            <div class="case-stat-label">Recalculation Latency Eliminated</div>
-          </div>
-        </div>
-
-        <div class="case-card">
-          <div class="case-badge">Commercial Real Estate ($92M Portfolio)</div>
-          <h3 class="case-title">48-Property Valuation & Debt Waterfall Model</h3>
-          <p class="case-summary">
-            Replaced 60 fragile cross-sheet links with a single relational calculation engine and executive 3D KPI summary dashboard.
-          </p>
-          <div class="case-stat-box">
-            <div class="case-stat-number">3 Days</div>
-            <div class="case-stat-label">Saved Every Month Per Analyst</div>
-          </div>
-        </div>
-
-        <div class="case-card">
-          <div class="case-badge">Logistics Fleet (1,800 Trucks)</div>
-          <h3 class="case-title">Automated Telemetry & Fuel Billing Ingestion</h3>
-          <p class="case-summary">
-            Constructed an automated PowerQuery pipeline that pulls 18 regional terminal CSVs every morning with 1-click validation.
-          </p>
-          <div class="case-stat-box">
-            <div class="case-stat-number">100%</div>
-            <div class="case-stat-label">Manual Copy-Pasting Eliminated</div>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- =============================================================
-       The Sheet Vault & Performance Guarantee
-  ============================================================= -->
-  <section class="section">
-    <div class="container">
-      
-      <div class="guarantee-box">
-        <div class="guarantee-shield">🛡️</div>
-        <h2 class="guarantee-title">The "Sheet Vault" Performance Guarantee</h2>
-        <p class="guarantee-text">
-          We sign a binding mutual NDA before you transmit a single cell of data. All files are engineered in air-gapped secure environments. If our rebuilt model doesn't drastically accelerate your team's workflow and eliminate errors, you pay exactly $0.
-        </p>
-        <button class="btn-primary btn-open-booking" data-tier="Risk-Free Audit">
-          Schedule Confidential 20-Min Audit <span>➔</span>
+        <button class="btn-hero-primary open-modal-btn">
+          Fix My Sheet Without Risk ➔
         </button>
       </div>
-
     </div>
   </section>
 
   <!-- =============================================================
-       Site Footer
+       Simple Footer
   ============================================================= -->
-  <footer class="footer-site">
-    <div class="container footer-grid">
-      <div class="footer-brand">
-        <a href="#" class="brand-logo" style="margin-bottom: 6px;">
-          <div class="brand-3d-badge">⚡</div>
-          <span>GridCraft 3D</span>
-        </a>
-        <div class="footer-copy">
-          © 2026 GridCraft 3D Architecture Agency. All rights reserved. Running on Port 5426.
-        </div>
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <span class="footer-logo">📊 SheetFix 3D</span>
+        <span class="footer-text">© 2026 SheetFix. The bespoke Excel organizing agency. Running on Port 5426.</span>
       </div>
-
-      <ul class="footer-links">
-        <li><a href="#hero3d">3D Monolith</a></li>
-        <li><a href="#comparison">Before & After</a></li>
-        <li><a href="#services">Pricing</a></li>
-        <li><a href="#calculator">ROI Calculator</a></li>
-        <li><a href="#audit">Audit</a></li>
-      </ul>
+      <div class="footer-right">
+        <a href="#how-it-works">How It Works</a>
+        <a href="#what-we-fix">What We Fix</a>
+        <a href="#pricing">Pricing</a>
+      </div>
     </div>
   </footer>
 
   <!-- =============================================================
-       Booking & Consultation Modal
+       Simple Booking Modal
   ============================================================= -->
-  <div id="bookingModal" class="modal-backdrop">
-    <div class="modal-card">
-      <button id="closeBookingModal" class="modal-close-btn" title="Close (Esc)">✕</button>
-
-      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-        <span style="color: var(--emerald-primary); font-size: 20px;">⚡</span>
-        <h3 style="font-size: 1.4rem;">Book Confidential Sheet Audit</h3>
+  <div id="bookingModal" class="simple-modal-backdrop">
+    <div class="simple-modal-card">
+      <button id="closeModalBtn" class="modal-x-btn" title="Close (Esc)">✕</button>
+      
+      <div class="modal-head">
+        <h3 class="modal-title">Get Your Sheet Fixed</h3>
+        <p class="modal-sub">Tell us about your sheet and we'll reply within 2 hours with an upfront NDA and intake link.</p>
       </div>
-      <p style="font-size: 0.9rem; color: var(--text-muted);">
-        A senior spreadsheet architect will review your workbook structure and provide an immediate fixed quote within 2 hours.
-      </p>
 
-      <form id="bookingForm" class="booking-form">
-        <div class="form-group">
-          <label class="form-label" for="bookName">Full Name</label>
-          <input id="bookName" class="form-input" type="text" placeholder="e.g. Alex Morgan" required>
+      <form id="simpleBookingForm" class="modal-form">
+        <div class="input-wrap">
+          <label for="clientName">Your Name</label>
+          <input type="text" id="clientName" placeholder="e.g. Sarah Jenkins" required>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="bookEmail">Work Email (Strictly Confidential)</label>
-          <input id="bookEmail" class="form-input" type="email" placeholder="alex@company.com" required>
+        <div class="input-wrap">
+          <label for="clientEmail">Work Email (Strictly Confidential)</label>
+          <input type="email" id="clientEmail" placeholder="sarah@company.com" required>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="bookCompany">Company / Industry</label>
-          <input id="bookCompany" class="form-input" type="text" placeholder="e.g. Apex Health (Series A)" required>
+        <div class="input-wrap">
+          <label for="sheetNotes">What is wrong with your spreadsheet?</label>
+          <textarea id="sheetNotes" placeholder="e.g. 5 tabs, broken #REF! formulas in the budget model, file freezes when saving..." rows="3" required></textarea>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="bookNotes">Workbook Symptoms / Notes</label>
-          <textarea id="bookNotes" class="form-textarea" placeholder="Describe the current problems (e.g. 15 tabs, broken #REF!, takes 5 mins to recalculate)..."></textarea>
-        </div>
-
-        <button type="submit" class="btn-primary" style="justify-content: center; width: 100%; margin-top: 8px;">
-          Submit for 2-Hour Rapid Review <span>➔</span>
+        <button type="submit" class="btn-hero-primary" style="width: 100%; justify-content: center;">
+          Send Intake Request ➔
         </button>
       </form>
 
-      <!-- Confirmation Box -->
-      <div id="bookingSuccess" class="booking-success-box">
-        <div class="success-badge-icon">✅</div>
-        <h4 style="font-size: 1.3rem; color: #FFFFFF;">Audit Slot Confirmed</h4>
-        <p id="bookingConfirmSummary" style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">
-          Your intake request has been routed to our Lead Model Architect. We will reach out within 2 business hours with an upfront NDA and secure vault link.
-        </p>
+      <div id="modalSuccessMsg" class="modal-success-box" style="display: none;">
+        <div class="success-icon">✅</div>
+        <h4>Request Received!</h4>
+        <p>A senior Excel architect has been assigned to your request. We will email you within 2 hours with our mutual NDA and secure file link.</p>
       </div>
-
     </div>
   </div>
 
-  <!-- =============================================================
-       Vendor & Application Scripts
-  ============================================================= -->
+  <!-- Scripts -->
   <script src="vendor/three.min.js"></script>
-  <script src="vendor/OrbitControls.js"></script>
   <script src="js/audio.js"></script>
   <script src="js/three_scene.js"></script>
-  <script src="js/calculator.js"></script>
-  <script src="js/diagnostic.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
