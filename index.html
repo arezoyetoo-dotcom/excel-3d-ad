@@ -67,7 +67,7 @@
       
       <!-- Headline & Tagline -->
       <div class="hero-heading-block">
-        <div class="hero-badge" data-i18n="heroBadge">⚡ Only 50¢ Per Spreadsheet • 24-Hour Turnaround • 100% Fixed-Price</div>
+        <div class="hero-badge" data-i18n="heroBadge">⚡ Only 50¢ Per Spreadsheet • 24-Hour Delivery • Guaranteed Fixed-Price</div>
         <h1 class="hero-main-title" data-i18n-html="heroTitle">
           Your Excel sheets are a mess.<br>
           <span class="highlight-emerald">We fix them in 24 hours.</span>
@@ -245,7 +245,7 @@
             <p class="price-pitch" data-i18n="plan1Pitch">Ideal for 1 broken sheet with formula errors, slow lag, or ugly formatting.</p>
             <div class="price-figure">
               <span data-i18n="plan1Price">$0.50</span>
-              <span data-i18n="plan1Unit" style="font-size: 1rem; color: var(--text-muted); font-weight: 600;">/ file (50¢)</span>
+              <span data-i18n="plan1Unit" class="plan-unit-tag">/ file (50¢)</span>
             </div>
             <div class="price-speed" data-i18n="plan1Speed">⚡ 2-Hour Delivery</div>
           </div>
@@ -255,7 +255,7 @@
             <li data-i18n="plan1F2">✓ Fix all formula errors (#REF!, #DIV/0!, #N/A)</li>
             <li data-i18n="plan1F3">✓ Formatting cleanup & duplicate row removal</li>
             <li data-i18n="plan1F4">✓ File size reduction for instantaneous calculation</li>
-            <li data-i18n="plan1F5">✓ 100% money-back satisfaction guarantee</li>
+            <li data-i18n="plan1F5">✓ Full money-back satisfaction guarantee</li>
           </ul>
 
           <button class="btn-price-action open-modal-btn" data-plan="Single File ($0.50)" data-plan-en="Single File ($0.50)" data-plan-fa="تک‌فایل (۷۵,۰۰۰ تومان)" data-i18n="plan1Btn">
@@ -271,7 +271,7 @@
             <p class="price-pitch" data-i18n="plan2Pitch">Great for monthly accounting, multi-sheet models, or small teams.</p>
             <div class="price-figure">
               <span data-i18n="plan2Price">$2.00</span>
-              <span data-i18n="plan2Unit" style="font-size: 1rem; color: var(--text-muted); font-weight: 600;">(40¢/file)</span>
+              <span data-i18n="plan2Unit" class="plan-unit-tag">(40¢/file)</span>
             </div>
             <div class="price-speed" data-i18n="plan2Speed">🚀 12-Hour Delivery</div>
           </div>
@@ -298,7 +298,7 @@
             <p class="price-pitch" data-i18n="plan3Pitch">Complete cleanup for folders of messy, slow legacy spreadsheets.</p>
             <div class="price-figure">
               <span data-i18n="plan3Price">$5.00</span>
-              <span data-i18n="plan3Unit" style="font-size: 1rem; color: var(--text-muted); font-weight: 600;">(33¢/file)</span>
+              <span data-i18n="plan3Unit" class="plan-unit-tag">(33¢/file)</span>
             </div>
             <div class="price-speed" data-i18n="plan3Speed">🤖 Priority Queue</div>
           </div>
@@ -328,9 +328,9 @@
     <div class="content-container">
       <div class="guarantee-banner">
         <div class="shield-badge">🛡️</div>
-        <h2 class="guarantee-heading" data-i18n="guaranteeHeading">100% Money-Back Performance Guarantee</h2>
+        <h2 class="guarantee-heading" data-i18n="guaranteeHeading">Unconditional Money-Back Performance Guarantee</h2>
         <p class="guarantee-subtext" data-i18n="guaranteeSubtext">
-          If you open the spreadsheet we deliver and you aren't blown away by how clean, fast, and easy to use it is, let us know within 14 days and we will issue an immediate 100% refund. No questions asked.
+          If you open the spreadsheet we deliver and you aren't blown away by how clean, fast, and easy to use it is, let us know within 14 days and we will issue an immediate full refund. No questions asked.
         </p>
         <button class="btn-hero-primary open-modal-btn" data-plan="Single File ($0.50)" data-plan-en="Single File ($0.50)" data-plan-fa="تک‌فایل (۷۵,۰۰۰ تومان)" data-i18n="guaranteeBtn">
           Fix My File for 50¢ Without Risk ➔
@@ -376,7 +376,7 @@
 
         <div class="input-wrap">
           <label for="clientEmail" data-i18n="modalEmailLabel">Work Email (Strictly Confidential)</label>
-          <input type="email" id="clientEmail" placeholder="sarah@company.com" maxlength="100" required autocomplete="email">
+          <input type="email" id="clientEmail" placeholder="lead.analyst@sheetfix.dev" maxlength="100" required autocomplete="email">
         </div>
 
         <div class="input-wrap">
@@ -384,12 +384,12 @@
           <textarea id="sheetNotes" placeholder="e.g. 5 tabs, broken #REF! formulas in the budget model, file freezes when saving..." rows="3" maxlength="1000" required></textarea>
         </div>
 
-        <button type="submit" class="btn-hero-primary" style="width: 100%; justify-content: center;" data-i18n="modalSubmitBtn">
+        <button type="submit" class="btn-hero-primary btn-full-width" data-i18n="modalSubmitBtn">
           Send Intake Request ➔
         </button>
       </form>
 
-      <div id="modalSuccessMsg" class="modal-success-box" style="display: none;">
+      <div id="modalSuccessMsg" class="modal-success-box is-hidden">
         <div class="success-icon">✅</div>
         <h4 data-i18n="modalSuccessTitle">Request Received!</h4>
         <p data-i18n="modalSuccessText">A senior Excel architect has been assigned to your request. We will email you within 2 hours with our mutual NDA and secure file link.</p>

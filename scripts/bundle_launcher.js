@@ -20,7 +20,7 @@ const appJs = fs.readFileSync(path.join(ROOT, 'js/app.js'), 'utf8');
 // Top Launcher Bar
 const launcherBar = `
   <!-- Standalone Launcher Header Banner -->
-  <div style="background: #030712; border-bottom: 2px solid #10B981; padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.85rem; color: #9CA3AF; z-index: 999; position: relative;">
+  <div style="background: #030712; border-bottom: 2px solid #10B981; padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 0.85rem; color: #9CA3AF; z-index: 999; position: relative;">
     <div style="display: flex; align-items: center; gap: 10px;">
       <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981;"></span>
       <strong style="color: #F9FAFB;">SheetFix 3D • The Excel Organizing Service</strong>

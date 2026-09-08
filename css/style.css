@@ -22,14 +22,82 @@
   --border: rgba(255, 255, 255, 0.08);
   --border-emerald: rgba(16, 185, 129, 0.35);
 
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', Consolas, monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', Consolas, "Liberation Mono", Courier, monospace;
+
+  caret-color: var(--emerald);
+  color-scheme: dark;
 }
 
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+::selection {
+  background: rgba(16, 185, 129, 0.35);
+  color: #FFFFFF;
+}
+
+:focus-visible {
+  outline: 2px solid var(--emerald);
+  outline-offset: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #080C14;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(16, 185, 129, 0.5);
+}
+
+a {
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+.tabular, .metric-val, .metric-number, .price-amount, .audit-val, .plan-unit-tag {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tactile pointer feedback on press (anti-slop 04-states) */
+button:active,
+.btn-hero-primary:active,
+.btn-hero-secondary:active,
+.btn-nav-action:active,
+.toggle-pill:active,
+.btn-price-action:active,
+.btn-sound:active,
+.btn-lang:active {
+  transform: scale(0.975);
+  transition: transform 60ms ease-out;
+}
+
+.plan-unit-tag {
+  font-size: 1rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.btn-full-width {
+  width: 100%;
+  justify-content: center;
+}
+
+.is-hidden {
+  display: none !important;
 }
 
 body {
@@ -154,7 +222,7 @@ a {
   font-size: 0.82rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
 }
 
 .btn-sound:hover {
@@ -171,7 +239,7 @@ a {
   font-size: 0.82rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -192,7 +260,7 @@ a {
   font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, filter 0.2s ease;
   box-shadow: 0 4px 15px var(--emerald-glow);
 }
 
@@ -305,7 +373,7 @@ a {
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .toggle-pill.pill-chaos.active {
@@ -343,7 +411,7 @@ a {
   font-size: 1.05rem;
   font-weight: 800;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, filter 0.2s ease;
   box-shadow: 0 6px 25px var(--emerald-glow);
   display: inline-flex;
   align-items: center;
@@ -365,7 +433,7 @@ a {
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -666,7 +734,7 @@ a {
   font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
   text-align: center;
 }
 
@@ -865,10 +933,16 @@ a {
   padding: 10px 14px;
   font-family: inherit;
   font-size: 0.9rem;
-  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .input-wrap input:focus, .input-wrap textarea:focus {
+  border-color: var(--emerald);
+}
+
+.input-wrap input:focus-visible, .input-wrap textarea:focus-visible {
+  outline: 2px solid var(--emerald);
+  outline-offset: 1px;
   border-color: var(--emerald);
 }
 

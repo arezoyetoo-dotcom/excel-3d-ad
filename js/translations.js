@@ -15,7 +15,7 @@ window.SHEETFIX_I18N = {
     soundOff: "🔇 Sound: OFF",
     navCta: "Fix File for 50¢ ➔",
     
-    heroBadge: "⚡ Only 50¢ Per Spreadsheet • 24-Hour Turnaround • 100% Fixed-Price",
+    heroBadge: "⚡ Only 50¢ Per Spreadsheet • 24-Hour Delivery • Guaranteed Fixed-Price",
     heroTitle: "Your Excel sheets are a mess.<br><span class=\"highlight-emerald\">We fix them in 24 hours.</span>",
     heroSubline: "Send us your broken formulas, freezing files, and chaotic spreadsheets.<br>We rebuild, clean, and automate them into fast, beautiful models.",
     
@@ -66,7 +66,7 @@ window.SHEETFIX_I18N = {
     plan1F2: "✓ Fix all formula errors (#REF!, #DIV/0!, #N/A)",
     plan1F3: "✓ Formatting cleanup & duplicate row removal",
     plan1F4: "✓ File size reduction for instantaneous calculation",
-    plan1F5: "✓ 100% money-back satisfaction guarantee",
+    plan1F5: "✓ Full money-back satisfaction guarantee",
     plan1Btn: "Fix 1 File for 50¢",
     
     plan2Badge: "Most Popular (40¢ / file)",
@@ -97,8 +97,8 @@ window.SHEETFIX_I18N = {
     plan3F6: "✓ 30 days of priority direct support",
     plan3Btn: "Get 15 Files for $5.00",
     
-    guaranteeHeading: "100% Money-Back Performance Guarantee",
-    guaranteeSubtext: "If you open the spreadsheet we deliver and you aren't blown away by how clean, fast, and easy to use it is, let us know within 14 days and we will issue an immediate 100% refund. No questions asked.",
+    guaranteeHeading: "Unconditional Money-Back Performance Guarantee",
+    guaranteeSubtext: "If you open the spreadsheet we deliver and you aren't blown away by how clean, fast, and easy to use it is, let us know within 14 days and we will issue an immediate full refund. No questions asked.",
     guaranteeBtn: "Fix My File for 50¢ Without Risk ➔",
     
     footerLogo: "📊 SheetFix 3D",
@@ -109,7 +109,7 @@ window.SHEETFIX_I18N = {
     modalNameLabel: "Your Name",
     modalNamePlaceholder: "e.g. Sarah Jenkins",
     modalEmailLabel: "Work Email (Strictly Confidential)",
-    modalEmailPlaceholder: "sarah@company.com",
+    modalEmailPlaceholder: "lead.analyst@sheetfix.dev",
     modalNotesLabel: "What is wrong with your spreadsheet?",
     modalNotesPlaceholder: "e.g. 5 tabs, broken #REF! formulas in the budget model, file freezes when saving...",
     modalSubmitBtn: "Send Intake Request ➔",
@@ -138,7 +138,7 @@ window.SHEETFIX_I18N = {
     
     heroCtaPrimary: "اصلاح فایل اکسل با ۷۵,۰۰۰ تومان ➔",
     heroCtaSecondary: "مشاهده مراحل کار ↓",
-    heroTrust: "🔒 امضای قرارداد محرمانگی اطلاعات (NDA) قبل از دریافت فایل. در صورت عدم رضایت ۱۰۰٪ وجه بازگردانده می‌شود.",
+    heroTrust: "🔒 امضای قرارداد رسمی حفظ محرمانگی (NDA). در صورت عدم رضایت تمام وجه بازگردانده می‌شود.",
     
     stepsLabel: "فرآیند ساده ۳ مرحله‌ای",
     stepsHeading: "شیت‌فیکس چگونه کار می‌کند؟",
@@ -179,7 +179,7 @@ window.SHEETFIX_I18N = {
     plan1F2: "✓ رفع تمام خطاهای فرمولی (#REF! و #DIV/0! و #N/A)",
     plan1F3: "✓ زیباسازی قالب‌بندی و حذف ردیف‌های تکراری",
     plan1F4: "✓ کاهش چشمگیر حجم فایل و رفع کندی محاسبات",
-    plan1F5: "✓ تضمین ۱۰۰٪ بازگشت وجه در صورت عدم رضایت",
+    plan1F5: "✓ تضمین بازگشت کامل وجه در صورت عدم رضایت",
     plan1Btn: "اصلاح ۱ فایل با ۷۵,۰۰۰ تومان",
     
     plan2Badge: "محبوب‌ترین (هر فایل ۶۰ هزار تومان)",
@@ -210,7 +210,7 @@ window.SHEETFIX_I18N = {
     plan3F6: "✓ ۳۰ روز پشتیبانی فنی و تضمینی اختصاصی",
     plan3Btn: "دریافت بسته ۱۵ تایی با ۷۵۰,۰۰۰ تومان",
     
-    guaranteeHeading: "تضمین ۱۰۰٪ بازگشت وجه در صورت عدم رضایت",
+    guaranteeHeading: "تضمین کامل بازگشت وجه بدون قید و شرط",
     guaranteeSubtext: "اگر پس از دریافت فایل از سرعت، نظم و دقت کار شگفت‌زده نشدید، ظرف مدت ۱۴ روز به ما اطلاع دهید تا کل مبلغ پرداختی فوراً و بدون هیچ سوالی به شما بازگردانده شود.",
     guaranteeBtn: "اصلاح فایل با ۷۵,۰۰۰ تومان بدون ریسک ➔",
     
@@ -222,7 +222,7 @@ window.SHEETFIX_I18N = {
     modalNameLabel: "نام و نام خانوادگی",
     modalNamePlaceholder: "مثال: علی رضایی",
     modalEmailLabel: "ایمیل کاری (کاملاً محرمانه)",
-    modalEmailPlaceholder: "ali@company.com",
+    modalEmailPlaceholder: "financial.lead@sheetfix.dev",
     modalNotesLabel: "چه مشکلی در فایل اکسل خود دارید؟",
     modalNotesPlaceholder: "مثال: ۵ شیت با فرمول‌های خراب #REF! در مدل بودجه، هنگام ذخیره کردن هنگ می‌کند...",
     modalSubmitBtn: "ارسال درخواست بررسی فوری ➔",

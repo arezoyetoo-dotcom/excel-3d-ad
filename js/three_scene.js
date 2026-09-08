@@ -173,7 +173,7 @@ class SimpleSpreadsheet3D {
     });
 
     // Floating Clean Badges for Clean Mode
-    const cleanLabels = ['✓ 100% Clean', '✓ 0.1s Load Speed', '✓ Error-Free'];
+    const cleanLabels = ['✓ Fully Verified', '✓ 0.08s Recalc', '✓ Zero Errors'];
     cleanLabels.forEach((txt, idx) => {
       const sprite = this.createLabel(txt, '#10B981', 'rgba(16, 185, 129, 0.35)');
       const angle = (idx / cleanLabels.length) * Math.PI * 2 + 0.8;

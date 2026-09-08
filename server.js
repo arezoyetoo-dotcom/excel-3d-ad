@@ -40,13 +40,26 @@ const server = http.createServer((req, res) => {
   res.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
   res.setHeader(
     'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'self';"
+    "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'self';"
   );
 
-  // CORS Headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
+
+  // Scoped CORS Headers (reject wildcard reflection per INJECT-10)
+  const reqOrigin = req.headers.origin;
+  const ALLOWED_ORIGINS = [
+    'http://localhost:5426',
+    'http://127.0.0.1:5426',
+    `http://localhost:${PORT}`,
+    `http://127.0.0.1:${PORT}`,
+    'https://arezoyetoo-dotcom.github.io'
+  ];
+  if (reqOrigin && ALLOWED_ORIGINS.includes(reqOrigin)) {
+    res.setHeader('Access-Control-Allow-Origin', reqOrigin);
+    res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Vary', 'Origin');
+  }
 
   if (req.method === 'OPTIONS') {
     res.writeHead(204);
@@ -94,9 +107,9 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 4. Block Hidden Files (.env, .git, etc.)
-  const baseName = path.basename(resolvedPath);
-  if (baseName.startsWith('.') && baseName !== '.nojekyll') {
+  // 4. Block Hidden Files and Directories (.env, .git, etc.)
+  const pathParts = safePath.split(/[\/\\]/);
+  if (pathParts.some(part => part.startsWith('.') && part !== '.nojekyll')) {
     res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('403 Forbidden: Access Restricted');
     return;

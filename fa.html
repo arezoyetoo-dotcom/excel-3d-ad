@@ -245,7 +245,7 @@
             <p class="price-pitch" data-i18n="plan1Pitch">ایده‌آل برای ۱ شیت با فرمول‌های خراب، کندی سرعت یا ظاهر نامرتب.</p>
             <div class="price-figure">
               <span data-i18n="plan1Price">۷۵,۰۰۰</span>
-              <span data-i18n="plan1Unit" style="font-size: 1rem; color: var(--text-muted); font-weight: 600;">تومان / هر فایل</span>
+              <span data-i18n="plan1Unit" class="plan-unit-tag">تومان / هر فایل</span>
             </div>
             <div class="price-speed" data-i18n="plan1Speed">⚡ تحویل ۲ ساعته</div>
           </div>
@@ -255,7 +255,7 @@
             <li data-i18n="plan1F2">✓ رفع تمام خطاهای فرمولی (#REF! و #DIV/0! و #N/A)</li>
             <li data-i18n="plan1F3">✓ زیباسازی قالب‌بندی و حذف ردیف‌های تکراری</li>
             <li data-i18n="plan1F4">✓ کاهش چشمگیر حجم فایل و رفع کندی محاسبات</li>
-            <li data-i18n="plan1F5">✓ تضمین ۱۰۰٪ بازگشت وجه در صورت عدم رضایت</li>
+            <li data-i18n="plan1F5">✓ تضمین بازگشت کامل وجه در صورت عدم رضایت</li>
           </ul>
 
           <button class="btn-price-action open-modal-btn" data-plan="تک‌فایل (۷۵,۰۰۰ تومان)" data-plan-en="Single File ($0.50)" data-plan-fa="تک‌فایل (۷۵,۰۰۰ تومان)" data-i18n="plan1Btn">
@@ -271,7 +271,7 @@
             <p class="price-pitch" data-i18n="plan2Pitch">عالی برای حسابداری ماهانه، مدل‌های چند شیته یا تیم‌های کوچک.</p>
             <div class="price-figure">
               <span data-i18n="plan2Price">۳۰۰,۰۰۰</span>
-              <span data-i18n="plan2Unit" style="font-size: 1rem; color: var(--text-muted); font-weight: 600;">تومان (بسته ۵ تایی)</span>
+              <span data-i18n="plan2Unit" class="plan-unit-tag">تومان (بسته ۵ تایی)</span>
             </div>
             <div class="price-speed" data-i18n="plan2Speed">🚀 تحویل ۱۲ ساعته</div>
           </div>
@@ -298,7 +298,7 @@
             <p class="price-pitch" data-i18n="plan3Pitch">ساماندهی یکباره پوشه‌های اکسل شلوغ، قدیمی و سنگین شرکت.</p>
             <div class="price-figure">
               <span data-i18n="plan3Price">۷۵۰,۰۰۰</span>
-              <span data-i18n="plan3Unit" style="font-size: 1rem; color: var(--text-muted); font-weight: 600;">تومان (بسته ۱۵ تایی)</span>
+              <span data-i18n="plan3Unit" class="plan-unit-tag">تومان (بسته ۱۵ تایی)</span>
             </div>
             <div class="price-speed" data-i18n="plan3Speed">🤖 صف اولویت‌دار</div>
           </div>
@@ -328,7 +328,7 @@
     <div class="content-container">
       <div class="guarantee-banner">
         <div class="shield-badge">🛡️</div>
-        <h2 class="guarantee-heading" data-i18n="guaranteeHeading">تضمین ۱۰۰٪ بازگشت وجه در صورت عدم رضایت</h2>
+        <h2 class="guarantee-heading" data-i18n="guaranteeHeading">تضمین کامل بازگشت وجه بدون قید و شرط</h2>
         <p class="guarantee-subtext" data-i18n="guaranteeSubtext">
           اگر پس از دریافت فایل از سرعت، نظم و دقت کار شگفت‌زده نشدید، ظرف مدت ۱۴ روز به ما اطلاع دهید تا کل مبلغ پرداختی فوراً و بدون هیچ سوالی به شما بازگردانده شود.
         </p>
@@ -376,7 +376,7 @@
 
         <div class="input-wrap">
           <label for="clientEmail" data-i18n="modalEmailLabel">ایمیل کاری (کاملاً محرمانه)</label>
-          <input type="email" id="clientEmail" placeholder="ali@company.com" maxlength="100" required autocomplete="email">
+          <input type="email" id="clientEmail" placeholder="financial.lead@sheetfix.dev" maxlength="100" required autocomplete="email">
         </div>
 
         <div class="input-wrap">
@@ -384,12 +384,12 @@
           <textarea id="sheetNotes" placeholder="مثال: ۵ شیت با فرمول‌های خراب #REF! در مدل بودجه، هنگام ذخیره کردن هنگ می‌کند..." rows="3" maxlength="1000" required></textarea>
         </div>
 
-        <button type="submit" class="btn-hero-primary" style="width: 100%; justify-content: center;" data-i18n="modalSubmitBtn">
+        <button type="submit" class="btn-hero-primary btn-full-width" data-i18n="modalSubmitBtn">
           ارسال درخواست بررسی فوری ➔
         </button>
       </form>
 
-      <div id="modalSuccessMsg" class="modal-success-box" style="display: none;">
+      <div id="modalSuccessMsg" class="modal-success-box is-hidden">
         <div class="success-icon">✅</div>
         <h4 data-i18n="modalSuccessTitle">درخواست شما دریافت شد!</h4>
         <p data-i18n="modalSuccessText">پرونده شما به معمار ارشد اکسل ارجاع داده شد. ظرف ۲ ساعت کاری قرارداد محرمانگی NDA و لینک بارگذاری اختصاصی برای شما ارسال می‌شود.</p>
