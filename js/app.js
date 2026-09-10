@@ -218,27 +218,26 @@ document.addEventListener('DOMContentLoaded', () => {
       calcFilesDisplay.textContent = currentLang === 'fa' ? `${files} فایل` : `${files} ${files === 1 ? 'File' : 'Files'}`;
     }
 
-    // Micro-pricing computation
-    let costText = '';
-    let costVal = 0;
-    if (currentLang === 'fa') {
-      let unitPrice = 75000;
-      if (files >= 15) unitPrice = 50000;
-      else if (files >= 5) unitPrice = 60000;
-      costVal = files * unitPrice;
-      costText = `${costVal.toLocaleString('fa-IR')} تومان`;
+    // Architectural Tier Computation
+    let tierText = '';
+    let tierEn = '';
+    let tierFa = '';
+    if (files >= 10) {
+      tierEn = 'Enterprise Matrix Suite';
+      tierFa = 'بسته جامع سازمانی';
+    } else if (files >= 4) {
+      tierEn = 'Multi-Model Architecture';
+      tierFa = 'معماری چند مدلی';
     } else {
-      let unitPrice = 0.50;
-      if (files >= 15) unitPrice = 0.3333;
-      else if (files >= 5) unitPrice = 0.40;
-      costVal = (files * unitPrice).toFixed(2);
-      costText = `$${costVal}`;
+      tierEn = 'Standard Refactor Tier';
+      tierFa = 'اصلاح استاندارد شیت';
     }
+    tierText = currentLang === 'fa' ? tierFa : tierEn;
 
-    if (calcCostDisplay) calcCostDisplay.textContent = costText;
+    if (calcCostDisplay) calcCostDisplay.textContent = tierText;
 
-    const hoursSaved = (files * 3.8).toFixed(1);
-    const formulasFixed = files * 18;
+    const hoursSaved = (files * 4.2).toFixed(1);
+    const formulasFixed = files * 25;
 
     if (calcHoursDisplay) {
       calcHoursDisplay.textContent = currentLang === 'fa' ? `${Number(hoursSaved).toLocaleString('fa-IR')} ساعت` : `${hoursSaved} hrs`;
@@ -249,11 +248,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (calcCtaBtn) {
       const planName = currentLang === 'fa'
-        ? `سفارش محاسبه‌شده (${files} فایل - ${costText})`
-        : `Calculated Order (${files} Files - ${costText})`;
+        ? `پیشنهاد معماری (${files} فایل - ${tierFa})`
+        : `Architecture Proposal (${files} Files - ${tierEn})`;
       calcCtaBtn.dataset.plan = planName;
-      calcCtaBtn.dataset.planEn = `Calculated Order (${files} Files - $${costVal})`;
-      calcCtaBtn.dataset.planFa = `سفارش محاسبه‌شده (${files} فایل - ${costText})`;
+      calcCtaBtn.dataset.planEn = `Architecture Proposal (${files} Files - ${tierEn})`;
+      calcCtaBtn.dataset.planFa = `پیشنهاد معماری (${files} فایل - ${tierFa})`;
     }
   }
 

@@ -3,11 +3,13 @@ import assert from 'node:assert';
 import http from 'node:http';
 import { server, PORT, resetRateLimits } from '../server.js';
 
-const BASE_URL = `http://127.0.0.1:${PORT}`;
+let BASE_URL = `http://127.0.0.1:${PORT}`;
 
 before((t, done) => {
   if (!server.listening) {
-    server.listen(PORT, () => {
+    server.listen(0, '127.0.0.1', () => {
+      const assignedPort = server.address().port;
+      BASE_URL = `http://127.0.0.1:${assignedPort}`;
       resetRateLimits();
       done();
     });
