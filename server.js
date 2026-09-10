@@ -1,7 +1,10 @@
 import http from 'http';
 import fs from 'fs';
 import path from 'path';
+import crypto from 'node:crypto';
 import { fileURLToPath } from 'url';
+import { db } from './lib/db.js';
+import { verifyPassword } from './lib/auth.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,10 +26,15 @@ const MIME_TYPES = {
   '.ttf': 'font/ttf'
 };
 
-// In-Memory Sliding-Window Rate Limiter (INJECT-DoS Defense)
+// In-Memory Sliding-Window Rate Limiter (General API & Static: 120 req/min)
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;
 const MAX_REQUESTS_PER_WINDOW = 120;
 const requestRecords = new Map();
+
+// Dedicated Auth Rate Limiter (Brute-Force defense: 5 failed attempts / 15 min)
+const AUTH_WINDOW_MS = 15 * 60 * 1000;
+const MAX_AUTH_ATTEMPTS = 5;
+const authFailRecords = new Map();
 
 export function isRateLimited(ip, maxLimit = MAX_REQUESTS_PER_WINDOW) {
   const now = Date.now();
@@ -45,22 +53,93 @@ export function isRateLimited(ip, maxLimit = MAX_REQUESTS_PER_WINDOW) {
   return clientData.count > maxLimit;
 }
 
-export function resetRateLimits() {
-  requestRecords.clear();
+export function isAuthRateLimited(ip) {
+  const now = Date.now();
+  const record = authFailRecords.get(ip);
+  if (!record) return false;
+  if (now > record.resetTime) {
+    authFailRecords.delete(ip);
+    return false;
+  }
+  return record.count >= MAX_AUTH_ATTEMPTS;
 }
 
-// Garbage collection for rate limiter map every 5 minutes
+export function recordAuthFailure(ip) {
+  const now = Date.now();
+  const record = authFailRecords.get(ip) || { count: 0, resetTime: now + AUTH_WINDOW_MS };
+  record.count++;
+  authFailRecords.set(ip, record);
+}
+
+export function resetRateLimits() {
+  requestRecords.clear();
+  authFailRecords.clear();
+}
+
+// Garbage collection for rate limiter maps every 5 minutes
 setInterval(() => {
   const now = Date.now();
   for (const [ip, data] of requestRecords.entries()) {
-    if (now > data.resetTime) {
-      requestRecords.delete(ip);
-    }
+    if (now > data.resetTime) requestRecords.delete(ip);
+  }
+  for (const [ip, data] of authFailRecords.entries()) {
+    if (now > data.resetTime) authFailRecords.delete(ip);
   }
 }, 5 * 60 * 1000).unref();
 
-export const server = http.createServer((req, res) => {
-  // 1. Rate Limiting Check
+/**
+ * Parses HTTP cookie header into key-value map
+ */
+function parseCookies(cookieHeader) {
+  const list = {};
+  if (!cookieHeader) return list;
+  cookieHeader.split(';').forEach(cookie => {
+    let [name, ...rest] = cookie.split('=');
+    name = name?.trim();
+    if (!name) return;
+    list[name] = decodeURIComponent(rest.join('=').trim());
+  });
+  return list;
+}
+
+/**
+ * Reads and parses JSON payload up to maxSize (default 50KB to stop DoS)
+ */
+function readJsonBody(req, maxSize = 50 * 1024) {
+  return new Promise((resolve, reject) => {
+    let body = '';
+    let bytes = 0;
+    req.on('data', chunk => {
+      bytes += chunk.length;
+      if (bytes > maxSize) {
+        reject(new Error('PAYLOAD_TOO_LARGE'));
+        req.destroy();
+        return;
+      }
+      body += chunk;
+    });
+    req.on('end', () => {
+      if (!body.trim()) return resolve({});
+      try {
+        resolve(JSON.parse(body));
+      } catch {
+        reject(new Error('INVALID_JSON'));
+      }
+    });
+    req.on('error', reject);
+  });
+}
+
+function sendJson(res, statusCode, data, headers = {}) {
+  res.writeHead(statusCode, {
+    'Content-Type': 'application/json; charset=utf-8',
+    ...headers
+  });
+  res.end(JSON.stringify(data));
+}
+
+export const server = http.createServer(async (req, res) => {
+  // 1. Rate Limiting Check (General)
   const clientIp = req.socket.remoteAddress || '127.0.0.1';
   if (isRateLimited(clientIp)) {
     res.writeHead(429, {
@@ -75,14 +154,7 @@ export const server = http.createServer((req, res) => {
     return;
   }
 
-  // 2. Method Whitelisting
-  if (!['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {
-    res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
-    res.end('405 Method Not Allowed');
-    return;
-  }
-
-  // 3. Comprehensive Security Headers
+  // 2. Comprehensive Security Headers
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
@@ -93,10 +165,9 @@ export const server = http.createServer((req, res) => {
     'Content-Security-Policy',
     "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'self';"
   );
-
   res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
 
-  // Scoped CORS Headers (reject wildcard reflection per INJECT-10)
+  // Scoped CORS Headers
   const reqOrigin = req.headers.origin;
   const ALLOWED_ORIGINS = [
     'http://localhost:5426',
@@ -107,8 +178,9 @@ export const server = http.createServer((req, res) => {
   ];
   if (reqOrigin && ALLOWED_ORIGINS.includes(reqOrigin)) {
     res.setHeader('Access-Control-Allow-Origin', reqOrigin);
-    res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, POST, PATCH, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Vary', 'Origin');
   }
 
@@ -129,16 +201,265 @@ export const server = http.createServer((req, res) => {
 
   let pathname = decodeURIComponent(parsedUrl.pathname);
 
+  // Parse session if present
+  const cookies = parseCookies(req.headers.cookie);
+  const sessionToken = cookies.sheetfix_session;
+  const currentSession = sessionToken ? db.getSession(sessionToken) : null;
+  const currentUser = currentSession ? db.findUserById(currentSession.userId) : null;
+
+  // =========================================================================
+  // API ROUTING
+  // =========================================================================
+
   // Health API
   if (pathname === '/api/health') {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({
+    if (req.method !== 'GET' && req.method !== 'HEAD') {
+      res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('405 Method Not Allowed');
+      return;
+    }
+    sendJson(res, 200, {
       status: 'ok',
       service: 'SheetFix 3D Excel Architecture Service',
       security: 'hardened',
       port: PORT,
       timestamp: new Date().toISOString()
-    }));
+    });
+    return;
+  }
+
+  // Auth: Register
+  if (pathname === '/api/auth/register') {
+    if (req.method !== 'POST') {
+      res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('405 Method Not Allowed');
+      return;
+    }
+
+    try {
+      const body = await readJsonBody(req);
+      const { name, email, password } = body;
+
+      if (!name || !email || !password) {
+        sendJson(res, 400, { error: 'Name, email, and password are required' });
+        return;
+      }
+      if (typeof password !== 'string' || password.length < 8) {
+        sendJson(res, 400, { error: 'Password must be at least 8 characters long' });
+        return;
+      }
+      if (typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        sendJson(res, 400, { error: 'Invalid email address format' });
+        return;
+      }
+
+      const existing = db.findUserByEmail(email);
+      if (existing) {
+        sendJson(res, 409, { error: 'This email is already registered' });
+        return;
+      }
+
+      const user = db.createUser({ name, email, password, role: 'client' });
+      const token = db.createSession(user.id, user.role);
+
+      res.setHeader('Set-Cookie', `sheetfix_session=${token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400`);
+      sendJson(res, 201, { user });
+      return;
+    } catch (err) {
+      if (err.message === 'PAYLOAD_TOO_LARGE') {
+        sendJson(res, 413, { error: 'Payload too large' });
+        return;
+      }
+      sendJson(res, 500, { error: 'Internal registration error' });
+      return;
+    }
+  }
+
+  // Auth: Login
+  if (pathname === '/api/auth/login') {
+    if (req.method !== 'POST') {
+      res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('405 Method Not Allowed');
+      return;
+    }
+
+    if (isAuthRateLimited(clientIp)) {
+      sendJson(res, 429, {
+        error: 'Too Many Failed Attempts',
+        message: 'Account authentication temporarily locked. Retry in 15 minutes.'
+      }, { 'Retry-After': '900' });
+      return;
+    }
+
+    try {
+      const body = await readJsonBody(req);
+      const { email, password } = body;
+
+      if (!email || !password) {
+        recordAuthFailure(clientIp);
+        sendJson(res, 400, { error: 'Email and password are required' });
+        return;
+      }
+
+      const user = db.findUserByEmail(email);
+      if (!user || !verifyPassword(password, user.salt, user.passwordHash)) {
+        recordAuthFailure(clientIp);
+        sendJson(res, 401, { error: 'Invalid email or password' });
+        return;
+      }
+
+      const token = db.createSession(user.id, user.role);
+      res.setHeader('Set-Cookie', `sheetfix_session=${token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400`);
+
+      sendJson(res, 200, {
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role
+        }
+      });
+      return;
+    } catch (err) {
+      if (err.message === 'PAYLOAD_TOO_LARGE') {
+        sendJson(res, 413, { error: 'Payload too large' });
+        return;
+      }
+      sendJson(res, 500, { error: 'Login error' });
+      return;
+    }
+  }
+
+  // Auth: Logout
+  if (pathname === '/api/auth/logout') {
+    if (req.method !== 'POST') {
+      res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('405 Method Not Allowed');
+      return;
+    }
+    if (sessionToken) {
+      db.deleteSession(sessionToken);
+    }
+    res.setHeader('Set-Cookie', 'sheetfix_session=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0');
+    sendJson(res, 200, { status: 'ok' });
+    return;
+  }
+
+  // Auth: Me
+  if (pathname === '/api/auth/me') {
+    if (req.method !== 'GET') {
+      res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('405 Method Not Allowed');
+      return;
+    }
+    if (!currentUser) {
+      sendJson(res, 401, { error: 'Unauthorized: Valid session required' });
+      return;
+    }
+    sendJson(res, 200, {
+      user: {
+        id: currentUser.id,
+        name: currentUser.name,
+        email: currentUser.email,
+        role: currentUser.role
+      },
+      csrfToken: crypto.randomBytes(16).toString('hex')
+    });
+    return;
+  }
+
+  // Orders: List & Create
+  if (pathname === '/api/orders') {
+    if (!currentUser) {
+      sendJson(res, 401, { error: 'Unauthorized: Login required to manage orders' });
+      return;
+    }
+
+    if (req.method === 'GET') {
+      // Role-based filtering: architects get all; clients get only their own
+      const orders = currentUser.role === 'architect'
+        ? db.getAllOrders()
+        : db.getOrdersByUser(currentUser.id);
+
+      sendJson(res, 200, orders);
+      return;
+    }
+
+    if (req.method === 'POST') {
+      try {
+        const body = await readJsonBody(req);
+        const { architectureTier, fileCount, notes } = body;
+
+        const order = db.createOrder({
+          userId: currentUser.id,
+          clientName: currentUser.name,
+          clientEmail: currentUser.email,
+          architectureTier,
+          fileCount,
+          notes
+        });
+
+        sendJson(res, 201, order);
+        return;
+      } catch (err) {
+        if (err.message === 'PAYLOAD_TOO_LARGE') {
+          sendJson(res, 413, { error: 'Payload too large' });
+          return;
+        }
+        sendJson(res, 500, { error: 'Error creating spreadsheet order' });
+        return;
+      }
+    }
+
+    res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('405 Method Not Allowed');
+    return;
+  }
+
+  // Orders: Status Update (Senior Architect Only)
+  const statusMatch = pathname.match(/^\/api\/orders\/([A-Za-z0-9_-]+)\/status$/);
+  if (statusMatch) {
+    if (req.method !== 'PATCH') {
+      res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('405 Method Not Allowed');
+      return;
+    }
+    if (!currentUser) {
+      sendJson(res, 401, { error: 'Unauthorized' });
+      return;
+    }
+    if (currentUser.role !== 'architect') {
+      sendJson(res, 403, { error: 'Forbidden: Senior Architect role required' });
+      return;
+    }
+
+    const orderId = statusMatch[1];
+    try {
+      const body = await readJsonBody(req);
+      const { status, sha256Checksum } = body;
+
+      const updated = db.updateOrderStatus(orderId, status, sha256Checksum);
+      if (!updated) {
+        sendJson(res, 404, { error: 'Order not found' });
+        return;
+      }
+
+      sendJson(res, 200, updated);
+      return;
+    } catch {
+      sendJson(res, 500, { error: 'Failed to update order status' });
+      return;
+    }
+  }
+
+  // =========================================================================
+  // STATIC FILE SERVING
+  // =========================================================================
+
+  // Method Whitelisting for static files
+  if (!['GET', 'HEAD'].includes(req.method)) {
+    res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('405 Method Not Allowed');
     return;
   }
 
@@ -146,19 +467,19 @@ export const server = http.createServer((req, res) => {
     pathname = '/index.html';
   }
 
-  // 4. Strict Path Traversal and Jail Enforcement
+  // Strict Path Traversal and Jail Enforcement
   const safePath = path.normalize(pathname).replace(/^(\.\.[\/\\])+/, '');
   const rootDir = path.resolve(__dirname);
   const resolvedPath = path.resolve(rootDir, '.' + safePath);
 
-  // Must strictly stay inside the root directory
+  // Must strictly stay inside root directory
   if (!resolvedPath.startsWith(rootDir)) {
     res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('403 Forbidden: Path Traversal Denied');
     return;
   }
 
-  // 5. Block Hidden Files, Manifests, and Source Files
+  // Block Hidden Files, Databases, Manifests, Source Dirs
   const pathParts = safePath.split(/[\/\\]/);
   const filename = pathParts[pathParts.length - 1].toLowerCase();
   const SENSITIVE_FILES = [
@@ -174,8 +495,12 @@ export const server = http.createServer((req, res) => {
 
   if (pathParts.some(part => part.startsWith('.') && part !== '.nojekyll') ||
       SENSITIVE_FILES.includes(filename) ||
+      pathParts.includes('data') ||
+      pathParts.includes('lib') ||
+      pathParts.includes('docs') ||
       pathParts.includes('test') ||
-      pathParts.includes('scripts')) {
+      pathParts.includes('scripts') ||
+      filename.endsWith('.json')) {
     res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('403 Forbidden: Access Restricted');
     return;
