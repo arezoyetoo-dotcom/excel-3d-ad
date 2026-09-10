@@ -53,6 +53,20 @@
           🔊 Sound: ON
         </button>
 
+        <!-- Auth Portal Trigger & User Status -->
+        <button id="authPortalBtn" class="btn-auth-trigger" title="Client & Architect Portal">
+          <span>🔐</span> <span id="authPortalText" data-i18n="navPortal">Sign In / Portal</span>
+        </button>
+
+        <div id="authUserBadge" class="header-user-status is-hidden">
+          <div class="user-logged-badge">
+            <span>👤</span>
+            <span id="headerUserName">Client</span>
+            <span id="headerUserRole" class="user-role-tag">CLIENT</span>
+          </div>
+          <button id="authSignOutBtn" class="btn-signout" title="Sign Out" data-i18n="navSignOut">Sign Out</button>
+        </div>
+
         <!-- CTA -->
         <button class="btn-nav-action open-modal-btn" data-plan="Architecture Inquiry" data-plan-en="Architecture Inquiry" data-plan-fa="درخواست بررسی معماری" data-i18n="navCta">
           Request Proposal ➔
@@ -538,43 +552,130 @@
   </footer>
 
   <!-- =============================================================
-       Simple Booking Modal
+       Client & Architect Auth Portal Modal
   ============================================================= -->
   <div id="bookingModal" class="simple-modal-backdrop">
-    <div class="simple-modal-card">
+    <div class="simple-modal-card portal-card-expand">
       <button id="closeModalBtn" class="modal-x-btn" title="Close (Esc)">✕</button>
       
       <div class="modal-head">
-        <h3 class="modal-title" data-i18n="modalTitle">Get Your Sheet Fixed</h3>
-        <p class="modal-sub" data-i18n="modalSub">Tell us about your sheet and we'll reply within 2 hours with an upfront NDA and intake link.</p>
+        <h3 class="modal-title" data-i18n="portalTitle">SheetFix Client & Architect Portal</h3>
+        <p class="modal-sub" data-i18n="portalSub">Encrypted, role-based gateway to your spreadsheet architecture pipeline.</p>
       </div>
 
-      <form id="simpleBookingForm" class="modal-form" autocomplete="on">
-        <div class="input-wrap">
-          <label for="clientName" data-i18n="modalNameLabel">Your Name</label>
-          <input type="text" id="clientName" placeholder="e.g. Sarah Jenkins" maxlength="80" required autocomplete="name">
-        </div>
-
-        <div class="input-wrap">
-          <label for="clientEmail" data-i18n="modalEmailLabel">Work Email (Strictly Confidential)</label>
-          <input type="email" id="clientEmail" placeholder="lead.analyst@sheetfix.dev" maxlength="100" required autocomplete="email">
-        </div>
-
-        <div class="input-wrap">
-          <label for="sheetNotes" data-i18n="modalNotesLabel">What is wrong with your spreadsheet?</label>
-          <textarea id="sheetNotes" placeholder="e.g. 5 tabs, broken #REF! formulas in the budget model, file freezes when saving..." rows="3" maxlength="1000" required></textarea>
-        </div>
-
-        <button type="submit" class="btn-hero-primary btn-full-width" data-i18n="modalSubmitBtn">
-          Send Intake Request ➔
-        </button>
-      </form>
-
-      <div id="modalSuccessMsg" class="modal-success-box is-hidden">
-        <div class="success-icon">✅</div>
-        <h4 data-i18n="modalSuccessTitle">Request Received!</h4>
-        <p data-i18n="modalSuccessText">A senior Excel architect has been assigned to your request. We will email you within 2 hours with our mutual NDA and secure file link.</p>
+      <!-- Tab Navigation -->
+      <div class="portal-nav-tabs">
+        <button type="button" id="tabSignInBtn" class="portal-tab-btn active" data-tab="signIn" data-i18n="tabSignIn">Sign In</button>
+        <button type="button" id="tabRegisterBtn" class="portal-tab-btn" data-tab="register" data-i18n="tabRegister">Create Account</button>
+        <button type="button" id="tabWorkspaceBtn" class="portal-tab-btn is-hidden" data-tab="workspace" data-i18n="tabWorkspace">Client Workspace</button>
+        <button type="button" id="tabArchitectBtn" class="portal-tab-btn is-hidden" data-tab="architect" data-i18n="tabArchitect">Architect Console</button>
       </div>
+
+      <!-- Pane 1: Sign In -->
+      <div id="paneSignIn" class="portal-pane is-active">
+        <form id="signInForm" autocomplete="on">
+          <div class="portal-input-group">
+            <label for="signInEmail" data-i18n="authEmailLabel">Work Email (Strictly Confidential)</label>
+            <input type="email" id="signInEmail" placeholder="client@company.com" required autocomplete="username">
+          </div>
+          <div class="portal-input-group">
+            <label for="signInPassword" data-i18n="authPassLabel">Password (min 8 characters)</label>
+            <input type="password" id="signInPassword" placeholder="••••••••" required autocomplete="current-password">
+          </div>
+          <div id="signInError" class="field-error is-hidden" style="color: #EF4444; font-size: 0.82rem; margin-bottom: 12px; font-weight: 600;"></div>
+          <button type="submit" class="btn-hero-primary btn-full-width" data-i18n="btnSignIn">Sign In ➔</button>
+        </form>
+      </div>
+
+      <!-- Pane 2: Register -->
+      <div id="paneRegister" class="portal-pane">
+        <form id="registerForm" autocomplete="on">
+          <div class="portal-input-group">
+            <label for="regName" data-i18n="authNameLabel">Full Name</label>
+            <input type="text" id="regName" placeholder="e.g. Sarah Jenkins" maxlength="80" required autocomplete="name">
+          </div>
+          <div class="portal-input-group">
+            <label for="regEmail" data-i18n="authEmailLabel">Work Email (Strictly Confidential)</label>
+            <input type="email" id="regEmail" placeholder="sarah@company.com" maxlength="100" required autocomplete="username">
+          </div>
+          <div class="portal-input-group">
+            <label for="regPassword" data-i18n="authPassLabel">Password (min 8 characters)</label>
+            <input type="password" id="regPassword" placeholder="Minimum 8 characters" minlength="8" required autocomplete="new-password">
+          </div>
+          <div id="registerError" class="field-error is-hidden" style="color: #EF4444; font-size: 0.82rem; margin-bottom: 12px; font-weight: 600;"></div>
+          <button type="submit" class="btn-hero-primary btn-full-width" data-i18n="btnRegister">Create Secure Account ➔</button>
+        </form>
+      </div>
+
+      <!-- Pane 3: Client Workspace -->
+      <div id="paneWorkspace" class="portal-pane">
+        <div class="workspace-header-card">
+          <div>
+            <div class="workspace-greeting"><span data-i18n="welcomeUser">Welcome back</span>, <span id="workspaceUserName">Client</span></div>
+            <span class="user-role-tag" data-i18n="roleClientBadge">VERIFIED CLIENT</span>
+          </div>
+          <span class="pill-label" style="margin: 0;" data-i18n="ndaBadge">🔒 Mutual NDA Active</span>
+        </div>
+
+        <!-- New Spreadsheet Intake Sub-Form -->
+        <form id="newOrderForm" style="background: rgba(0,0,0,0.25); padding: 18px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 24px;">
+          <h4 style="color: #FFFFFF; font-size: 0.95rem; margin-bottom: 12px;" data-i18n="btnSubmitOrder">Submit Architecture Intake</h4>
+          <div class="portal-input-group">
+            <label for="orderTierSelect" data-i18n="orderTierLabel">Architecture Tier</label>
+            <select id="orderTierSelect">
+              <option value="Core Spreadsheet Architecture">Core Spreadsheet Architecture & Restructuring</option>
+              <option value="Financial Modeling Architecture">Financial & Executive Modeling Architecture</option>
+              <option value="Automated ETL Pipelines">Automated Pipelines & Script Integrations</option>
+              <option value="Cell Governance & Security">Data Governance, Auditing & Cell Security</option>
+            </select>
+          </div>
+          <div class="portal-input-group">
+            <label for="orderFilesCount" data-i18n="orderFilesLabel">Number of Spreadsheets</label>
+            <input type="number" id="orderFilesCount" min="1" max="30" value="1" required>
+          </div>
+          <div class="portal-input-group">
+            <label for="orderNotesText" data-i18n="orderNotesLabel">Formulas & Calculation Errors</label>
+            <textarea id="orderNotesText" placeholder="Describe formula breaks, #REF! errors, freezes, or automation goals..." rows="3" required></textarea>
+          </div>
+          <button type="submit" class="btn-hero-primary btn-full-width" data-i18n="btnSubmitOrder">Submit Architecture Intake ➔</button>
+        </form>
+
+        <h4 style="color: #FFFFFF; font-size: 1rem; margin-bottom: 14px;" data-i18n="ticketsHeading">Your Spreadsheet Projects</h4>
+        <div id="workspaceTicketsList">
+          <!-- Dynamic ticket cards populated by app.js -->
+        </div>
+      </div>
+
+      <!-- Pane 4: Senior Architect Console -->
+      <div id="paneArchitect" class="portal-pane">
+        <div class="workspace-header-card">
+          <div>
+            <div class="workspace-greeting">Senior Architect Queue</div>
+            <span class="user-role-tag" data-i18n="roleArchitectBadge">SENIOR ARCHITECT</span>
+          </div>
+          <span class="pill-label" style="margin: 0;">⚡ Air-Gapped Cleanroom</span>
+        </div>
+
+        <div class="architect-table-wrap">
+          <table class="architect-data-table">
+            <thead>
+              <tr>
+                <th data-i18n="colId">Order ID</th>
+                <th data-i18n="colClient">Client</th>
+                <th data-i18n="colTier">Tier</th>
+                <th data-i18n="colFiles">Files</th>
+                <th data-i18n="colStatus">Status</th>
+                <th data-i18n="colChecksum">SHA-256 Seal</th>
+                <th data-i18n="colActions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="architectOrdersTableBody">
+              <!-- Dynamic orders rows populated by app.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
   </div>
 

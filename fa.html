@@ -53,6 +53,20 @@
           🔊 صدا: روشن
         </button>
 
+        <!-- Auth Portal Trigger & User Status -->
+        <button id="authPortalBtn" class="btn-auth-trigger" title="پرتال ورود و مشتریان">
+          <span>🔐</span> <span id="authPortalText" data-i18n="navPortal">ورود / پرتال مشتریان</span>
+        </button>
+
+        <div id="authUserBadge" class="header-user-status is-hidden">
+          <div class="user-logged-badge">
+            <span>👤</span>
+            <span id="headerUserName">کاربر</span>
+            <span id="headerUserRole" class="user-role-tag">مشتری</span>
+          </div>
+          <button id="authSignOutBtn" class="btn-signout" title="خروج" data-i18n="navSignOut">خروج</button>
+        </div>
+
         <!-- CTA -->
         <button class="btn-nav-action open-modal-btn" data-plan="Architecture Inquiry" data-plan-en="Architecture Inquiry" data-plan-fa="درخواست بررسی معماری" data-i18n="navCta">
           درخواست پروپوزال ➔
@@ -538,43 +552,130 @@
   </footer>
 
   <!-- =============================================================
-       Simple Booking Modal
+       Client & Architect Auth Portal Modal
   ============================================================= -->
   <div id="bookingModal" class="simple-modal-backdrop">
-    <div class="simple-modal-card">
+    <div class="simple-modal-card portal-card-expand">
       <button id="closeModalBtn" class="modal-x-btn" title="بستن (Esc)">✕</button>
       
       <div class="modal-head">
-        <h3 class="modal-title" data-i18n="modalTitle">ثبت درخواست بررسی اکسل</h3>
-        <p class="modal-sub" data-i18n="modalSub">مشکلات فایل اکسل خود را مطرح کنید؛ معماران ما ظرف ۲ ساعت با ارسال NDA و لینک امن پاسخ خواهند داد.</p>
+        <h3 class="modal-title" data-i18n="portalTitle">پرتال اختصاصی مشتریان و معماران شیت‌فیکس</h3>
+        <p class="modal-sub" data-i18n="portalSub">درگاه امن و رمزنگاری‌شده رهگیری پروژه‌ها و ارتباط با معماران ارشد اکسل.</p>
       </div>
 
-      <form id="simpleBookingForm" class="modal-form" autocomplete="on">
-        <div class="input-wrap">
-          <label for="clientName" data-i18n="modalNameLabel">نام و نام خانوادگی</label>
-          <input type="text" id="clientName" placeholder="مثال: علی رضایی" maxlength="80" required autocomplete="name">
-        </div>
-
-        <div class="input-wrap">
-          <label for="clientEmail" data-i18n="modalEmailLabel">ایمیل کاری (کاملاً محرمانه)</label>
-          <input type="email" id="clientEmail" placeholder="financial.lead@sheetfix.dev" maxlength="100" required autocomplete="email">
-        </div>
-
-        <div class="input-wrap">
-          <label for="sheetNotes" data-i18n="modalNotesLabel">چه مشکلی در فایل اکسل خود دارید؟</label>
-          <textarea id="sheetNotes" placeholder="مثال: ۵ شیت با فرمول‌های خراب #REF! در مدل بودجه، هنگام ذخیره کردن هنگ می‌کند..." rows="3" maxlength="1000" required></textarea>
-        </div>
-
-        <button type="submit" class="btn-hero-primary btn-full-width" data-i18n="modalSubmitBtn">
-          ارسال درخواست بررسی فوری ➔
-        </button>
-      </form>
-
-      <div id="modalSuccessMsg" class="modal-success-box is-hidden">
-        <div class="success-icon">✅</div>
-        <h4 data-i18n="modalSuccessTitle">درخواست شما دریافت شد!</h4>
-        <p data-i18n="modalSuccessText">پرونده شما به معمار ارشد اکسل ارجاع داده شد. ظرف ۲ ساعت کاری قرارداد محرمانگی NDA و لینک بارگذاری اختصاصی برای شما ارسال می‌شود.</p>
+      <!-- Tab Navigation -->
+      <div class="portal-nav-tabs">
+        <button type="button" id="tabSignInBtn" class="portal-tab-btn active" data-tab="signIn" data-i18n="tabSignIn">ورود به حساب</button>
+        <button type="button" id="tabRegisterBtn" class="portal-tab-btn" data-tab="register" data-i18n="tabRegister">افتتاح حساب جدید</button>
+        <button type="button" id="tabWorkspaceBtn" class="portal-tab-btn is-hidden" data-tab="workspace" data-i18n="tabWorkspace">میز کار من</button>
+        <button type="button" id="tabArchitectBtn" class="portal-tab-btn is-hidden" data-tab="architect" data-i18n="tabArchitect">کنسول معمار ارشد</button>
       </div>
+
+      <!-- Pane 1: Sign In -->
+      <div id="paneSignIn" class="portal-pane is-active">
+        <form id="signInForm" autocomplete="on">
+          <div class="portal-input-group">
+            <label for="signInEmail" data-i18n="authEmailLabel">ایمیل کاری (کاملاً محرمانه)</label>
+            <input type="email" id="signInEmail" placeholder="client@company.com" required autocomplete="username">
+          </div>
+          <div class="portal-input-group">
+            <label for="signInPassword" data-i18n="authPassLabel">رمز عبور</label>
+            <input type="password" id="signInPassword" placeholder="••••••••" required autocomplete="current-password">
+          </div>
+          <div id="signInError" class="field-error is-hidden" style="color: #EF4444; font-size: 0.82rem; margin-bottom: 12px; font-weight: 600;"></div>
+          <button type="submit" class="btn-hero-primary btn-full-width" data-i18n="btnSignIn">ورود به پرتال ➔</button>
+        </form>
+      </div>
+
+      <!-- Pane 2: Register -->
+      <div id="paneRegister" class="portal-pane">
+        <form id="registerForm" autocomplete="on">
+          <div class="portal-input-group">
+            <label for="regName" data-i18n="authNameLabel">نام و نام خانوادگی</label>
+            <input type="text" id="regName" placeholder="مثال: علی رضایی" maxlength="80" required autocomplete="name">
+          </div>
+          <div class="portal-input-group">
+            <label for="regEmail" data-i18n="authEmailLabel">ایمیل کاری (کاملاً محرمانه)</label>
+            <input type="email" id="regEmail" placeholder="ali@company.com" maxlength="100" required autocomplete="username">
+          </div>
+          <div class="portal-input-group">
+            <label for="regPassword" data-i18n="authPassLabel">رمز عبور (حداقل ۸ کاراکتر)</label>
+            <input type="password" id="regPassword" placeholder="حداقل ۸ کاراکتر" minlength="8" required autocomplete="new-password">
+          </div>
+          <div id="registerError" class="field-error is-hidden" style="color: #EF4444; font-size: 0.82rem; margin-bottom: 12px; font-weight: 600;"></div>
+          <button type="submit" class="btn-hero-primary btn-full-width" data-i18n="btnRegister">افتتاح حساب امن ➔</button>
+        </form>
+      </div>
+
+      <!-- Pane 3: Client Workspace -->
+      <div id="paneWorkspace" class="portal-pane">
+        <div class="workspace-header-card">
+          <div>
+            <div class="workspace-greeting"><span data-i18n="welcomeUser">خوش آمدید</span>، <span id="workspaceUserName">کاربر گرامی</span></div>
+            <span class="user-role-tag" data-i18n="roleClientBadge">مشتری احرازشده</span>
+          </div>
+          <span class="pill-label" style="margin: 0;" data-i18n="ndaBadge">🔒 قرارداد محرمانگی فعال</span>
+        </div>
+
+        <!-- New Spreadsheet Intake Sub-Form -->
+        <form id="newOrderForm" style="background: rgba(0,0,0,0.25); padding: 18px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 24px;">
+          <h4 style="color: #FFFFFF; font-size: 0.95rem; margin-bottom: 12px;" data-i18n="btnSubmitOrder">ثبت سفارش معماری جدید</h4>
+          <div class="portal-input-group">
+            <label for="orderTierSelect" data-i18n="orderTierLabel">سطح معماری درخواستی</label>
+            <select id="orderTierSelect">
+              <option value="Core Spreadsheet Architecture">بازسازی و مهندسی مجدد فایل‌های اکسل</option>
+              <option value="Financial Modeling Architecture">معماری مدل‌سازی مالی و گزارش‌های هیئت مدیره</option>
+              <option value="Automated ETL Pipelines">خط لوله خودکارسازی داده و اسکریپت‌های سیستمی</option>
+              <option value="Cell Governance & Security">حاکمیت، قفل‌گذاری ساختار و ممیزی امنیتی</option>
+            </select>
+          </div>
+          <div class="portal-input-group">
+            <label for="orderFilesCount" data-i18n="orderFilesLabel">تعداد فایل‌های اکسل</label>
+            <input type="number" id="orderFilesCount" min="1" max="30" value="1" required>
+          </div>
+          <div class="portal-input-group">
+            <label for="orderNotesText" data-i18n="orderNotesLabel">شرح مشکلات یا خطاهای فرمولی</label>
+            <textarea id="orderNotesText" placeholder="توضیح دهید چه مشکلاتی مانند خطای #REF!، فریز شدن، کندی یا نیاز به اتوماسیون دارید..." rows="3" required></textarea>
+          </div>
+          <button type="submit" class="btn-hero-primary btn-full-width" data-i18n="btnSubmitOrder">ثبت سفارش معماری جدید ➔</button>
+        </form>
+
+        <h4 style="color: #FFFFFF; font-size: 1rem; margin-bottom: 14px;" data-i18n="ticketsHeading">پروژه‌های در حال اصلاح شما</h4>
+        <div id="workspaceTicketsList">
+          <!-- Dynamic ticket cards populated by app.js -->
+        </div>
+      </div>
+
+      <!-- Pane 4: Senior Architect Console -->
+      <div id="paneArchitect" class="portal-pane">
+        <div class="workspace-header-card">
+          <div>
+            <div class="workspace-greeting">صف کلی پروژه‌ها (معماران ارشد)</div>
+            <span class="user-role-tag" data-i18n="roleArchitectBadge">معمار ارشد اکسل</span>
+          </div>
+          <span class="pill-label" style="margin: 0;">⚡ محیط ایزوله Cleanroom</span>
+        </div>
+
+        <div class="architect-table-wrap">
+          <table class="architect-data-table">
+            <thead>
+              <tr>
+                <th data-i18n="colId">شناسه</th>
+                <th data-i18n="colClient">مشتری</th>
+                <th data-i18n="colTier">سطح معماری</th>
+                <th data-i18n="colFiles">تعداد</th>
+                <th data-i18n="colStatus">وضعیت</th>
+                <th data-i18n="colChecksum">مهر SHA-256</th>
+                <th data-i18n="colActions">عملیات</th>
+              </tr>
+            </thead>
+            <tbody id="architectOrdersTableBody">
+              <!-- Dynamic orders rows populated by app.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
   </div>
 
