@@ -3,14 +3,19 @@
 ============================================================= */
 
 :root {
-  --bg-main: #080C14;
-  --bg-contrast: #0F172A;
-  --bg-card: #141E33;
-  --bg-card-hover: #1A2845;
+  --bg-main: #23262F;
+  --bg-contrast: #15181F;
+  --bg-card: #191C24;
+  --bg-card-hover: #20242E;
 
-  --emerald: #10B981;
-  --emerald-light: #34D399;
-  --emerald-glow: rgba(16, 185, 129, 0.3);
+  --volt: #B6FF2E;
+  --volt-light: #D4FF70;
+  --volt-glow: rgba(182, 255, 46, 0.28);
+  --text-on-volt: #11141A;
+
+  --emerald: #B6FF2E;
+  --emerald-light: #D4FF70;
+  --emerald-glow: rgba(182, 255, 46, 0.28);
 
   --danger: #EF4444;
   --danger-glow: rgba(239, 68, 68, 0.3);
@@ -20,12 +25,13 @@
   --text-muted: #64748B;
 
   --border: rgba(255, 255, 255, 0.08);
-  --border-emerald: rgba(16, 185, 129, 0.35);
+  --border-emerald: rgba(182, 255, 46, 0.35);
+  --border-volt: rgba(182, 255, 46, 0.35);
 
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: 'JetBrains Mono', Consolas, "Liberation Mono", Courier, monospace;
 
-  caret-color: var(--emerald);
+  caret-color: var(--volt);
   color-scheme: dark;
 }
 
@@ -36,12 +42,12 @@
 }
 
 ::selection {
-  background: rgba(16, 185, 129, 0.35);
+  background: rgba(182, 255, 46, 0.35);
   color: #FFFFFF;
 }
 
 :focus-visible {
-  outline: 2px solid var(--emerald);
+  outline: 2px solid var(--volt);
   outline-offset: 2px;
 }
 
@@ -51,7 +57,7 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #080C14;
+  background: #23262F;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -60,7 +66,7 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(16, 185, 129, 0.5);
+  background: rgba(182, 255, 46, 0.5);
 }
 
 a {
@@ -139,7 +145,7 @@ body::before {
   left: 20vw;
   width: 60vw;
   height: 40vw;
-  background: radial-gradient(circle, rgba(16, 185, 129, 0.12), transparent 70%);
+  background: radial-gradient(circle, rgba(182, 255, 46, 0.12), transparent 70%);
   pointer-events: none;
   z-index: -1;
 }
@@ -231,7 +237,7 @@ a {
 }
 
 .btn-lang {
-  background: rgba(16, 185, 129, 0.12);
+  background: rgba(182, 255, 46, 0.12);
   border: 1px solid var(--border-emerald);
   color: var(--emerald-light);
   padding: 8px 14px;
@@ -246,14 +252,14 @@ a {
 }
 
 .btn-lang:hover {
-  background: rgba(16, 185, 129, 0.22);
+  background: rgba(182, 255, 46, 0.22);
   border-color: var(--emerald);
   color: #FFFFFF;
 }
 
 .btn-nav-action {
-  background: linear-gradient(135deg, #10B981, #059669);
-  color: #FFFFFF;
+  background: linear-gradient(135deg, #B6FF2E, #9EE81B);
+  color: #11141A;
   border: none;
   padding: 10px 20px;
   border-radius: 10px;
@@ -291,7 +297,7 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(16, 185, 129, 0.12);
+  background: rgba(182, 255, 46, 0.12);
   border: 1px solid var(--border-emerald);
   color: var(--emerald-light);
   padding: 6px 16px;
@@ -310,8 +316,8 @@ a {
   margin-top: 10px;
 }
 
-.highlight-emerald {
-  background: linear-gradient(135deg, #34D399, #10B981);
+.highlight-emerald, .highlight-volt {
+  background: linear-gradient(135deg, #B6FF2E 0%, #D4FF70 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -335,7 +341,7 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(16, 185, 129, 0.12);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(182, 255, 46, 0.12);
   margin-top: 10px;
 }
 
@@ -383,8 +389,9 @@ a {
 }
 
 .toggle-pill.pill-clean.active {
-  background: linear-gradient(135deg, #10B981, #059669);
-  color: #FFFFFF;
+  background: linear-gradient(135deg, #B6FF2E, #9EE81B);
+  color: #11141A;
+  font-weight: 800;
   box-shadow: 0 0 16px var(--emerald-glow);
 }
 
@@ -403,8 +410,8 @@ a {
 }
 
 .btn-hero-primary {
-  background: linear-gradient(135deg, #10B981, #059669);
-  color: #FFFFFF;
+  background: linear-gradient(135deg, #B6FF2E, #9EE81B);
+  color: #11141A;
   border: none;
   padding: 14px 32px;
   border-radius: 12px;
@@ -421,7 +428,7 @@ a {
 .btn-hero-primary:hover {
   transform: translateY(-2px);
   filter: brightness(1.1);
-  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.5);
+  box-shadow: 0 10px 30px rgba(182, 255, 46, 0.5);
 }
 
 .btn-hero-secondary {
@@ -478,7 +485,7 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(16, 185, 129, 0.1);
+  background: rgba(182, 255, 46, 0.1);
   border: 1px solid var(--border-emerald);
   color: var(--emerald-light);
   padding: 4px 14px;
@@ -530,7 +537,7 @@ a {
   font-size: 0.85rem;
   font-weight: 800;
   color: var(--emerald-light);
-  background: rgba(16, 185, 129, 0.15);
+  background: rgba(182, 255, 46, 0.15);
   padding: 2px 10px;
   border-radius: 6px;
   width: fit-content;
@@ -593,9 +600,9 @@ a {
 }
 
 .tag-good {
-  background: rgba(16, 185, 129, 0.2);
-  color: #34D399;
-  border: 1px solid rgba(16, 185, 129, 0.4);
+  background: rgba(182, 255, 46, 0.15);
+  color: var(--volt);
+  border: 1px solid rgba(182, 255, 46, 0.4);
 }
 
 .fix-arrow {
@@ -651,7 +658,7 @@ a {
 }
 
 .price-featured {
-  background: linear-gradient(180deg, rgba(16, 185, 129, 0.14), rgba(20, 30, 51, 0.95));
+  background: linear-gradient(180deg, rgba(182, 255, 46, 0.14), rgba(25, 28, 36, 0.95));
   border: 2px solid var(--emerald);
   box-shadow: 0 0 35px var(--emerald-glow);
 }
@@ -661,7 +668,7 @@ a {
   top: -13px;
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(135deg, #10B981, #059669);
+  background: linear-gradient(135deg, #B6FF2E, #9EE81B);
   color: #000;
   font-size: 0.75rem;
   font-weight: 900;
@@ -744,7 +751,8 @@ a {
 }
 
 .featured-btn {
-  background: linear-gradient(135deg, #10B981, #059669);
+  background: linear-gradient(135deg, #B6FF2E, #9EE81B);
+  color: #11141A !important;
   border: none;
   box-shadow: 0 4px 15px var(--emerald-glow);
 }
@@ -941,7 +949,7 @@ a {
 }
 
 .input-wrap input:focus-visible, .input-wrap textarea:focus-visible {
-  outline: 2px solid var(--emerald);
+  outline: 2px solid var(--volt);
   outline-offset: 1px;
   border-color: var(--emerald);
 }
@@ -1010,7 +1018,7 @@ a {
 }
 
 .calc-count-pill {
-  background: rgba(16, 185, 129, 0.15);
+  background: rgba(182, 255, 46, 0.15);
   border: 1px solid var(--border-emerald);
   color: var(--emerald-light);
   padding: 4px 14px;
@@ -1051,7 +1059,7 @@ a {
 }
 
 .calc-slider:focus-visible {
-  outline: 2px solid var(--emerald);
+  outline: 2px solid var(--volt);
   outline-offset: 4px;
 }
 
@@ -1134,7 +1142,7 @@ a {
 }
 
 .clinic-tab-btn.active {
-  background: rgba(16, 185, 129, 0.15);
+  background: rgba(182, 255, 46, 0.15);
   border-color: var(--emerald);
   color: var(--emerald-light);
 }
@@ -1173,7 +1181,7 @@ a {
 }
 
 .diff-card.diff-fixed {
-  background: rgba(16, 185, 129, 0.08);
+  background: rgba(182, 255, 46, 0.08);
   border: 1px solid var(--border-emerald);
 }
 

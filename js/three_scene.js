@@ -61,7 +61,7 @@ class SimpleSpreadsheet3D {
     this.keyLight.position.set(8, 12, 8);
     this.scene.add(this.keyLight);
 
-    this.greenLight = new THREE.PointLight(0x10b981, 2.5, 20);
+    this.greenLight = new THREE.PointLight(0xb6ff2e, 2.5, 20);
     this.greenLight.position.set(-6, 8, 4);
     this.scene.add(this.greenLight);
 
@@ -109,7 +109,7 @@ class SimpleSpreadsheet3D {
         const cleanZ = startZ + r * (cellD + gap);
 
         const isHeader = (r === 0);
-        const baseColor = isHeader ? 0x059669 : 0x1e293b;
+        const baseColor = isHeader ? 0xb6ff2e : 0x191c24;
 
         const mat = new THREE.MeshStandardMaterial({
           color: baseColor,
@@ -124,7 +124,7 @@ class SimpleSpreadsheet3D {
         // Edge outlines
         const wireGeo = new THREE.EdgesGeometry(boxGeo);
         const wireMat = new THREE.LineBasicMaterial({
-          color: isHeader ? 0x34d399 : 0x38bdf8,
+          color: isHeader ? 0x11141a : 0xb6ff2e,
           transparent: true,
           opacity: 0.8
         });
@@ -164,9 +164,9 @@ class SimpleSpreadsheet3D {
 
     // Add 3 Rising 3D Bar Chart Pillars in Clean Mode
     const barConfigs = [
-      { x: startX + 1 * (cellW + gap), z: startZ + 2 * (cellD + gap), h: 2.2, color: 0x38bdf8 },
-      { x: startX + 2 * (cellW + gap), z: startZ + 2 * (cellD + gap), h: 3.5, color: 0x10b981 },
-      { x: startX + 3 * (cellW + gap), z: startZ + 2 * (cellD + gap), h: 2.8, color: 0x34d399 }
+      { x: startX + 1 * (cellW + gap), z: startZ + 2 * (cellD + gap), h: 2.2, color: 0x9ee81b },
+      { x: startX + 2 * (cellW + gap), z: startZ + 2 * (cellD + gap), h: 3.5, color: 0xb6ff2e },
+      { x: startX + 3 * (cellW + gap), z: startZ + 2 * (cellD + gap), h: 2.8, color: 0xd4ff70 }
     ];
 
     barConfigs.forEach(conf => {
@@ -204,7 +204,7 @@ class SimpleSpreadsheet3D {
     // Floating Clean Badges for Clean Mode
     const cleanLabels = ['✓ Fully Verified', '✓ 0.08s Recalc', '✓ Zero Errors'];
     cleanLabels.forEach((txt, idx) => {
-      const sprite = this.createLabel(txt, '#10B981', 'rgba(16, 185, 129, 0.35)');
+      const sprite = this.createLabel(txt, '#B6FF2E', 'rgba(25, 28, 36, 0.85)');
       const angle = (idx / cleanLabels.length) * Math.PI * 2 + 0.8;
       sprite.position.set(Math.cos(angle) * 3.6, 2.6, Math.sin(angle) * 3.6);
       this.sheetGroup.add(sprite);
@@ -362,7 +362,7 @@ class SimpleSpreadsheet3D {
       }
 
       const isClean = (this.cleanProgress > 0.5);
-      const emissiveColor = isClean ? 0x059669 : 0x991B1B;
+      const emissiveColor = isClean ? 0xb6ff2e : 0x991B1B;
       hitCell.material.emissive.setHex(emissiveColor);
 
       if (hud) {

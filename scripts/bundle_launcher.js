@@ -20,9 +20,9 @@ const appJs = fs.readFileSync(path.join(ROOT, 'js/app.js'), 'utf8');
 // Top Launcher Bar
 const launcherBar = `
   <!-- Standalone Launcher Header Banner -->
-  <div style="background: #030712; border-bottom: 2px solid #10B981; padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 0.85rem; color: #9CA3AF; z-index: 999; position: relative;">
+  <div style="background: #191C24; border-bottom: 2px solid #B6FF2E; padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 0.85rem; color: #9CA3AF; z-index: 999; position: relative;">
     <div style="display: flex; align-items: center; gap: 10px;">
-      <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981;"></span>
+      <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #B6FF2E; box-shadow: 0 0 8px #B6FF2E;"></span>
       <strong style="color: #F9FAFB;">SheetFix 3D • The Excel Organizing Service</strong>
       <span style="color: #6B7280;">(Local Port 5426)</span>
     </div>
@@ -30,7 +30,7 @@ const launcherBar = `
       <a href="http://localhost:5426" target="_blank" style="color: #38BDF8; text-decoration: none; font-weight: 700; background: rgba(6, 182, 212, 0.15); padding: 5px 12px; border-radius: 6px; border: 1px solid rgba(6, 182, 212, 0.3);">
         🚀 Local Server (Port 5426)
       </a>
-      <a href="https://arezoyetoo-dotcom.github.io/excel-3d-ad/" target="_blank" style="color: #A7F3D0; text-decoration: none; font-weight: 700; background: rgba(16, 185, 129, 0.15); padding: 5px 12px; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.3);">
+      <a href="https://arezoyetoo-dotcom.github.io/excel-3d-ad/" target="_blank" style="color: #B6FF2E; text-decoration: none; font-weight: 700; background: rgba(182, 255, 46, 0.15); padding: 5px 12px; border-radius: 6px; border: 1px solid rgba(182, 255, 46, 0.3);">
         🌐 Online Website (GitHub Pages)
       </a>
       <a href="https://github.com/arezoyetoo-dotcom/excel-3d-ad" target="_blank" style="color: #C4B5FD; text-decoration: none; font-weight: 700; background: rgba(139, 92, 246, 0.15); padding: 5px 12px; border-radius: 6px; border: 1px solid rgba(139, 92, 246, 0.3);">

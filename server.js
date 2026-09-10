@@ -23,15 +23,66 @@ const MIME_TYPES = {
   '.ttf': 'font/ttf'
 };
 
-const server = http.createServer((req, res) => {
-  // 1. Method Whitelisting
+// In-Memory Sliding-Window Rate Limiter (INJECT-DoS Defense)
+const RATE_LIMIT_WINDOW_MS = 60 * 1000;
+const MAX_REQUESTS_PER_WINDOW = 120;
+const requestRecords = new Map();
+
+export function isRateLimited(ip, maxLimit = MAX_REQUESTS_PER_WINDOW) {
+  const now = Date.now();
+  const clientData = requestRecords.get(ip) || { count: 0, resetTime: now + RATE_LIMIT_WINDOW_MS };
+
+  if (now > clientData.resetTime) {
+    clientData.count = 1;
+    clientData.resetTime = now + RATE_LIMIT_WINDOW_MS;
+    requestRecords.set(ip, clientData);
+    return false;
+  }
+
+  clientData.count++;
+  requestRecords.set(ip, clientData);
+
+  return clientData.count > maxLimit;
+}
+
+export function resetRateLimits() {
+  requestRecords.clear();
+}
+
+// Garbage collection for rate limiter map every 5 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, data] of requestRecords.entries()) {
+    if (now > data.resetTime) {
+      requestRecords.delete(ip);
+    }
+  }
+}, 5 * 60 * 1000).unref();
+
+export const server = http.createServer((req, res) => {
+  // 1. Rate Limiting Check
+  const clientIp = req.socket.remoteAddress || '127.0.0.1';
+  if (isRateLimited(clientIp)) {
+    res.writeHead(429, {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Retry-After': '60'
+    });
+    res.end(JSON.stringify({
+      error: 'Too Many Requests',
+      message: 'Rate limit exceeded. Please retry after 60 seconds.',
+      status: 429
+    }));
+    return;
+  }
+
+  // 2. Method Whitelisting
   if (!['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {
     res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('405 Method Not Allowed');
     return;
   }
 
-  // 2. Comprehensive Security Headers
+  // 3. Comprehensive Security Headers
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
@@ -95,7 +146,7 @@ const server = http.createServer((req, res) => {
     pathname = '/index.html';
   }
 
-  // 3. Strict Path Traversal and Jail Enforcement
+  // 4. Strict Path Traversal and Jail Enforcement
   const safePath = path.normalize(pathname).replace(/^(\.\.[\/\\])+/, '');
   const rootDir = path.resolve(__dirname);
   const resolvedPath = path.resolve(rootDir, '.' + safePath);
@@ -107,9 +158,24 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // 4. Block Hidden Files and Directories (.env, .git, etc.)
+  // 5. Block Hidden Files, Manifests, and Source Files
   const pathParts = safePath.split(/[\/\\]/);
-  if (pathParts.some(part => part.startsWith('.') && part !== '.nojekyll')) {
+  const filename = pathParts[pathParts.length - 1].toLowerCase();
+  const SENSITIVE_FILES = [
+    'package.json',
+    'package-lock.json',
+    '.npmrc',
+    'server.js',
+    'readme.md',
+    '.gitignore',
+    '.gitattributes',
+    '.env'
+  ];
+
+  if (pathParts.some(part => part.startsWith('.') && part !== '.nojekyll') ||
+      SENSITIVE_FILES.includes(filename) ||
+      pathParts.includes('test') ||
+      pathParts.includes('scripts')) {
     res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('403 Forbidden: Access Restricted');
     return;
@@ -150,6 +216,12 @@ const server = http.createServer((req, res) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`⚡ SheetFix 3D Excel Service (Hardened) running at http://localhost:${PORT}`);
-});
+export { PORT };
+
+// Direct execution check
+const isMain = process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1]);
+if (isMain) {
+  server.listen(PORT, () => {
+    console.log(`⚡ SheetFix 3D Excel Service (Hardened) running at http://localhost:${PORT}`);
+  });
+}

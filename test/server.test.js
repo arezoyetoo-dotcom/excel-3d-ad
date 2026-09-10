@@ -1,9 +1,29 @@
-import { test } from 'node:test';
+import { test, before, after } from 'node:test';
 import assert from 'node:assert';
 import http from 'node:http';
+import { server, PORT, resetRateLimits } from '../server.js';
 
-const PORT = 5426;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
+
+before((t, done) => {
+  if (!server.listening) {
+    server.listen(PORT, () => {
+      resetRateLimits();
+      done();
+    });
+  } else {
+    resetRateLimits();
+    done();
+  }
+});
+
+after((t, done) => {
+  if (server.listening) {
+    server.close(done);
+  } else {
+    done();
+  }
+});
 
 function request(path, options = {}) {
   return new Promise((resolve, reject) => {
@@ -38,7 +58,7 @@ test('Security: Root redirects/serves index.html with baseline security headers'
   assert.ok(res.headers['strict-transport-security']);
 });
 
-test('Security: Path Traversal attempts are rejected with 403 or 404', async () => {
+test('Security: Path Traversal attempts are rejected with 403', async () => {
   const res = await request('/../../../../etc/passwd');
   assert.ok(res.statusCode === 403 || res.statusCode === 404);
 });
@@ -48,6 +68,13 @@ test('Security: Hidden file access (.env, .git) is blocked with 403', async () =
   assert.strictEqual(resEnv.statusCode, 403);
   const resGit = await request('/.git/config');
   assert.strictEqual(resGit.statusCode, 403);
+});
+
+test('Security: Sensitive configuration and manifest files are blocked with 403', async () => {
+  const resPkg = await request('/package.json');
+  assert.strictEqual(resPkg.statusCode, 403);
+  const resServer = await request('/server.js');
+  assert.strictEqual(resServer.statusCode, 403);
 });
 
 test('Security: CORS rejects arbitrary origins and does not reflect wildcards', async () => {
@@ -61,4 +88,19 @@ test('Security: CORS rejects arbitrary origins and does not reflect wildcards', 
 test('Security: Disallowed HTTP methods are rejected with 405', async () => {
   const res = await request('/api/health', { method: 'POST' });
   assert.strictEqual(res.statusCode, 405);
+});
+
+test('Security: Rate limiting triggers 429 when threshold exceeded', async () => {
+  resetRateLimits();
+  // Send requests up to limit
+  let lastRes;
+  for (let i = 0; i < 125; i++) {
+    lastRes = await request('/api/health');
+    if (lastRes.statusCode === 429) break;
+  }
+  assert.strictEqual(lastRes.statusCode, 429);
+  assert.strictEqual(lastRes.headers['retry-after'], '60');
+  const json = JSON.parse(lastRes.body);
+  assert.strictEqual(json.status, 429);
+  resetRateLimits();
 });
