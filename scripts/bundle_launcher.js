@@ -23,7 +23,7 @@ const launcherBar = `
   <div style="background: #191C24; border-bottom: 2px solid #B6FF2E; padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 0.85rem; color: #9CA3AF; z-index: 999; position: relative;">
     <div style="display: flex; align-items: center; gap: 10px;">
       <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #B6FF2E; box-shadow: 0 0 8px #B6FF2E;"></span>
-      <strong style="color: #F9FAFB;">SheetFix 3D • The Excel Organizing Service</strong>
+      <strong style="color: #F9FAFB;">SheetFix 3D • Custom Excel Solutions On Demand</strong>
       <span style="color: #6B7280;">(Local Port 5426)</span>
     </div>
     <div style="display: flex; align-items: center; gap: 12px;">

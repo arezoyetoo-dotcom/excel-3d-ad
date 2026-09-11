@@ -1,7 +1,7 @@
 {
   "name": "excel-3d-ad",
   "version": "1.0.0",
-  "description": "GridCraft 3D - High-Impact 3D Advertisement & Showcase Website for Bespoke Excel Organizing & Spreadsheet Architecture Services",
+  "description": "SheetFix 3D - High-Impact 3D Showcase Platform for Custom Excel Engineering, VBA Automation & Solutions On Demand",
   "main": "server.js",
   "type": "module",
   "scripts": {

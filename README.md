@@ -1,6 +1,6 @@
-# GridCraft 3D • Bespoke Excel Architecture & Modeling Agency ⚡📊
+# SheetFix 3D • Custom Excel Engineering & Solutions On Demand ⚡📊
 
-> High-impact, interactive 3D advertisement and showcase platform for an elite Excel organizing, spreadsheet restructuring, financial modeling, and automation agency.
+> High-impact, interactive 3D showcase platform for an elite custom Excel engineering, VBA automation, financial modeling, and on-demand spreadsheet solutions service. Whatever the client asks for, we engineer and deliver in 24 hours.
 
 - **Live Public URL (GitHub Pages):** [https://arezoyetoo-dotcom.github.io/excel-3d-ad/](https://arezoyetoo-dotcom.github.io/excel-3d-ad/)
 - **GitHub Repository:** [https://github.com/arezoyetoo-dotcom/excel-3d-ad](https://github.com/arezoyetoo-dotcom/excel-3d-ad)
