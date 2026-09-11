@@ -673,8 +673,8 @@ class SimpleSpreadsheet3D {
   }
 
   setPriceOfferScale(price) {
-    const num = parseFloat(price) || 650;
-    this.priceOfferMultiplier = Math.min(2.8, Math.max(0.35, num / 650));
+    const num = parseFloat(price) || 7500000;
+    this.priceOfferMultiplier = Math.min(2.8, Math.max(0.35, num / 7500000));
   }
 
   animate() {

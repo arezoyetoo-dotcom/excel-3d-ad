@@ -305,6 +305,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (currentUser) {
       updateUserUI(currentUser);
     }
+
+    if (typeof window.refreshBountyStudioLanguage === 'function') {
+      window.refreshBountyStudioLanguage();
+    }
   }
 
   // Language Toggle Button Click
@@ -1407,6 +1411,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentFilter = 'all';
     let cachedProjects = [];
 
+    function formatCurrency(amount) {
+      const num = parseInt(amount, 10) || 0;
+      return currentLang === 'fa' 
+        ? `${num.toLocaleString('fa-IR')} تومان`
+        : `${num.toLocaleString('en-US')} Toman`;
+    }
+
     // LocalStorage Fallback Seed for GitHub Pages
     const LOCAL_PROJECTS_KEY = 'sheetfix_custom_bounties_v1';
     function getLocalProjects() {
@@ -1423,7 +1434,7 @@ document.addEventListener('DOMContentLoaded', () => {
           projectTitle: 'Real Estate Multi-Family LBO & Waterfall Model',
           category: 'Financial Modeling',
           description: 'Dynamic 10-year cash flow model for a 240-unit property with 3 equity tiers, debt amortization, and automated sensitivity returns matrix.',
-          offeredPrice: 850,
+          offeredPrice: 9500000,
           turnaroundHours: 48,
           status: 'In Progress',
           adminNotes: 'Assigned to Senior Modeler. Modeling tier-3 IRR waterfall formulas with zero legacy circular references.',
@@ -1441,7 +1452,7 @@ document.addEventListener('DOMContentLoaded', () => {
           projectTitle: 'Automated Multi-Warehouse Inventory & Barcode VBA',
           category: 'VBA Automation',
           description: 'VBA macro that auto-syncs 6 warehouse CSV exports every morning, reconciles SKU variances, and triggers restock orders in under 5 seconds.',
-          offeredPrice: 600,
+          offeredPrice: 6500000,
           turnaroundHours: 24,
           status: 'Delivered',
           adminNotes: 'Delivered with 64-bit API compatibility and modular VBA scripts.',
@@ -1459,7 +1470,7 @@ document.addEventListener('DOMContentLoaded', () => {
           projectTitle: 'Executive C-Suite KPI Dashboard with Interactive Slicers',
           category: 'Interactive Dashboard',
           description: 'Clean obsidian dark mode dashboard synthesizing ARR, Churn, LTV:CAC, and Runway with dynamic fiscal year slicers and print-ready board PDF layout.',
-          offeredPrice: 1200,
+          offeredPrice: 16000000,
           turnaroundHours: 48,
           status: 'Pending Review',
           adminNotes: 'Under architecture review by Lead Architect.',
@@ -1480,7 +1491,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Two-Way Sync Price Slider & Input & 3D Scene
     function updateOfferRadar(price) {
-      const p = parseInt(price, 10) || 50;
+      const p = parseInt(price, 10) || 7500000;
       if (priceInput && priceInput.value != p) priceInput.value = p;
       if (slider && slider.value != p) slider.value = p;
 
@@ -1500,7 +1511,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Update Radar
       if (radarTierTitle && radarTierDesc && radarSpeedVal && radarArchitectVal && radarDot) {
-        if (p < 250) {
+        if (p < 4000000) {
           radarTierTitle.textContent = currentLang === 'fa' ? 'پیشنهاد پایه و اقتصادی' : 'Value Tier Offer';
           radarTierDesc.textContent = currentLang === 'fa' 
             ? 'سفارش وارد صف استاندارد بررسی می‌شود. مناسب برای فایل‌های سبک و فرمول‌های جزئی.'
@@ -1510,7 +1521,7 @@ document.addEventListener('DOMContentLoaded', () => {
           radarArchitectVal.textContent = currentLang === 'fa' ? 'مهندس محاسبات اکسل' : 'Spreadsheet Specialist';
           radarDot.style.background = '#F59E0B';
           radarDot.style.boxShadow = '0 0 10px #F59E0B';
-        } else if (p < 850) {
+        } else if (p < 15000000) {
           radarTierTitle.textContent = currentLang === 'fa' ? 'پیشنهاد متناسب با بازار' : 'Market Competitive Offer';
           radarTierDesc.textContent = currentLang === 'fa'
             ? 'معماران ارشد اکسل معمولاً پیشنهادهای منصفانه را ظرف ۲ الی ۴ ساعت بررسی و شروع می‌کنند.'
@@ -1546,7 +1557,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       priceInput.addEventListener('change', (e) => {
         let val = parseInt(e.target.value, 10);
-        if (isNaN(val) || val < 25) val = 25;
+        if (isNaN(val) || val < 500000) val = 500000;
         updateOfferRadar(val);
       });
     }
@@ -1633,7 +1644,7 @@ document.addEventListener('DOMContentLoaded', () => {
           statusLabel = currentLang === 'fa' ? 'تحویل شد' : 'Delivered';
         } else if (p.status === 'Countered') {
           statusClass = 'countered';
-          statusLabel = currentLang === 'fa' ? `پیشنهاد معمار: $${p.counterPrice}` : `Counter: $${p.counterPrice}`;
+          statusLabel = currentLang === 'fa' ? `پیشنهاد معمار: ${formatCurrency(p.counterPrice)}` : `Counter: ${formatCurrency(p.counterPrice)}`;
         } else {
           statusLabel = currentLang === 'fa' ? 'در انتظار بررسی' : 'Pending Review';
         }
@@ -1651,7 +1662,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="bounty-bottom-meta">
               <div>
                 <span style="font-size: 0.68rem; color: var(--text-muted); display: block;">OFFERED PRICE</span>
-                <span class="bounty-price-val">$${p.offeredPrice || 0}</span>
+                <span class="bounty-price-val">${formatCurrency(p.offeredPrice)}</span>
               </div>
               <span class="status-pill ${statusClass}">
                 <span style="width:6px;height:6px;border-radius:50%;background:currentColor;display:inline-block;"></span>
@@ -1703,7 +1714,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('trackResultId').textContent = proj.id;
         document.getElementById('trackResultTitle').textContent = proj.projectTitle;
         document.getElementById('trackResultCat').textContent = proj.category || 'Custom Excel';
-        document.getElementById('trackResultPrice').textContent = `$${proj.offeredPrice}`;
+        document.getElementById('trackResultPrice').textContent = formatCurrency(proj.offeredPrice);
 
         const statusPill = document.getElementById('trackResultStatusPill');
         statusPill.textContent = proj.status;
@@ -1787,7 +1798,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const title = document.getElementById('bountyTitle')?.value?.trim();
         const category = document.getElementById('bountyCategory')?.value || 'Financial Modeling';
         const description = document.getElementById('bountyDescription')?.value?.trim();
-        const offeredPrice = parseInt(document.getElementById('bountyPriceInput')?.value, 10) || 650;
+        const offeredPrice = parseInt(document.getElementById('bountyPriceInput')?.value, 10) || 7500000;
         const urgencyEl = document.querySelector('input[name="bountyUrgency"]:checked');
         const turnaroundHours = urgencyEl ? parseInt(urgencyEl.value, 10) : 48;
         const clientName = document.getElementById('bountyClientName')?.value?.trim() || 'Anonymous Client';
@@ -1863,7 +1874,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           // Reset form
           projectForm.reset();
-          updateOfferRadar(650);
+          updateOfferRadar(7500000);
 
           if (submitBtn) {
             submitBtn.disabled = false;
@@ -1876,11 +1887,11 @@ document.addEventListener('DOMContentLoaded', () => {
           alert(currentLang === 'fa'
             ? `✅ پروژه شما با موفقیت ثبت شد!
 شناسه پیگیری: ${createdProject.id}
-قیمت پیشنهادی: $${createdProject.offeredPrice}
+قیمت پیشنهادی: ${formatCurrency(createdProject.offeredPrice)}
 معمار ارشد به زودی پیشنهاد شما را بررسی و شروع خواهد کرد.`
             : `✅ Project offer submitted successfully!
 Project ID: ${createdProject.id}
-Offered Price: $${createdProject.offeredPrice}
+Offered Price: ${formatCurrency(createdProject.offeredPrice)}
 A Senior Excel Architect is reviewing your requirements now.`);
         }
       });
@@ -1981,7 +1992,7 @@ A Senior Excel Architect is reviewing your requirements now.`);
         else if (p.status === 'Delivered') delivered++;
       });
 
-      if (adminMetricPipeline) adminMetricPipeline.textContent = `$${totalVal.toLocaleString()}`;
+      if (adminMetricPipeline) adminMetricPipeline.textContent = formatCurrency(totalVal);
       if (adminMetricPending) adminMetricPending.textContent = pending;
       if (adminMetricBuilding) adminMetricBuilding.textContent = building;
       if (adminMetricDelivered) adminMetricDelivered.textContent = delivered;
@@ -2013,11 +2024,11 @@ A Senior Excel Architect is reviewing your requirements now.`);
               ${escapeHtml(p.description || '')}
             </div>
           </td>
-          <td><strong style="color: #10B981; font-size: 1rem;">$${p.offeredPrice || 0}</strong></td>
+          <td><strong style="color: #10B981; font-size: 1rem;">${formatCurrency(p.offeredPrice)}</strong></td>
           <td><span style="font-size: 0.76rem;">${p.turnaroundHours || 48}h</span></td>
           <td>
             <span class="status-pill ${statusClass}">${p.status}</span>
-            ${p.counterPrice ? `<br><span style="font-size:0.7rem; color:#C084FC;">Counter: $${p.counterPrice}</span>` : ''}
+            ${p.counterPrice ? `<br><span style="font-size:0.7rem; color:#C084FC;">Counter: ${formatCurrency(p.counterPrice)}</span>` : ''}
           </td>
           <td>
             <div class="admin-actions-cell">
@@ -2055,7 +2066,7 @@ A Senior Excel Architect is reviewing your requirements now.`);
           adminNotes: 'Offer accepted by Lead Architect. Spreadsheet currently in dedicated cleanroom refactoring sprint.'
         };
       } else if (action === 'counter') {
-        const counter = prompt('Enter your counter-offer price in USD ($):', '750');
+        const counter = prompt('Enter your counter-offer price in Toman (تومان):', '8500000');
         if (!counter) return;
         const note = prompt('Enter explanation note for the client:', 'Scope requires multi-tab automated PowerQuery ETL pipeline.');
         patchBody = {
@@ -2144,8 +2155,14 @@ A Senior Excel Architect is reviewing your requirements now.`);
       });
     }
 
+    window.refreshBountyStudioLanguage = function() {
+      const val = parseInt(priceInput?.value, 10) || 7500000;
+      updateOfferRadar(val);
+      if (cachedProjects.length > 0) renderBoard(cachedProjects);
+    };
+
     // Initial load
-    updateOfferRadar(650);
+    updateOfferRadar(7500000);
     loadPublicProjects();
   }
 

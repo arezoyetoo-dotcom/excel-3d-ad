@@ -35,7 +35,7 @@ window.SHEETFIX_I18N = {
     
     heroCtaPrimary: "Commission Architecture ➔",
     heroCtaSecondary: "See How It Works ↓",
-    heroTrust: "🔒 Mutual NDA signed upfront. If you don't love your completed spreadsheet, you pay $0.",
+    heroTrust: "🔒 Mutual NDA signed upfront. If you don't love your completed spreadsheet, you pay 0 Toman.",
     
     stepsLabel: "Simple 3-Step Process",
     stepsHeading: "How SheetFix Delivers",
@@ -286,11 +286,11 @@ window.SHEETFIX_I18N = {
     excelTab1: "مدل_مالی_فصل_سوم",
     excelTab2: "ورودی_داده_خام",
     excelStatusCalc: "● زمان محاسبه: ۰.۰۴ ثانیه",
-    excelStatusSum: "مجموع: ۱,۱۶۶,۳۰۰ دلار",
+    excelStatusSum: "مجموع: ۱,۱۶۶,۳۰۰ تومان",
     
     heroCtaPrimary: "درخواست پروژه و پیاده‌سازی ➔",
     heroCtaSecondary: "مشاهده مراحل کار ↓",
-    heroTrust: "🔒 امضای قرارداد رسمی حفظ محرمانگی (NDA). در صورت عدم رضایت کامل، تمام وجه بازگردانده می‌شود.",
+    heroTrust: "🔒 امضای قرارداد رسمی حفظ محرمانگی (NDA). در صورت عدم رضایت کامل، تمام وجه بازگردانده می‌شود (۰ تومان).",
     
     stepsLabel: "فرآیند ساده ۳ مرحله‌ای",
     stepsHeading: "شیت‌فیکس چگونه سفارش شما را اجرا می‌کند؟",

@@ -2619,23 +2619,33 @@ body[dir="rtl"] .architect-data-table {
   margin-right: 6px;
 }
 
+.price-currency-sign:empty {
+  display: none;
+}
+
 .price-big-input {
   background: transparent;
   border: none;
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   font-weight: 900;
   color: #FFFFFF;
-  width: 140px;
+  width: 220px;
+  max-width: 100%;
   text-align: center;
   font-family: inherit;
   outline: none;
 }
 
 .price-currency-suffix {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  color: var(--text-muted);
-  margin-left: 6px;
+  color: #10B981;
+  margin-left: 8px;
+}
+
+[dir="rtl"] .price-currency-suffix {
+  margin-left: 0;
+  margin-right: 8px;
 }
 
 .price-slider-wrap {
