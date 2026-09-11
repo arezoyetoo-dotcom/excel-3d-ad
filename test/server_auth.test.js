@@ -259,3 +259,23 @@ test('Auth API: 6-digit OTP code dispatch and verification workflow', async () =
   assert.strictEqual(goodData.email, targetEmail);
 });
 
+test('Auth API: arezoyetoo@gmail.com logs in with ploi1357 as authorized architect', async () => {
+  const loginRes = await request('/api/auth/login', { method: 'POST' }, {
+    email: 'arezoyetoo@gmail.com',
+    password: 'ploi1357'
+  });
+  assert.strictEqual(loginRes.statusCode, 200);
+  const data = loginRes.json();
+  assert.strictEqual(data.user.email, 'arezoyetoo@gmail.com');
+  assert.strictEqual(data.user.role, 'architect');
+  const cookie = loginRes.headers['set-cookie'][0].split(';')[0];
+
+  // Access admin projects using architect session cookie
+  const adminRes = await request('/api/admin/projects', {
+    headers: { 'Cookie': cookie }
+  });
+  assert.strictEqual(adminRes.statusCode, 200);
+  const projs = adminRes.json();
+  assert.ok(Array.isArray(projs));
+});
+

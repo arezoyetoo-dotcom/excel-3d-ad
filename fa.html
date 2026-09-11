@@ -69,11 +69,6 @@
           🔊
         </button>
 
-        <!-- Admin Operations Desk Trigger -->
-        <button id="adminDeskBtn" class="btn-util-pill btn-admin-desk" title="میز عملیات معماران ارشد و ادمین">
-          <span>🛠️</span> <span data-i18n="navAdminDesk">ادمین</span>
-        </button>
-
         <!-- Admin Telegram Contact -->
         <a href="https://t.me/Shy1ohmy" target="_blank" rel="noopener noreferrer" class="btn-util-pill btn-telegram-contact" title="پشتیبانی مستقیم تلگرام: Shy1ohmy@">
           <span>✈️</span> <span data-i18n="adminTelegramBtn">@Shy1ohmy</span>
@@ -85,11 +80,15 @@
         </button>
 
         <div id="authUserBadge" class="header-user-status is-hidden">
-          <div class="user-logged-badge">
+          <div class="user-logged-badge" title="باز کردن پرتال کاربری">
             <span class="user-badge-icon">👤</span>
             <span id="headerUserName" class="user-badge-name">کاربر</span>
             <span id="headerUserRole" class="user-role-tag">مشتری</span>
           </div>
+          <!-- دکمه میز کار ادمین (فقط برای معمار ارشد پس از ورود نمایش داده می‌شود) -->
+          <button id="adminDeskBtn" class="btn-util-pill btn-admin-desk is-hidden" title="میز عملیات معماران ارشد و ادمین">
+            <span>🛠️</span> <span data-i18n="navAdminDesk">میز کار ادمین</span>
+          </button>
           <button id="authSignOutBtn" class="btn-signout" title="خروج" data-i18n="navSignOut">خروج</button>
         </div>
 
@@ -1047,7 +1046,12 @@
             <div class="workspace-greeting">صف کلی پروژه‌ها (معماران ارشد)</div>
             <span class="user-role-tag" data-i18n="roleArchitectBadge">معمار ارشد اکسل</span>
           </div>
-          <span class="pill-label" style="margin: 0;">⚡ محیط ایزوله Cleanroom</span>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <button type="button" class="btn-util-pill btn-admin-desk btn-launch-admin-from-pane" title="باز کردن میز کار ادمین">
+              <span>🛠️</span> <span data-i18n="navAdminDesk">میز کار ادمین</span>
+            </button>
+            <span class="pill-label" style="margin: 0;">⚡ ایزوله Cleanroom</span>
+          </div>
         </div>
 
         <div class="architect-table-wrap">

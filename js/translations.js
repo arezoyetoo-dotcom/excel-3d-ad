@@ -117,7 +117,7 @@ window.SHEETFIX_I18N = {
     
     // Client Offerings Suite
     navBountyStudio: "Custom Projects ⚡",
-    navAdminDesk: "Admin",
+    navAdminDesk: "Admin Desk",
     bountyLabel: "⚡ Bespoke Commission & Bidding Studio",
     bountyHeading: "Say What You Want. Offer Your Price. We Build It.",
     bountySubtext: "Have a custom financial model, complex macro, executive dashboard, or broken spreadsheet? Tell us your exact requirements, propose your price, and our Senior Excel Architects review, accept your offer, and engineer your file.",
@@ -372,7 +372,7 @@ window.SHEETFIX_I18N = {
     
     // Client Offerings Suite
     navBountyStudio: "پروژه‌های سفارشی ⚡",
-    navAdminDesk: "ادمین",
+    navAdminDesk: "میز کار ادمین",
     bountyLabel: "⚡ استودیوی سفارش سفارشی و مناقصه مستقیم",
     bountyHeading: "آنچه می‌خواهید را بگویید. قیمت پیشنهادی دهید. ما می‌سازیم.",
     bountySubtext: "نیاز به مدل مالی پیشرفته، ماکروی خودکار VBA، داشبورد مدیریتی یا رفع اشکال فایل اکسل دارید؟ مشخصات را بنویسید، قیمت پیشنهادی خود را تعیین کنید؛ معماران ارشد اکسل پیشنهاد شما را بررسی، تأیید و پروژه را تحویل می‌دهند.",

@@ -105,23 +105,42 @@ document.addEventListener('DOMContentLoaded', () => {
     },
 
     getUsers() {
+      let users = [];
       try {
         const u = localStorage.getItem('sheetfix_local_users');
-        if (u) return JSON.parse(u);
+        if (u) users = JSON.parse(u);
       } catch {}
-      // Seed default Senior Architect
-      const defaultUsers = [
-        {
+      
+      // Ensure default Senior Architect
+      if (!users.some(u => u.email === 'architect@sheetfix.dev')) {
+        users.push({
           id: 'arch-primary-01',
           name: 'Senior Excel Architect',
           email: 'architect@sheetfix.dev',
           role: 'architect',
           passwordHash: '50f82e57ce8b3c40f427158ed21bf63b4f135499b1375dfbb478f4bb621936bf',
           createdAt: new Date().toISOString()
-        }
-      ];
-      this.saveUsers(defaultUsers);
-      return defaultUsers;
+        });
+      }
+
+      // Ensure arezoyetoo@gmail.com with ploi1357 is always seeded and architect
+      const arezo = users.find(u => u.email === 'arezoyetoo@gmail.com');
+      const arezoHash = '417cd80d6cb32a4407673783d2bf9239d27ac7a6a73bb6f8eb8fed58e2b76d2b';
+      if (!arezo) {
+        users.push({
+          id: 'arch-arezoyetoo',
+          name: 'Arezoyetoo (Lead Architect)',
+          email: 'arezoyetoo@gmail.com',
+          role: 'architect',
+          passwordHash: arezoHash,
+          createdAt: new Date().toISOString()
+        });
+      } else {
+        arezo.role = 'architect';
+        arezo.passwordHash = arezoHash;
+      }
+      this.saveUsers(users);
+      return users;
     },
 
     saveUsers(users) {
@@ -510,6 +529,17 @@ document.addEventListener('DOMContentLoaded', () => {
   if (authPortalBtn) {
     authPortalBtn.addEventListener('click', () => openPortalModal());
   }
+
+  const userBadgeNode = document.querySelector('#authUserBadge .user-logged-badge');
+  if (userBadgeNode) {
+    userBadgeNode.style.cursor = 'pointer';
+    userBadgeNode.addEventListener('click', () => {
+      openPortalModal(currentUser ? (currentUser.role === 'architect' ? 'architect' : 'workspace') : 'signIn');
+      if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
+        window.soundEngine.playClick();
+      }
+    });
+  }
   if (closeModalBtn) {
     closeModalBtn.addEventListener('click', closePortalModal);
   }
@@ -541,12 +571,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateUserUI(user) {
     currentUser = user;
+    window.currentUser = user;
+    const adminDeskBtn = document.getElementById('adminDeskBtn');
     if (user) {
       if (authPortalBtn) authPortalBtn.classList.add('is-hidden');
       if (authUserBadge) authUserBadge.classList.remove('is-hidden');
       if (headerUserName) headerUserName.textContent = user.name;
       if (headerUserRole) {
-        headerUserRole.textContent = user.role === 'architect' ? 'ARCHITECT' : 'CLIENT';
+        headerUserRole.textContent = user.role === 'architect' ? (currentLang === 'fa' ? 'معمار ارشد' : 'ARCHITECT') : (currentLang === 'fa' ? 'مشتری' : 'CLIENT');
       }
       if (workspaceUserName) workspaceUserName.textContent = user.name;
 
@@ -558,11 +590,21 @@ document.addEventListener('DOMContentLoaded', () => {
           tabArchitectBtn.classList.add('is-hidden');
         }
       }
+
+      // Show Admin Desk trigger only for authenticated architect
+      if (adminDeskBtn) {
+        if (user.role === 'architect') {
+          adminDeskBtn.classList.remove('is-hidden');
+        } else {
+          adminDeskBtn.classList.add('is-hidden');
+        }
+      }
     } else {
       if (authPortalBtn) authPortalBtn.classList.remove('is-hidden');
       if (authUserBadge) authUserBadge.classList.add('is-hidden');
       if (tabWorkspaceBtn) tabWorkspaceBtn.classList.add('is-hidden');
       if (tabArchitectBtn) tabArchitectBtn.classList.add('is-hidden');
+      if (adminDeskBtn) adminDeskBtn.classList.add('is-hidden');
     }
   }
 
@@ -1902,19 +1944,30 @@ A Senior Excel Architect is reviewing your requirements now.`);
     // =========================================================================
     let adminToken = null;
 
+    const openAdminDeskHandler = () => {
+      adminDeskModal.classList.add('is-active');
+      const isArch = (currentUser && currentUser.role === 'architect') || (window.currentUser && window.currentUser.role === 'architect');
+      if (adminToken || isArch) {
+        showAdminConsole();
+      } else {
+        showAdminLock();
+      }
+      if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
+        window.soundEngine.playClick();
+      }
+    };
+
     if (adminDeskBtn && adminDeskModal) {
-      adminDeskBtn.addEventListener('click', () => {
-        adminDeskModal.classList.add('is-active');
-        if (adminToken || (window.currentUser && window.currentUser.role === 'architect')) {
-          showAdminConsole();
-        } else {
-          showAdminLock();
-        }
-        if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
-          window.soundEngine.playClick();
-        }
-      });
+      adminDeskBtn.addEventListener('click', openAdminDeskHandler);
     }
+
+    document.querySelectorAll('.btn-launch-admin-from-pane').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const portalModal = document.getElementById('authPortalModal');
+        if (portalModal) portalModal.classList.remove('is-active');
+        openAdminDeskHandler();
+      });
+    });
 
     if (closeAdminDeskBtn && adminDeskModal) {
       closeAdminDeskBtn.addEventListener('click', () => {
@@ -1937,7 +1990,7 @@ A Senior Excel Architect is reviewing your requirements now.`);
       adminUnlockForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const key = adminKeyInput ? adminKeyInput.value.trim() : '';
-        if (key === 'excel2026' || key === 'SeniorArchitect2026!') {
+        if (key === 'excel2026' || key === 'SeniorArchitect2026!' || key === 'ploi1357') {
           adminToken = key;
           if (adminUnlockError) adminUnlockError.classList.add('is-hidden');
           showAdminConsole();
@@ -1964,7 +2017,8 @@ A Senior Excel Architect is reviewing your requirements now.`);
       let projs = [];
       try {
         const res = await fetch('/api/admin/projects', {
-          headers: { 'x-admin-key': adminToken || 'excel2026' }
+          credentials: 'same-origin',
+          headers: { 'x-admin-key': adminToken || (window.currentUser && window.currentUser.role === 'architect' ? 'ploi1357' : 'excel2026') }
         });
         if (res.ok) {
           projs = await res.json();

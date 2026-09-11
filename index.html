@@ -69,11 +69,6 @@
           🔊
         </button>
 
-        <!-- Admin Operations Desk Trigger -->
-        <button id="adminDeskBtn" class="btn-util-pill btn-admin-desk" title="Senior Architect & Admin Operations Desk">
-          <span>🛠️</span> <span data-i18n="navAdminDesk">Admin</span>
-        </button>
-
         <!-- Admin Telegram Contact -->
         <a href="https://t.me/Shy1ohmy" target="_blank" rel="noopener noreferrer" class="btn-util-pill btn-telegram-contact" title="Direct Telegram Support: @Shy1ohmy">
           <span>✈️</span> <span data-i18n="adminTelegramBtn">@Shy1ohmy</span>
@@ -85,11 +80,15 @@
         </button>
 
         <div id="authUserBadge" class="header-user-status is-hidden">
-          <div class="user-logged-badge">
+          <div class="user-logged-badge" title="Open Portal Workspace">
             <span class="user-badge-icon">👤</span>
             <span id="headerUserName" class="user-badge-name">Client</span>
             <span id="headerUserRole" class="user-role-tag">CLIENT</span>
           </div>
+          <!-- Admin Operations Desk (Visible ONLY when logged in as Architect) -->
+          <button id="adminDeskBtn" class="btn-util-pill btn-admin-desk is-hidden" title="Senior Architect & Admin Operations Desk">
+            <span>🛠️</span> <span data-i18n="navAdminDesk">Admin Desk</span>
+          </button>
           <button id="authSignOutBtn" class="btn-signout" title="Sign Out" data-i18n="navSignOut">Sign Out</button>
         </div>
 
@@ -1047,7 +1046,12 @@
             <div class="workspace-greeting">Senior Architect Queue</div>
             <span class="user-role-tag" data-i18n="roleArchitectBadge">SENIOR ARCHITECT</span>
           </div>
-          <span class="pill-label" style="margin: 0;">⚡ Air-Gapped Cleanroom</span>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <button type="button" class="btn-util-pill btn-admin-desk btn-launch-admin-from-pane" title="Open Operations Desk">
+              <span>🛠️</span> <span data-i18n="navAdminDesk">Admin Operations Desk</span>
+            </button>
+            <span class="pill-label" style="margin: 0;">⚡ Cleanroom</span>
+          </div>
         </div>
 
         <div class="architect-table-wrap">
