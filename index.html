@@ -57,6 +57,7 @@
         <a href="#clinic" data-i18n="clinicLabel">Formula Clinic</a>
         <a href="#calculator" data-i18n="calcLabel">Calculator</a>
         <a href="#security" data-i18n="securityLabel">Security</a>
+        <a href="#bounty-studio" class="nav-highlight" data-i18n="navBountyStudio">Custom Projects & Bids ⚡</a>
         <a href="#offerings" data-i18n="navOfferings">Client Offerings</a>
       </nav>
 
@@ -69,6 +70,11 @@
         <!-- Sound Toggle -->
         <button id="soundToggle" class="btn-sound" title="Toggle Sound">
           🔊 Sound: ON
+        </button>
+
+        <!-- Admin Operations Desk Trigger -->
+        <button id="adminDeskBtn" class="btn-admin-desk" title="Senior Architect & Admin Operations Desk">
+          <span>🛠️</span> <span data-i18n="navAdminDesk">Admin Desk</span>
         </button>
 
         <!-- Admin Telegram Contact -->
@@ -118,23 +124,87 @@
       </div>
 
       <!-- 3D Interactive Stage -->
+      <!-- 3D Interactive Stage (Authentic Microsoft Excel Experience) -->
       <div class="hero-3d-wrapper">
         
-        <!-- 3D Canvas -->
-        <div id="simple3dCanvas" class="simple-3d-canvas"></div>
+        <!-- Excel Window Desktop Shell -->
+        <div class="excel-window-shell">
+          <!-- Excel Title Bar -->
+          <div class="excel-title-bar">
+            <div class="excel-title-left">
+              <div class="excel-win-dots">
+                <span class="win-dot close"></span>
+                <span class="win-dot min"></span>
+                <span class="win-dot max"></span>
+              </div>
+              <span class="excel-app-badge">📗 Excel</span>
+              <span class="excel-file-title" data-i18n="excelFileTitle">SheetFix_Executive_Financial_Model.xlsx</span>
+              <span class="excel-autosave-badge" data-i18n="excelAutoSave">● AutoSave ON</span>
+            </div>
+            <div class="excel-view-actions">
+              <button id="viewToggle3D" class="excel-view-btn active" data-i18n="excelView3D" type="button">📐 3D View</button>
+              <button id="viewToggleFlat" class="excel-view-btn" data-i18n="excelViewFlat" type="button">📄 Flat Sheet</button>
+            </div>
+          </div>
+
+          <!-- Excel Ribbon Menu -->
+          <div class="excel-ribbon-bar">
+            <span class="ribbon-tab">File</span>
+            <span class="ribbon-tab active">Home</span>
+            <span class="ribbon-tab">Insert</span>
+            <span class="ribbon-tab">Formulas</span>
+            <span class="ribbon-tab">Data</span>
+            <span class="ribbon-tab highlight">⚡ SheetFix 24h</span>
+          </div>
+
+          <!-- Excel Formula Bar (fx) -->
+          <div class="excel-formula-bar">
+            <div class="excel-name-box" id="excelActiveCellAddr">C3</div>
+            <div class="excel-fx-icons">
+              <span class="fx-icon-cancel">✕</span>
+              <span class="fx-icon-confirm">✓</span>
+              <span class="fx-icon-fx">fx</span>
+            </div>
+            <div class="excel-formula-display" id="excelFormulaInput">=XLOOKUP(A3, Financials!A:F, 3, 0)</div>
+          </div>
+
+          <!-- The 3D Interactive WebGL Spreadsheet Canvas -->
+          <div id="simple3dCanvas" class="simple-3d-canvas"></div>
+
+          <!-- Excel Sheet Tabs & Status Bar -->
+          <div class="excel-sheet-footer">
+            <div class="excel-sheet-tabs">
+              <div class="sheet-tab active" id="excelTabActive">
+                <span>📊</span>
+                <span data-i18n="excelTab1">Q3_Executive_Model</span>
+              </div>
+              <div class="sheet-tab" id="excelTabInactive">
+                <span data-i18n="excelTab2">Raw_Ingestion</span>
+              </div>
+              <div class="sheet-tab-add">+</div>
+            </div>
+            <div class="excel-status-line">
+              <span id="excelStatusCalc" data-i18n="excelStatusCalc">● Recalculation: 0.04s</span>
+              <span class="status-sep">|</span>
+              <span id="excelStatusSum" data-i18n="excelStatusSum">Sum: $1,166,300</span>
+              <span class="status-sep">|</span>
+              <span>100% 🔍</span>
+            </div>
+          </div>
+        </div>
 
         <!-- Single Prominent 3D Toggle -->
         <div class="mode-toggle-bar">
-          <button id="modeChaosBtn" class="toggle-pill pill-chaos" data-i18n="chaosPill">
+          <button id="modeChaosBtn" class="toggle-pill pill-chaos" data-i18n="chaosPill" type="button">
             <span>💥</span> Messy & Broken (#REF!)
           </button>
-          <button id="modeCleanBtn" class="toggle-pill pill-clean active" data-i18n="cleanPill">
+          <button id="modeCleanBtn" class="toggle-pill pill-clean active" data-i18n="cleanPill" type="button">
             <span>✨</span> Clean & Organized (Fixed)
           </button>
         </div>
 
         <div class="canvas-drag-hint">
-          <span data-i18n="dragHint">👆 Click & drag with mouse to spin in 3D</span>
+          <span data-i18n="dragHint">👆 Click & drag with mouse to spin in 3D • Hover cells to inspect formulas</span>
         </div>
 
         <!-- 3D Cell Inspector HUD -->
@@ -382,6 +452,243 @@
           <button id="calcCtaBtn" class="btn-hero-primary open-modal-btn" data-plan="Calculated Architecture Scope (5 Files)" data-plan-en="Calculated Architecture Scope (5 Files)" data-plan-fa="برآورد معماری (۵ فایل)" data-i18n="calcCta">
             Commission Architecture Scope ➔
           </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <!-- =============================================================
+       Custom Excel Projects & Price Offer Studio ("Say what you want & offer a price")
+  ============================================================= -->
+  <section id="bounty-studio" class="content-section">
+    <div class="content-container">
+      <div class="section-title-wrap">
+        <span class="pill-label" data-i18n="bountyLabel">⚡ Bespoke Commission & Bidding Studio</span>
+        <h2 class="section-heading" data-i18n="bountyHeading">Say What You Want. Offer Your Price. We Build It.</h2>
+        <p class="section-subtext" data-i18n="bountySubtext">Have a custom financial model, complex macro, executive dashboard, or broken spreadsheet? Tell us your exact requirements, propose your price, and our Senior Excel Architects review, accept your offer, and engineer your file.</p>
+      </div>
+
+      <!-- Studio Grid: Left = Submission Form, Right = Price Offer Radar & 3D Synergy -->
+      <div class="bounty-grid">
+        <!-- Left: Project Requirements Form ("Say What You Want") -->
+        <div class="bounty-form-card">
+          <div class="bounty-card-header">
+            <span class="bounty-step-badge">STEP 1</span>
+            <h3 class="bounty-card-title" data-i18n="bountyFormTitle">Describe Your Excel Project</h3>
+          </div>
+
+          <form id="customProjectForm" class="bounty-form" autocomplete="on">
+            <!-- Project Title -->
+            <div class="form-group">
+              <label for="bountyTitle" data-i18n="bountyTitleLabel">Project Title / Goal</label>
+              <input type="text" id="bountyTitle" placeholder="e.g. Real Estate Multi-Family LBO & Waterfall Model" maxlength="120" required>
+            </div>
+
+            <!-- Category Selector -->
+            <div class="form-group">
+              <label data-i18n="bountyCategoryLabel">Project Discipline / Category</label>
+              <div class="category-pills-grid" id="bountyCategoryPills">
+                <button type="button" class="category-pill active" data-cat="Financial Modeling">📈 Financial Modeling</button>
+                <button type="button" class="category-pill" data-cat="VBA Automation">⚙️ VBA & Macros</button>
+                <button type="button" class="category-pill" data-cat="Interactive Dashboard">📊 Executive Dashboard</button>
+                <button type="button" class="category-pill" data-cat="Power Query ETL">🔄 Power Query & ETL</button>
+                <button type="button" class="category-pill" data-cat="Corrupt File Repair">🚑 Repair & Error Fix</button>
+                <button type="button" class="category-pill" data-cat="Custom Template">📐 Dynamic Templates</button>
+              </div>
+              <input type="hidden" id="bountyCategory" value="Financial Modeling">
+            </div>
+
+            <!-- Requirements Details ("Say What You Want") -->
+            <div class="form-group">
+              <label for="bountyDescription" data-i18n="bountyDescLabel">What Do You Want Built or Fixed? (Specifications & Formulas)</label>
+              <textarea id="bountyDescription" rows="4" placeholder="Detail your required sheets, input formats, key calculations (XLOOKUP, LAMBDA, IRR, etc.), and desired output visuals..." required></textarea>
+              <div class="form-hint" data-i18n="bountyDescHint">Tip: The clearer your specifications, the faster an architect accepts your offer.</div>
+            </div>
+
+            <!-- Turnaround Urgency -->
+            <div class="form-group">
+              <label data-i18n="bountyUrgencyLabel">Turnaround Urgency</label>
+              <div class="urgency-selector-grid" id="bountyUrgencyGroup">
+                <label class="urgency-option">
+                  <input type="radio" name="bountyUrgency" value="24" checked>
+                  <div class="urgency-card">
+                    <span class="urgency-icon">⚡</span>
+                    <strong>24 Hours</strong>
+                    <span>Emergency Sprint</span>
+                  </div>
+                </label>
+                <label class="urgency-option">
+                  <input type="radio" name="bountyUrgency" value="48">
+                  <div class="urgency-card">
+                    <span class="urgency-icon">⏱️</span>
+                    <strong>48 Hours</strong>
+                    <span>Standard Build</span>
+                  </div>
+                </label>
+                <label class="urgency-option">
+                  <input type="radio" name="bountyUrgency" value="120">
+                  <div class="urgency-card">
+                    <span class="urgency-icon">📅</span>
+                    <strong>5 Days</strong>
+                    <span>Comprehensive System</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Client Contact -->
+            <div class="form-row-2col">
+              <div class="form-group">
+                <label for="bountyClientName" data-i18n="bountyNameLabel">Your Name / Organization</label>
+                <input type="text" id="bountyClientName" placeholder="e.g. Sarah Jenkins" required>
+              </div>
+              <div class="form-group">
+                <label for="bountyClientEmail" data-i18n="bountyEmailLabel">Work Email (Confidential)</label>
+                <input type="email" id="bountyClientEmail" placeholder="sarah@meridian.com" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="bountyTelegram" data-i18n="bountyTelegramLabel">Telegram Handle (Optional - For Instant Updates)</label>
+              <input type="text" id="bountyTelegram" placeholder="@username">
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-submit-wrap">
+              <button type="submit" id="bountySubmitBtn" class="btn-hero-primary btn-full-width">
+                <span data-i18n="bountySubmitBtn">Submit Project & Offer Price ➔</span>
+              </button>
+              <div class="bounty-nda-note" data-i18n="bountyNdaNote">🔒 Protected by Mutual NDA • No payment charged until an architect accepts your offer.</div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Right: Interactive Price Offer Builder ("Offer a Price") & Valuation Radar -->
+        <div class="bounty-offer-card">
+          <div class="bounty-card-header">
+            <span class="bounty-step-badge">STEP 2</span>
+            <h3 class="bounty-card-title" data-i18n="bountyOfferTitle">Offer Your Price</h3>
+          </div>
+
+          <div class="price-offer-display-wrap">
+            <span class="price-currency-sign">$</span>
+            <input type="number" id="bountyPriceInput" class="price-big-input tabular" min="25" max="10000" step="25" value="650">
+            <span class="price-currency-suffix">USD</span>
+          </div>
+
+          <!-- Interactive Range Slider -->
+          <div class="price-slider-wrap">
+            <input type="range" id="bountyPriceSlider" min="50" max="3000" step="25" value="650" class="godly-slider">
+            <div class="slider-ticks">
+              <span>$50</span>
+              <span>$500</span>
+              <span>$1,000</span>
+              <span>$2,000</span>
+              <span>$3,000+</span>
+            </div>
+          </div>
+
+          <!-- Quick Preset Pills -->
+          <div class="preset-price-pills">
+            <button type="button" class="btn-preset-price" data-amount="150">$150 (Formula Triage)</button>
+            <button type="button" class="btn-preset-price active" data-amount="650">$650 (Standard Project)</button>
+            <button type="button" class="btn-preset-price" data-amount="1200">$1,200 (Advanced Model)</button>
+            <button type="button" class="btn-preset-price" data-amount="2500">$2,500+ (Enterprise Architecture)</button>
+          </div>
+
+          <!-- Live Market Competitiveness Radar -->
+          <div class="offer-radar-card">
+            <div class="radar-header">
+              <span class="radar-indicator-dot" id="radarDot"></span>
+              <strong id="radarTierTitle" data-i18n="radarTierTitle">Market Competitive Offer</strong>
+            </div>
+            <p id="radarTierDesc" class="radar-desc" data-i18n="radarTierDesc">Senior Excel Architects typically review and accept competitive bids within 2 to 4 hours.</p>
+            <div class="radar-stats-grid">
+              <div class="radar-stat-item">
+                <span class="radar-stat-lbl" data-i18n="radarSpeedLabel">Pickup Speed</span>
+                <strong id="radarSpeedVal" class="radar-stat-val text-emerald">⚡ High Priority</strong>
+              </div>
+              <div class="radar-stat-item">
+                <span class="radar-stat-lbl" data-i18n="radarArchitectLabel">Architect Tier</span>
+                <strong id="radarArchitectVal" class="radar-stat-val">Senior Financial Modeler</strong>
+              </div>
+              <div class="radar-stat-item">
+                <span class="radar-stat-lbl" data-i18n="radarWarrantyLabel">Refactoring Guarantee</span>
+                <strong class="radar-stat-val">100% Error-Free or $0</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3D Scene Interactive Link -->
+          <div class="scene-link-callout">
+            <span class="callout-icon">🌐</span>
+            <div class="callout-text">
+              <strong>Interactive 3D Preview Linked:</strong>
+              <span>Adjusting your offered price dynamically extrudes the 3D spreadsheet KPI pillars in the hero viewport!</span>
+            </div>
+          </div>
+
+          <!-- Direct Telegram Channel Link -->
+          <a href="https://t.me/Shy1ohmy" target="_blank" rel="noopener noreferrer" class="bounty-admin-fastlink">
+            <span>✈️ Have a custom scope question? Chat directly with Admin @Shy1ohmy</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Live Community Projects & Bounties Board -->
+      <div id="bounty-board" class="bounty-board-wrap">
+        <div class="board-header">
+          <div>
+            <div class="board-badge">LIVE ARCHITECT WORKFLOW</div>
+            <h3 class="board-title" data-i18n="boardTitle">Active Project Requests & Bids Queue</h3>
+            <p class="board-sub" data-i18n="boardSub">Real-time public feed of client spreadsheet challenges and architect execution statuses.</p>
+          </div>
+
+          <!-- Filter Tabs -->
+          <div class="board-filter-tabs">
+            <button type="button" class="board-tab active" data-filter="all">All Bids (<span id="countAll">0</span>)</button>
+            <button type="button" class="board-tab" data-filter="Pending Review">Pending (<span id="countPending">0</span>)</button>
+            <button type="button" class="board-tab" data-filter="In Progress">Building (<span id="countBuilding">0</span>)</button>
+            <button type="button" class="board-tab" data-filter="Delivered">Delivered (<span id="countDelivered">0</span>)</button>
+          </div>
+        </div>
+
+        <!-- Quick Track Search Bar -->
+        <div class="track-project-bar">
+          <input type="text" id="trackInput" placeholder="Enter Project ID (e.g. EXCEL-8421) or your work email to track live status..." autocomplete="off">
+          <button type="button" id="btnTrackProject" class="btn-track-action">Track Status ➔</button>
+        </div>
+
+        <!-- Track Result Drawer (Initially Hidden) -->
+        <div id="trackResultDrawer" class="track-result-card is-hidden">
+          <div class="track-card-head">
+            <div class="track-id-badge" id="trackResultId">EXCEL-0000</div>
+            <button type="button" id="closeTrackBtn" class="track-close-x">✕</button>
+          </div>
+          <h4 id="trackResultTitle" class="track-title">Project Title</h4>
+          <div class="track-meta-row">
+            <span>Category: <strong id="trackResultCat">--</strong></span>
+            <span>Offered Price: <strong id="trackResultPrice" class="text-emerald">$0</strong></span>
+            <span>Status: <span id="trackResultStatusPill" class="status-pill">--</span></span>
+          </div>
+          <!-- Progress Stepper -->
+          <div class="track-stepper">
+            <div class="step-point" id="stepPoint1"><span class="step-num">1</span> Submitted</div>
+            <div class="step-line" id="stepLine1"></div>
+            <div class="step-point" id="stepPoint2"><span class="step-num">2</span> Reviewed</div>
+            <div class="step-line" id="stepLine2"></div>
+            <div class="step-point" id="stepPoint3"><span class="step-num">3</span> In Progress</div>
+            <div class="step-line" id="stepLine3"></div>
+            <div class="step-point" id="stepPoint4"><span class="step-num">4</span> Delivered</div>
+          </div>
+          <div id="trackResultNotes" class="track-admin-note"></div>
+          <div id="trackResultDownload" class="track-delivery-box is-hidden"></div>
+        </div>
+
+        <!-- Project Cards Grid -->
+        <div id="bountyCardsGrid" class="bounty-cards-grid">
+          <!-- Dynamically populated by app.js -->
         </div>
       </div>
     </div>
@@ -788,5 +1095,83 @@
   <script src="js/three_scene.js"></script>
   <script src="js/translations.js"></script>
   <script src="js/app.js"></script>
+
+  <!-- =============================================================
+       Admin Operations Desk & Architect Control Portal
+  ============================================================= -->
+  <div id="adminDeskModal" class="simple-modal-backdrop">
+    <div class="simple-modal-card admin-card-expand">
+      <button id="closeAdminDeskBtn" class="modal-x-btn" title="Close (Esc)">✕</button>
+
+      <div class="modal-head">
+        <div class="admin-head-badge">🛠️ AIR-GAPPED ARCHITECT CLEANROOM</div>
+        <h3 class="modal-title" data-i18n="adminDeskTitle">Senior Excel Architect Operations Desk</h3>
+        <p class="modal-sub" data-i18n="adminDeskSub">Review client project offers, accept or counter bids, claim spreadsheets, and deliver completed files.</p>
+      </div>
+
+      <!-- Password Lock Screen if not authenticated -->
+      <div id="adminLockScreen" class="admin-auth-lock">
+        <div class="lock-icon-wrap">🔒</div>
+        <h4 style="color: #FFFFFF; margin-bottom: 8px;">Architect Credential Verification</h4>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; max-width: 480px; margin: 0 auto 16px auto;">Enter Senior Architect passcode or click Demo Unlock to manage incoming client spreadsheet offers and projects:</p>
+        <form id="adminUnlockForm" class="admin-unlock-form">
+          <input type="password" id="adminKeyInput" placeholder="Enter passkey (e.g. excel2026)" value="excel2026" required>
+          <button type="submit" class="btn-hero-primary">Unlock Operations Console ➔</button>
+        </form>
+        <div id="adminUnlockError" class="field-error is-hidden" style="color: #EF4444; margin-top: 8px;"></div>
+      </div>
+
+      <!-- Unlocked Operations Console -->
+      <div id="adminConsoleArea" class="admin-console-area is-hidden">
+        <!-- Admin Stats Ribbon -->
+        <div class="admin-metrics-ribbon">
+          <div class="admin-metric-card">
+            <span class="admin-metric-lbl">Total Pipeline Value</span>
+            <strong id="adminMetricPipeline" class="admin-metric-val text-emerald tabular">$0</strong>
+          </div>
+          <div class="admin-metric-card">
+            <span class="admin-metric-lbl">Pending Review</span>
+            <strong id="adminMetricPending" class="admin-metric-val text-amber tabular">0</strong>
+          </div>
+          <div class="admin-metric-card">
+            <span class="admin-metric-lbl">In-Flight Building</span>
+            <strong id="adminMetricBuilding" class="admin-metric-val text-cyan tabular">0</strong>
+          </div>
+          <div class="admin-metric-card">
+            <span class="admin-metric-lbl">Delivered Models</span>
+            <strong id="adminMetricDelivered" class="admin-metric-val tabular">0</strong>
+          </div>
+        </div>
+
+        <div class="admin-actions-bar">
+          <button type="button" id="btnExportProjectsJson" class="btn-admin-tool">📥 Export Projects (JSON)</button>
+          <button type="button" id="btnExportProjectsCsv" class="btn-admin-tool">📊 Export Projects (CSV)</button>
+          <a href="https://t.me/Shy1ohmy" target="_blank" rel="noopener noreferrer" class="btn-admin-tool btn-tool-telegram">✈️ Telegram Admin: @Shy1ohmy</a>
+          <button type="button" id="btnAdminLockConsole" class="btn-admin-tool btn-tool-danger">🔒 Lock Console</button>
+        </div>
+
+        <!-- Project Offers Table -->
+        <div class="admin-table-container">
+          <table class="admin-projects-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Client & Contact</th>
+                <th>Project Title & Requirements</th>
+                <th>Offered Price</th>
+                <th>Urgency</th>
+                <th>Status</th>
+                <th>Architect Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminProjectsTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

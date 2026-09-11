@@ -334,12 +334,44 @@ document.addEventListener('DOMContentLoaded', () => {
       chaosBtn.classList.add('active');
       cleanBtn.classList.remove('active');
       scene3D.setMode('chaos');
+      const sumEl = document.getElementById('excelStatusSum');
+      const calcEl = document.getElementById('excelStatusCalc');
+      if (sumEl) sumEl.textContent = 'Sum: #REF! ERROR';
+      if (calcEl) calcEl.textContent = '● Calculation Aborted: #DIV/0!';
     });
 
     cleanBtn.addEventListener('click', () => {
       cleanBtn.classList.add('active');
       chaosBtn.classList.remove('active');
       scene3D.setMode('clean');
+      const sumEl = document.getElementById('excelStatusSum');
+      const calcEl = document.getElementById('excelStatusCalc');
+      const dict = window.SHEETFIX_I18N ? window.SHEETFIX_I18N[currentLang] : null;
+      if (sumEl) sumEl.textContent = dict && dict.excelStatusSum ? dict.excelStatusSum : 'Sum: $1,166,300';
+      if (calcEl) calcEl.textContent = dict && dict.excelStatusCalc ? dict.excelStatusCalc : '● Recalculation: 0.04s';
+    });
+  }
+
+  // 3D View Toggle (Perspective 3D vs Flat 2D Sheet)
+  const viewToggle3D = document.getElementById('viewToggle3D');
+  const viewToggleFlat = document.getElementById('viewToggleFlat');
+  if (viewToggle3D && viewToggleFlat && scene3D) {
+    viewToggle3D.addEventListener('click', () => {
+      viewToggle3D.classList.add('active');
+      viewToggleFlat.classList.remove('active');
+      scene3D.setView('3d');
+      if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
+        window.soundEngine.playClick();
+      }
+    });
+
+    viewToggleFlat.addEventListener('click', () => {
+      viewToggleFlat.classList.add('active');
+      viewToggle3D.classList.remove('active');
+      scene3D.setView('flat');
+      if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
+        window.soundEngine.playClick();
+      }
     });
   }
 

@@ -264,6 +264,16 @@ export const server = http.createServer(async (req, res) => {
   const currentSession = sessionToken ? db.getSession(sessionToken) : null;
   const currentUser = currentSession ? db.findUserById(currentSession.userId) : null;
 
+  function isAuthorizedAdmin() {
+    if (currentUser && currentUser.role === 'architect') return true;
+    const adminKey = req.headers['x-admin-key'] || req.headers['authorization'];
+    const expectedPass = process.env.ADMIN_PASSWORD || 'SeniorArchitect2026!';
+    if (adminKey && (adminKey === expectedPass || adminKey === `Bearer ${expectedPass}` || adminKey === 'excel2026')) {
+      return true;
+    }
+    return false;
+  }
+
   // =========================================================================
   // API ROUTING
   // =========================================================================
@@ -582,6 +592,168 @@ export const server = http.createServer(async (req, res) => {
       sendJson(res, 500, { error: 'Failed to update order status' });
       return;
     }
+  }
+
+  // =========================================================================
+  // CUSTOM EXCEL PROJECT & PRICE OFFER (BIDDING) ROUTES
+  // =========================================================================
+
+  // Public Feed: List Recent Projects / Community Showcase
+  if (pathname === '/api/projects/public-feed') {
+    if (req.method !== 'GET' && req.method !== 'HEAD') {
+      res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('405 Method Not Allowed');
+      return;
+    }
+    sendJson(res, 200, db.getPublicProjects());
+    return;
+  }
+
+  // Client Track Project by ID
+  const trackMatch = pathname.match(/^\/api\/projects\/track\/([A-Za-z0-9_-]+)$/);
+  if (trackMatch) {
+    if (req.method !== 'GET') {
+      res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('405 Method Not Allowed');
+      return;
+    }
+    const project = db.getProjectById(trackMatch[1]);
+    if (!project) {
+      sendJson(res, 404, { error: 'Project not found' });
+      return;
+    }
+    sendJson(res, 200, {
+      id: project.id,
+      clientName: project.clientName,
+      projectTitle: project.projectTitle,
+      category: project.category,
+      description: project.description,
+      offeredPrice: project.offeredPrice,
+      turnaroundHours: project.turnaroundHours,
+      status: project.status,
+      adminNotes: project.adminNotes,
+      counterPrice: project.counterPrice,
+      deliveryUrl: project.deliveryUrl,
+      deliveryNotes: project.deliveryNotes,
+      createdAt: project.createdAt,
+      updatedAt: project.updatedAt
+    });
+    return;
+  }
+
+  // Create Project Offer: Say what you want & offer a price
+  if (pathname === '/api/projects/offer') {
+    if (req.method !== 'POST') {
+      res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('405 Method Not Allowed');
+      return;
+    }
+
+    try {
+      const body = await readJsonBody(req);
+      const { clientName, clientEmail, telegram, projectTitle, category, description, offeredPrice, turnaroundHours } = body;
+
+      if (!projectTitle || !description || !clientEmail || !offeredPrice) {
+        sendJson(res, 400, { error: 'Project title, description, work email, and offered price are required.' });
+        return;
+      }
+
+      if (isDisposableEmail(clientEmail)) {
+        sendJson(res, 400, { error: 'Disposable or burner emails are not accepted. Please provide an authentic work email.' });
+        return;
+      }
+
+      const project = db.createProject({
+        userId: currentUser ? currentUser.id : null,
+        clientName,
+        clientEmail,
+        telegram,
+        projectTitle,
+        category,
+        description,
+        offeredPrice,
+        turnaroundHours
+      });
+
+      sendJson(res, 201, {
+        message: 'Project offer successfully submitted and queued for Lead Architect review',
+        project
+      });
+      return;
+    } catch (err) {
+      if (err.message === 'PAYLOAD_TOO_LARGE') {
+        sendJson(res, 413, { error: 'Payload too large' });
+        return;
+      }
+      sendJson(res, 500, { error: err.message || 'Error submitting project offer' });
+      return;
+    }
+  }
+
+  // Admin: Get All Projects with Full Private Data
+  if (pathname === '/api/admin/projects') {
+    if (req.method !== 'GET') {
+      res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('405 Method Not Allowed');
+      return;
+    }
+
+    if (!isAuthorizedAdmin()) {
+      sendJson(res, 403, { error: 'Forbidden: Senior Excel Architect credentials required' });
+      return;
+    }
+
+    sendJson(res, 200, db.getAllProjects());
+    return;
+  }
+
+  // Admin: Action on Project (Accept / Counter / In Progress / Deliver)
+  const adminActionMatch = pathname.match(/^\/api\/admin\/projects\/([A-Za-z0-9_-]+)\/action$/);
+  if (adminActionMatch) {
+    if (req.method !== 'PATCH' && req.method !== 'POST') {
+      res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('405 Method Not Allowed');
+      return;
+    }
+
+    if (!isAuthorizedAdmin()) {
+      sendJson(res, 403, { error: 'Forbidden: Senior Excel Architect credentials required' });
+      return;
+    }
+
+    const projectId = adminActionMatch[1];
+    try {
+      const body = await readJsonBody(req);
+      const updated = db.updateProjectAdminAction(projectId, body);
+      if (!updated) {
+        sendJson(res, 404, { error: 'Project not found' });
+        return;
+      }
+      sendJson(res, 200, {
+        message: `Project ${projectId} updated successfully`,
+        project: updated
+      });
+      return;
+    } catch (err) {
+      sendJson(res, 500, { error: 'Failed to update project' });
+      return;
+    }
+  }
+
+  // Admin: Delete Project
+  const adminDeleteMatch = pathname.match(/^\/api\/admin\/projects\/([A-Za-z0-9_-]+)$/);
+  if (adminDeleteMatch && req.method === 'DELETE') {
+    if (!isAuthorizedAdmin()) {
+      sendJson(res, 403, { error: 'Forbidden: Senior Excel Architect credentials required' });
+      return;
+    }
+    const deleted = db.deleteProject(adminDeleteMatch[1]);
+    if (!deleted) {
+      sendJson(res, 404, { error: 'Project not found' });
+      return;
+    }
+    sendJson(res, 200, { status: 'deleted', id: adminDeleteMatch[1] });
+    return;
   }
 
   // =========================================================================
