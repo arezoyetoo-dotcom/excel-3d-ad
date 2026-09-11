@@ -206,7 +206,19 @@ window.SHEETFIX_I18N = {
     statusQA: "Security QA",
     statusDelivered: "Delivered",
     advanceStatusBtn: "Advance Status ➔",
-    ndaBadge: "🔒 Mutual NDA Active"
+    ndaBadge: "🔒 Mutual NDA Active",
+    tabVerifyOtp: "Verify Email",
+    otpHeading: "Verify Your Work Email",
+    otpSubtext: "We sent a 6-digit cryptographic verification code to",
+    otpEnterCode: "Enter the 6-digit code below to authenticate your account and unlock your workspace.",
+    btnVerifyOtp: "Verify & Unlock Workspace ➔",
+    resendOtp: "Resend Code",
+    resendWait: "Resend in",
+    backToRegister: "← Change Email",
+    errDisposableEmail: "Disposable and burner emails are blocked. Please use an authentic work email.",
+    errInvalidOtp: "Invalid or expired verification code. Please check and retry.",
+    toastOtpSent: "Verification code dispatched to your email.",
+    toastOrderForwarded: "Intake order securely dispatched to Senior Architect inbox."
   },
 
   fa: {
@@ -411,6 +423,18 @@ window.SHEETFIX_I18N = {
     statusQA: "تایید امنیتی",
     statusDelivered: "تحویل‌شده",
     advanceStatusBtn: "ارتقای مرحله ➔",
-    ndaBadge: "🔒 قرارداد محرمانگی فعال"
+    ndaBadge: "🔒 قرارداد محرمانگی فعال",
+    tabVerifyOtp: "تایید ایمیل",
+    otpHeading: "احراز هویت ایمیل کاری",
+    otpSubtext: "کد ۶ رقمی رمزنگاری‌شده احراز هویت به این نشانی ارسال شد:",
+    otpEnterCode: "برای فعال‌سازی حساب و دسترسی به میز کار، کد ۶ رقمی را در کادر زیر وارد کنید.",
+    btnVerifyOtp: "تایید هویت و ورود به میز کار ➔",
+    resendOtp: "ارسال مجدد کد",
+    resendWait: "ارسال مجدد تا",
+    backToRegister: "← ویرایش ایمیل",
+    errDisposableEmail: "استفاده از ایمیل‌های موقت و یکبارمصرف مجاز نیست. لطفاً از ایمیل معتبر شرکتی یا شخصی استفاده کنید.",
+    errInvalidOtp: "کد احراز هویت نامعتبر یا منقضی شده است. لطفاً مجدداً بررسی کنید.",
+    toastOtpSent: "کد تایید امنیتی به نشانی ایمیل شما ارسال گردید.",
+    toastOrderForwarded: "مشخصات سفارش با موفقیت به کارتابل ایمیل معمار ارشد ارسال شد."
   }
 };

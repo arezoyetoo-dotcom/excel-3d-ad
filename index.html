@@ -567,6 +567,7 @@
       <div class="portal-nav-tabs">
         <button type="button" id="tabSignInBtn" class="portal-tab-btn active" data-tab="signIn" data-i18n="tabSignIn">Sign In</button>
         <button type="button" id="tabRegisterBtn" class="portal-tab-btn" data-tab="register" data-i18n="tabRegister">Create Account</button>
+        <button type="button" id="tabVerifyBtn" class="portal-tab-btn is-hidden" data-tab="verifyOtp" data-i18n="tabVerifyOtp">Verify Email</button>
         <button type="button" id="tabWorkspaceBtn" class="portal-tab-btn is-hidden" data-tab="workspace" data-i18n="tabWorkspace">Client Workspace</button>
         <button type="button" id="tabArchitectBtn" class="portal-tab-btn is-hidden" data-tab="architect" data-i18n="tabArchitect">Architect Console</button>
       </div>
@@ -605,6 +606,55 @@
           <div id="registerError" class="field-error is-hidden" style="color: #EF4444; font-size: 0.82rem; margin-bottom: 12px; font-weight: 600;"></div>
           <button type="submit" class="btn-hero-primary btn-full-width" data-i18n="btnRegister">Create Secure Account ➔</button>
         </form>
+      </div>
+
+      <!-- Pane 2b: Email OTP Verification -->
+      <div id="paneVerifyOtp" class="portal-pane">
+        <div class="otp-verification-card">
+          <div class="otp-shield-header">
+            <span class="otp-shield-icon">🔐</span>
+            <div>
+              <h4 class="otp-heading" data-i18n="otpHeading">Verify Your Work Email</h4>
+              <p class="otp-subtext">
+                <span data-i18n="otpSubtext">We sent a 6-digit cryptographic verification code to</span><br>
+                <strong id="otpTargetEmail" class="otp-highlight-email">client@company.com</strong>
+              </p>
+            </div>
+          </div>
+
+          <!-- Simulation / Dispatch Banner -->
+          <div id="otpSimulationBanner" class="otp-sim-banner is-hidden">
+            <div class="otp-sim-badge">📩 SECURITY DISPATCH</div>
+            <div class="otp-sim-content">
+              <span>Code: <strong id="otpSimCodeDisplay">------</strong></span>
+              <button type="button" id="btnAutoFillOtp" class="btn-autofill-otp">Auto-Fill ➔</button>
+            </div>
+          </div>
+
+          <p class="otp-instruction-text" data-i18n="otpEnterCode">Enter the 6-digit code below to authenticate your account and unlock your workspace.</p>
+
+          <form id="otpForm" autocomplete="off">
+            <div class="otp-digit-group" id="otpDigitGroup">
+              <input type="text" class="otp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" required autocomplete="one-time-code">
+              <input type="text" class="otp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" required>
+              <input type="text" class="otp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" required>
+              <input type="text" class="otp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" required>
+              <input type="text" class="otp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" required>
+              <input type="text" class="otp-digit-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" required>
+            </div>
+
+            <div id="otpError" class="field-error is-hidden" style="color: #EF4444; font-size: 0.82rem; margin: 10px 0; font-weight: 600; text-align: center;"></div>
+
+            <button type="submit" id="btnVerifyOtp" class="btn-hero-primary btn-full-width" data-i18n="btnVerifyOtp">Verify & Unlock Workspace ➔</button>
+          </form>
+
+          <div class="otp-footer-meta">
+            <button type="button" id="btnResendOtp" class="btn-link-action" data-i18n="resendOtp">Resend Code</button>
+            <span id="otpCooldownText" class="otp-cooldown-timer is-hidden">(60s)</span>
+            <span class="otp-divider">•</span>
+            <button type="button" id="btnBackToRegister" class="btn-link-action" data-i18n="backToRegister">← Change Email</button>
+          </div>
+        </div>
       </div>
 
       <!-- Pane 3: Client Workspace -->

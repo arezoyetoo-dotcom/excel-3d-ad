@@ -209,3 +209,53 @@ test('Security: /data/db.json and database directory are blocked with 403', asyn
   const res = await request('/data/db.json');
   assert.strictEqual(res.statusCode, 403);
 });
+
+test('Auth Security: Disposable and burner email addresses are rejected with 400', async () => {
+  const disposableRes = await request('/api/auth/register', { method: 'POST' }, {
+    name: 'Spam Bot',
+    email: 'spammer@mailinator.com',
+    password: 'StrongPassword123!'
+  });
+  assert.strictEqual(disposableRes.statusCode, 400);
+  const data = disposableRes.json();
+  assert.ok(data.error.includes('Disposable and burner emails are rejected'));
+
+  const tempRes = await request('/api/auth/register', { method: 'POST' }, {
+    name: 'Spam Bot 2',
+    email: 'throwaway@tempmail.com',
+    password: 'StrongPassword123!'
+  });
+  assert.strictEqual(tempRes.statusCode, 400);
+});
+
+test('Auth API: 6-digit OTP code dispatch and verification workflow', async () => {
+  const targetEmail = `verified_user_${Date.now()}@corporate-hq.com`;
+
+  // 1. Send OTP
+  const sendRes = await request('/api/auth/send-otp', { method: 'POST' }, {
+    email: targetEmail
+  });
+  assert.strictEqual(sendRes.statusCode, 200);
+  const sendData = sendRes.json();
+  assert.strictEqual(sendData.status, 'dispatched');
+  assert.ok(sendData.simulatedCode);
+  assert.strictEqual(sendData.simulatedCode.length, 6);
+
+  // 2. Reject incorrect OTP
+  const badVerifyRes = await request('/api/auth/verify-otp', { method: 'POST' }, {
+    email: targetEmail,
+    code: '000000'
+  });
+  assert.strictEqual(badVerifyRes.statusCode, 400);
+
+  // 3. Accept valid OTP
+  const goodVerifyRes = await request('/api/auth/verify-otp', { method: 'POST' }, {
+    email: targetEmail,
+    code: sendData.simulatedCode
+  });
+  assert.strictEqual(goodVerifyRes.statusCode, 200);
+  const goodData = goodVerifyRes.json();
+  assert.strictEqual(goodData.status, 'verified');
+  assert.strictEqual(goodData.email, targetEmail);
+});
+

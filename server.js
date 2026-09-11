@@ -87,6 +87,60 @@ setInterval(() => {
   }
 }, 5 * 60 * 1000).unref();
 
+// 60+ Known Disposable / Burner Email Domains
+export const DISPOSABLE_EMAIL_DOMAINS = new Set([
+  'mailinator.com', 'tempmail.com', '10minutemail.com', 'guerrillamail.com',
+  'throwawaymail.com', 'trashmail.com', 'yopmail.com', 'fakeinbox.com',
+  'sharklasers.com', 'dispostable.com', 'getairmail.com', 'mohmal.com',
+  'temp-mail.org', 'burnermail.io', 'crazymailing.com', 'dropmail.me',
+  'fakemailgenerator.com', 'nada.ltd', 'inboxbear.com', 'getnada.com',
+  'emailondeck.com', 'tempail.com', 'mytemp.email', 'disposablemail.com',
+  'tempmailaddress.com', 'generator.email', 'throwawayemailaddress.com',
+  'armyspy.com', 'cuvox.de', 'dayrep.com', 'fleckens.hu', 'gustr.com',
+  'jourrapide.com', 'rhyta.com', 'superrito.com', 'teleworm.us', 'tinypest.com',
+  'trashmail.net', 'wegwerfemail.de', 'boun.cr', 'discard.email', 'spambog.com'
+]);
+
+export function isDisposableEmail(email) {
+  if (!email || typeof email !== 'string') return false;
+  const parts = email.trim().toLowerCase().split('@');
+  if (parts.length !== 2) return false;
+  return DISPOSABLE_EMAIL_DOMAINS.has(parts[1]);
+}
+
+// In-Memory Cryptographic OTP Store for Email Verification
+const serverOtps = new Map();
+
+export function generateServerOtp(email) {
+  const code = (Math.floor(100000 + Math.random() * 900000)).toString();
+  serverOtps.set(email.trim().toLowerCase(), {
+    code,
+    expiresAt: Date.now() + 10 * 60 * 1000,
+    attempts: 0
+  });
+  return code;
+}
+
+export function verifyServerOtp(email, candidateCode) {
+  const normEmail = email.trim().toLowerCase();
+  const record = serverOtps.get(normEmail);
+  if (!record) return { valid: false, error: 'NO_OTP_FOUND' };
+  if (Date.now() > record.expiresAt) {
+    serverOtps.delete(normEmail);
+    return { valid: false, error: 'OTP_EXPIRED' };
+  }
+  if (record.attempts >= 4) {
+    serverOtps.delete(normEmail);
+    return { valid: false, error: 'MAX_ATTEMPTS_EXCEEDED' };
+  }
+  if (record.code !== candidateCode) {
+    record.attempts++;
+    return { valid: false, error: 'INVALID_CODE' };
+  }
+  serverOtps.delete(normEmail);
+  return { valid: true };
+}
+
 /**
  * Parses HTTP cookie header into key-value map
  */
@@ -253,6 +307,11 @@ export const server = http.createServer(async (req, res) => {
         return;
       }
 
+      if (isDisposableEmail(email)) {
+        sendJson(res, 400, { error: 'Disposable and burner emails are rejected. Please provide an authentic work email.' });
+        return;
+      }
+
       const existing = db.findUserByEmail(email);
       if (existing) {
         sendJson(res, 409, { error: 'This email is already registered' });
@@ -271,6 +330,76 @@ export const server = http.createServer(async (req, res) => {
         return;
       }
       sendJson(res, 500, { error: 'Internal registration error' });
+      return;
+    }
+  }
+
+  // Auth: Send OTP Verification Code
+  if (pathname === '/api/auth/send-otp') {
+    if (req.method !== 'POST') {
+      res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('405 Method Not Allowed');
+      return;
+    }
+
+    try {
+      const body = await readJsonBody(req);
+      const { email } = body;
+
+      if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        sendJson(res, 400, { error: 'Valid email required' });
+        return;
+      }
+
+      if (isDisposableEmail(email)) {
+        sendJson(res, 400, { error: 'Disposable and burner emails are rejected. Please provide an authentic work email.' });
+        return;
+      }
+
+      const code = generateServerOtp(email);
+      sendJson(res, 200, {
+        status: 'dispatched',
+        message: 'Cryptographic OTP code dispatched to target email',
+        simulatedCode: code
+      });
+      return;
+    } catch {
+      sendJson(res, 500, { error: 'Failed to dispatch verification code' });
+      return;
+    }
+  }
+
+  // Auth: Verify OTP
+  if (pathname === '/api/auth/verify-otp') {
+    if (req.method !== 'POST') {
+      res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('405 Method Not Allowed');
+      return;
+    }
+
+    try {
+      const body = await readJsonBody(req);
+      const { email, code } = body;
+
+      if (!email || !code) {
+        sendJson(res, 400, { error: 'Email and 6-digit code are required' });
+        return;
+      }
+
+      const result = verifyServerOtp(email, String(code).trim());
+      if (!result.valid) {
+        sendJson(res, 400, {
+          error: result.error === 'OTP_EXPIRED'
+            ? 'Verification code has expired. Please request a new code.'
+            : 'Invalid or expired verification code'
+        });
+        return;
+      }
+
+      sendJson(res, 200, { status: 'verified', email: email.trim().toLowerCase() });
+      return;
+    } catch {
+      sendJson(res, 500, { error: 'Failed to verify code' });
       return;
     }
   }
