@@ -191,7 +191,7 @@ window.SHEETFIX_I18N = {
     guaranteeBtn: "Commission Risk-Free Architecture ➔",
     
     footerLogo: "📊 SheetFix 3D",
-    footerCopy: "© 2026 SheetFix. The bespoke Excel organizing agency. Running on Port 5426.",
+    footerCopy: "© 2026 SheetFix. Custom Excel Engineering on Demand. Running on Port 5426.",
     
     modalTitle: "Get Your Sheet Fixed",
     modalSub: "Tell us about your sheet and we'll reply within 2 hours with an upfront NDA and intake link.",
@@ -446,7 +446,7 @@ window.SHEETFIX_I18N = {
     guaranteeBtn: "سفارش معماری و اصلاح فایل بدون ریسک ➔",
     
     footerLogo: "📊 شیت‌فیکس سه‌بعدی",
-    footerCopy: "© ۲۰۲۶ شیت‌فیکس. سامانه تخصصی معماری و ساماندهی اکسل. فعال روی پورت ۵۴۲۶.",
+    footerCopy: "© ۲۰۲۶ شیت‌فیکس. خدمات تخصصی و مهندسی سفارشی اکسل بر اساس تقاضا. فعال روی پورت ۵۴۲۶.",
     
     modalTitle: "ثبت درخواست بررسی اکسل",
     modalSub: "مشکلات فایل اکسل خود را مطرح کنید؛ معماران ارشد ما ظرف ۲ ساعت کاری جهت بررسی تخصصی و ارسال پروپوزال با شما تماس خواهند گرفت.",
