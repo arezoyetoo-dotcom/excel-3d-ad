@@ -9,10 +9,10 @@ window.SHEETFIX_I18N = {
     logoText: "SheetFix",
     navHow: "How It Works",
     navFix: "What We Build",
-    navOfferings: "Custom Solutions",
+    navOfferings: "Solutions",
     navGuarantee: "Guarantee",
-    soundOn: "🔊 Sound: ON",
-    soundOff: "🔇 Sound: OFF",
+    soundOn: "🔊",
+    soundOff: "🔇",
     navCta: "Request Proposal ➔",
     
     heroBadge: "⚡ Custom Excel Engineering on Demand • Whatever You Ask For • 24-Hour Turnaround",
@@ -116,8 +116,8 @@ window.SHEETFIX_I18N = {
     sec4Desc: "Every delivered workbook carries cryptographic hash verification ensuring zero tampering.",
     
     // Client Offerings Suite
-        navBountyStudio: "Custom Projects & Bids ⚡",
-    navAdminDesk: "Admin Desk",
+    navBountyStudio: "Custom Projects ⚡",
+    navAdminDesk: "Admin",
     bountyLabel: "⚡ Bespoke Commission & Bidding Studio",
     bountyHeading: "Say What You Want. Offer Your Price. We Build It.",
     bountySubtext: "Have a custom financial model, complex macro, executive dashboard, or broken spreadsheet? Tell us your exact requirements, propose your price, and our Senior Excel Architects review, accept your offer, and engineer your file.",
@@ -206,7 +206,7 @@ window.SHEETFIX_I18N = {
     modalSuccessText: "A senior Excel architect has been assigned to your request. We will email you within 2 hours with our mutual NDA and secure file link.",
 
     // Auth & Portal
-    navPortal: "Sign In / Portal",
+    navPortal: "Sign In",
     navSignOut: "Sign Out",
     portalTitle: "SheetFix Client & Architect Portal",
     portalSub: "Encrypted, role-based gateway to your spreadsheet architecture pipeline.",
@@ -254,7 +254,7 @@ window.SHEETFIX_I18N = {
     errInvalidOtp: "Invalid or expired verification code. Please check and retry.",
     toastOtpSent: "Verification code dispatched to your email.",
     toastOrderForwarded: "Intake order securely dispatched to Senior Architect inbox.",
-    adminTelegramBtn: "Telegram: @Shy1ohmy",
+    adminTelegramBtn: "@Shy1ohmy",
     adminDirectContact: "Senior Architect Telegram: @Shy1ohmy",
     forwardTicketTelegram: "Dispatch to @Shy1ohmy on Telegram ➔"
   },
@@ -264,10 +264,10 @@ window.SHEETFIX_I18N = {
     logoText: "شیت‌فیکس",
     navHow: "مراحل کار",
     navFix: "آنچه می‌سازیم",
-    navOfferings: "راهکارهای سفارشی",
+    navOfferings: "راهکارها",
     navGuarantee: "ضمانت بازگشت وجه",
-    soundOn: "🔊 صدا: روشن",
-    soundOff: "🔇 صدا: خاموش",
+    soundOn: "🔊",
+    soundOff: "🔇",
     navCta: "درخواست پروپوزال ➔",
     
     heroBadge: "⚡ مهندسی و پیاده‌سازی سفارشی اکسل • انجام دقیق هر درخواست شما • تحویل ۲۴ ساعته",
@@ -371,8 +371,8 @@ window.SHEETFIX_I18N = {
     sec4Desc: "بررسی صحت فایل با توابع درهم‌ساز کریپتوگرافیک جهت اطمینان از اصالت اسناد.",
     
     // Client Offerings Suite
-        navBountyStudio: "پروژه‌های سفارشی و پیشنهاد قیمت ⚡",
-    navAdminDesk: "میز کار ادمین",
+    navBountyStudio: "پروژه‌های سفارشی ⚡",
+    navAdminDesk: "ادمین",
     bountyLabel: "⚡ استودیوی سفارش سفارشی و مناقصه مستقیم",
     bountyHeading: "آنچه می‌خواهید را بگویید. قیمت پیشنهادی دهید. ما می‌سازیم.",
     bountySubtext: "نیاز به مدل مالی پیشرفته، ماکروی خودکار VBA، داشبورد مدیریتی یا رفع اشکال فایل اکسل دارید؟ مشخصات را بنویسید، قیمت پیشنهادی خود را تعیین کنید؛ معماران ارشد اکسل پیشنهاد شما را بررسی، تأیید و پروژه را تحویل می‌دهند.",
@@ -461,7 +461,7 @@ window.SHEETFIX_I18N = {
     modalSuccessText: "پرونده شما به معمار ارشد اکسل ارجاع داده شد. ظرف ۲ ساعت کاری قرارداد محرمانگی NDA و لینک بارگذاری اختصاصی برای شما ارسال می‌شود.",
 
     // Auth & Portal
-    navPortal: "ورود / پرتال مشتریان",
+    navPortal: "ورود",
     navSignOut: "خروج",
     portalTitle: "پرتال اختصاصی مشتریان و معماران شیت‌فیکس",
     portalSub: "درگاه امن و رمزنگاری‌شده رهگیری پروژه‌ها و ارتباط با معماران ارشد اکسل.",
@@ -509,7 +509,7 @@ window.SHEETFIX_I18N = {
     errInvalidOtp: "کد احراز هویت نامعتبر یا منقضی شده است. لطفاً مجدداً بررسی کنید.",
     toastOtpSent: "کد تایید امنیتی به نشانی ایمیل شما ارسال گردید.",
     toastOrderForwarded: "مشخصات سفارش با موفقیت به کارتابل ایمیل معمار ارشد ارسال شد.",
-    adminTelegramBtn: "پشتیبانی تلگرام: Shy1ohmy@",
+    adminTelegramBtn: "@Shy1ohmy",
     adminDirectContact: "ارتباط مستقیم با معمار ارشد در تلگرام: Shy1ohmy@",
     forwardTicketTelegram: "ارسال مشخصات سفارش در تلگرام ➔"
   }

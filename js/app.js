@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update Language Toggle Button Label
     const langBtnText = document.getElementById('langText');
     if (langBtnText) {
-      langBtnText.textContent = (lang === 'fa' ? 'English (EN)' : 'فارسی (FA)');
+      langBtnText.textContent = (lang === 'fa' ? 'EN' : 'FA');
     }
 
     // Update Sound Button Label
@@ -384,6 +384,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (dict) {
         soundBtn.textContent = window.soundEngine.isMuted ? dict.soundOff : dict.soundOn;
       }
+      soundBtn.setAttribute('title', window.soundEngine.isMuted 
+        ? (currentLang === 'fa' ? 'صدا: خاموش (کلیک برای روشن کردن)' : 'Sound: OFF (Click to unmute)')
+        : (currentLang === 'fa' ? 'صدا: روشن (کلیک برای قطع صدا)' : 'Sound: ON (Click to mute)'));
     });
   }
 

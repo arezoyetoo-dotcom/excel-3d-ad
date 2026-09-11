@@ -53,44 +53,41 @@
 
       <nav class="site-nav">
         <a href="#how-it-works" data-i18n="navHow">How It Works</a>
-        <a href="#what-we-fix" data-i18n="navFix">What We Fix</a>
-        <a href="#clinic" data-i18n="clinicLabel">Formula Clinic</a>
-        <a href="#calculator" data-i18n="calcLabel">Calculator</a>
-        <a href="#security" data-i18n="securityLabel">Security</a>
-        <a href="#bounty-studio" class="nav-highlight" data-i18n="navBountyStudio">Custom Projects & Bids ⚡</a>
-        <a href="#offerings" data-i18n="navOfferings">Client Offerings</a>
+        <a href="#what-we-fix" data-i18n="navFix">What We Build</a>
+        <a href="#bounty-studio" class="nav-highlight" data-i18n="navBountyStudio">Custom Projects ⚡</a>
+        <a href="#offerings" data-i18n="navOfferings">Solutions</a>
       </nav>
 
       <div class="header-cta-group">
         <!-- Language Switcher Button -->
-        <button id="langToggle" class="btn-lang" title="Switch Language / تغییر زبان">
-          <span>🌐</span> <strong id="langText">فارسی</strong>
+        <button id="langToggle" class="btn-util-pill btn-lang" title="Switch Language / تغییر زبان">
+          <span>🌐</span> <strong id="langText">FA</strong>
         </button>
 
         <!-- Sound Toggle -->
-        <button id="soundToggle" class="btn-sound" title="Toggle Sound">
-          🔊 Sound: ON
+        <button id="soundToggle" class="btn-util-pill btn-sound" title="Toggle Sound / قطع و وصل صدا" aria-label="Toggle Sound">
+          🔊
         </button>
 
         <!-- Admin Operations Desk Trigger -->
-        <button id="adminDeskBtn" class="btn-admin-desk" title="Senior Architect & Admin Operations Desk">
-          <span>🛠️</span> <span data-i18n="navAdminDesk">Admin Desk</span>
+        <button id="adminDeskBtn" class="btn-util-pill btn-admin-desk" title="Senior Architect & Admin Operations Desk">
+          <span>🛠️</span> <span data-i18n="navAdminDesk">Admin</span>
         </button>
 
         <!-- Admin Telegram Contact -->
-        <a href="https://t.me/Shy1ohmy" target="_blank" rel="noopener noreferrer" class="btn-telegram-contact" title="Direct Telegram Support: @Shy1ohmy">
-          <span>✈️</span> <span data-i18n="adminTelegramBtn">Telegram: @Shy1ohmy</span>
+        <a href="https://t.me/Shy1ohmy" target="_blank" rel="noopener noreferrer" class="btn-util-pill btn-telegram-contact" title="Direct Telegram Support: @Shy1ohmy">
+          <span>✈️</span> <span data-i18n="adminTelegramBtn">@Shy1ohmy</span>
         </a>
 
         <!-- Auth Portal Trigger & User Status -->
-        <button id="authPortalBtn" class="btn-auth-trigger" title="Client & Architect Portal">
-          <span>🔐</span> <span id="authPortalText" data-i18n="navPortal">Sign In / Portal</span>
+        <button id="authPortalBtn" class="btn-util-pill btn-auth-trigger" title="Client & Architect Portal">
+          <span>🔐</span> <span id="authPortalText" data-i18n="navPortal">Sign In</span>
         </button>
 
         <div id="authUserBadge" class="header-user-status is-hidden">
           <div class="user-logged-badge">
-            <span>👤</span>
-            <span id="headerUserName">Client</span>
+            <span class="user-badge-icon">👤</span>
+            <span id="headerUserName" class="user-badge-name">Client</span>
             <span id="headerUserRole" class="user-role-tag">CLIENT</span>
           </div>
           <button id="authSignOutBtn" class="btn-signout" title="Sign Out" data-i18n="navSignOut">Sign Out</button>

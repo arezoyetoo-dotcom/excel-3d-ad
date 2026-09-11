@@ -53,44 +53,41 @@
 
       <nav class="site-nav">
         <a href="#how-it-works" data-i18n="navHow">مراحل کار</a>
-        <a href="#what-we-fix" data-i18n="navFix">چه مواردی را حل می‌کنیم؟</a>
-        <a href="#clinic" data-i18n="clinicLabel">آزمایشگاه مقایسه فرمول‌ها</a>
-        <a href="#calculator" data-i18n="calcLabel">محاسبه‌گر آنلاین</a>
-        <a href="#security" data-i18n="securityLabel">امنیت و محرمانگی</a>
-        <a href="#bounty-studio" class="nav-highlight" data-i18n="navBountyStudio">پروژه‌های سفارشی و قیمت ⚡</a>
-        <a href="#offerings" data-i18n="navOfferings">خدمات و راهکارها</a>
+        <a href="#what-we-fix" data-i18n="navFix">آنچه می‌سازیم</a>
+        <a href="#bounty-studio" class="nav-highlight" data-i18n="navBountyStudio">پروژه‌های سفارشی ⚡</a>
+        <a href="#offerings" data-i18n="navOfferings">راهکارها</a>
       </nav>
 
       <div class="header-cta-group">
         <!-- Language Switcher Button -->
-        <button id="langToggle" class="btn-lang" title="Switch Language / تغییر زبان">
-          <span>🌐</span> <strong id="langText">English (EN)</strong>
+        <button id="langToggle" class="btn-util-pill btn-lang" title="Switch Language / تغییر زبان">
+          <span>🌐</span> <strong id="langText">EN</strong>
         </button>
 
         <!-- Sound Toggle -->
-        <button id="soundToggle" class="btn-sound" title="قطع و وصل صدا">
-          🔊 صدا: روشن
+        <button id="soundToggle" class="btn-util-pill btn-sound" title="قطع و وصل صدا" aria-label="قطع و وصل صدا">
+          🔊
         </button>
 
         <!-- Admin Operations Desk Trigger -->
-        <button id="adminDeskBtn" class="btn-admin-desk" title="میز عملیات معماران ارشد و ادمین">
-          <span>🛠️</span> <span data-i18n="navAdminDesk">میز کار ادمین</span>
+        <button id="adminDeskBtn" class="btn-util-pill btn-admin-desk" title="میز عملیات معماران ارشد و ادمین">
+          <span>🛠️</span> <span data-i18n="navAdminDesk">ادمین</span>
         </button>
 
         <!-- Admin Telegram Contact -->
-        <a href="https://t.me/Shy1ohmy" target="_blank" rel="noopener noreferrer" class="btn-telegram-contact" title="پشتیبانی مستقیم تلگرام: Shy1ohmy@">
-          <span>✈️</span> <span data-i18n="adminTelegramBtn">پشتیبانی تلگرام: Shy1ohmy@</span>
+        <a href="https://t.me/Shy1ohmy" target="_blank" rel="noopener noreferrer" class="btn-util-pill btn-telegram-contact" title="پشتیبانی مستقیم تلگرام: Shy1ohmy@">
+          <span>✈️</span> <span data-i18n="adminTelegramBtn">@Shy1ohmy</span>
         </a>
 
         <!-- Auth Portal Trigger & User Status -->
-        <button id="authPortalBtn" class="btn-auth-trigger" title="پرتال ورود و مشتریان">
-          <span>🔐</span> <span id="authPortalText" data-i18n="navPortal">ورود / پرتال مشتریان</span>
+        <button id="authPortalBtn" class="btn-util-pill btn-auth-trigger" title="پرتال ورود و مشتریان">
+          <span>🔐</span> <span id="authPortalText" data-i18n="navPortal">ورود</span>
         </button>
 
         <div id="authUserBadge" class="header-user-status is-hidden">
           <div class="user-logged-badge">
-            <span>👤</span>
-            <span id="headerUserName">کاربر</span>
+            <span class="user-badge-icon">👤</span>
+            <span id="headerUserName" class="user-badge-name">کاربر</span>
             <span id="headerUserRole" class="user-role-tag">مشتری</span>
           </div>
           <button id="authSignOutBtn" class="btn-signout" title="خروج" data-i18n="navSignOut">خروج</button>
