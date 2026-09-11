@@ -218,7 +218,10 @@ window.SHEETFIX_I18N = {
     errDisposableEmail: "Disposable and burner emails are blocked. Please use an authentic work email.",
     errInvalidOtp: "Invalid or expired verification code. Please check and retry.",
     toastOtpSent: "Verification code dispatched to your email.",
-    toastOrderForwarded: "Intake order securely dispatched to Senior Architect inbox."
+    toastOrderForwarded: "Intake order securely dispatched to Senior Architect inbox.",
+    adminTelegramBtn: "Telegram: @Shy1ohmy",
+    adminDirectContact: "Senior Architect Telegram: @Shy1ohmy",
+    forwardTicketTelegram: "Dispatch to @Shy1ohmy on Telegram ➔"
   },
 
   fa: {
@@ -435,6 +438,9 @@ window.SHEETFIX_I18N = {
     errDisposableEmail: "استفاده از ایمیل‌های موقت و یکبارمصرف مجاز نیست. لطفاً از ایمیل معتبر شرکتی یا شخصی استفاده کنید.",
     errInvalidOtp: "کد احراز هویت نامعتبر یا منقضی شده است. لطفاً مجدداً بررسی کنید.",
     toastOtpSent: "کد تایید امنیتی به نشانی ایمیل شما ارسال گردید.",
-    toastOrderForwarded: "مشخصات سفارش با موفقیت به کارتابل ایمیل معمار ارشد ارسال شد."
+    toastOrderForwarded: "مشخصات سفارش با موفقیت به کارتابل ایمیل معمار ارشد ارسال شد.",
+    adminTelegramBtn: "پشتیبانی تلگرام: Shy1ohmy@",
+    adminDirectContact: "ارتباط مستقیم با معمار ارشد در تلگرام: Shy1ohmy@",
+    forwardTicketTelegram: "ارسال مشخصات سفارش در تلگرام ➔"
   }
 };

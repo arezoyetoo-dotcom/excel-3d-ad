@@ -11,10 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentLang = localStorage.getItem('sheetfix_lang') || (window.location.pathname.endsWith('fa.html') ? 'fa' : 'en');
   let currentUser = null;
 
-  // Web3Forms & Email Configuration
+  // Web3Forms & Admin Telegram Configuration
   window.SHEETFIX_CONFIG = window.SHEETFIX_CONFIG || {
     web3FormsAccessKey: localStorage.getItem('sheetfix_web3forms_key') || '',
     architectEmail: 'architect@sheetfix.dev',
+    adminTelegram: '@Shy1ohmy',
+    telegramUrl: 'https://t.me/Shy1ohmy',
     enableSimulationBadge: true
   };
 
@@ -1003,6 +1005,11 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       ` : '';
 
+      const tgMsg = encodeURIComponent(
+        `Hello Senior Architect (@Shy1ohmy),\nI have submitted SheetFix order ticket ${o.id} for "${o.architectureTier}" (${o.fileCount} file(s)).\n\nNotes: ${o.notes}`
+      );
+      const tgLink = `https://t.me/Shy1ohmy?text=${tgMsg}`;
+
       return `
         <div class="ticket-item-card">
           <div class="ticket-top-meta">
@@ -1017,6 +1024,11 @@ document.addEventListener('DOMContentLoaded', () => {
             ${stepsHtml}
           </div>
           ${checksumBlock}
+          <div style="margin-top: 12px; display: flex; align-items: center; justify-content: flex-end;">
+            <a href="${tgLink}" target="_blank" rel="noopener noreferrer" class="btn-ticket-telegram">
+              ✈️ ${currentLang === 'fa' ? 'ارسال مشخصات به معمار ارشد (@Shy1ohmy) ➔' : 'Message @Shy1ohmy on Telegram ➔'}
+            </a>
+          </div>
         </div>
       `;
     }).join('');
