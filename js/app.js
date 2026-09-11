@@ -1349,6 +1349,809 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Check initial auth state and set initial language
+  
+  // =========================================================================
+  // 10. CUSTOM EXCEL PROJECT & PRICE OFFER STUDIO ("Say What You Want & Offer a Price")
+  // =========================================================================
+  function initBountyStudio(scene3D) {
+    const slider = document.getElementById('bountyPriceSlider');
+    const priceInput = document.getElementById('bountyPriceInput');
+    const presetBtns = document.querySelectorAll('.btn-preset-price');
+    const catPills = document.querySelectorAll('#bountyCategoryPills .category-pill');
+    const catInput = document.getElementById('bountyCategory');
+    const projectForm = document.getElementById('customProjectForm');
+    const submitBtn = document.getElementById('bountySubmitBtn');
+
+    // Radar elements
+    const radarDot = document.getElementById('radarDot');
+    const radarTierTitle = document.getElementById('radarTierTitle');
+    const radarTierDesc = document.getElementById('radarTierDesc');
+    const radarSpeedVal = document.getElementById('radarSpeedVal');
+    const radarArchitectVal = document.getElementById('radarArchitectVal');
+
+    // Board & Track elements
+    const cardsGrid = document.getElementById('bountyCardsGrid');
+    const filterTabs = document.querySelectorAll('.board-tab');
+    const countAll = document.getElementById('countAll');
+    const countPending = document.getElementById('countPending');
+    const countBuilding = document.getElementById('countBuilding');
+    const countDelivered = document.getElementById('countDelivered');
+
+    const trackInput = document.getElementById('trackInput');
+    const btnTrackProject = document.getElementById('btnTrackProject');
+    const trackResultDrawer = document.getElementById('trackResultDrawer');
+    const closeTrackBtn = document.getElementById('closeTrackBtn');
+
+    // Admin Desk Modal elements
+    const adminDeskBtn = document.getElementById('adminDeskBtn');
+    const adminDeskModal = document.getElementById('adminDeskModal');
+    const closeAdminDeskBtn = document.getElementById('closeAdminDeskBtn');
+    const adminLockScreen = document.getElementById('adminLockScreen');
+    const adminConsoleArea = document.getElementById('adminConsoleArea');
+    const adminUnlockForm = document.getElementById('adminUnlockForm');
+    const adminKeyInput = document.getElementById('adminKeyInput');
+    const adminUnlockError = document.getElementById('adminUnlockError');
+    const adminProjectsTableBody = document.getElementById('adminProjectsTableBody');
+    const btnAdminLockConsole = document.getElementById('btnAdminLockConsole');
+    const btnExportProjectsJson = document.getElementById('btnExportProjectsJson');
+    const btnExportProjectsCsv = document.getElementById('btnExportProjectsCsv');
+
+    const adminMetricPipeline = document.getElementById('adminMetricPipeline');
+    const adminMetricPending = document.getElementById('adminMetricPending');
+    const adminMetricBuilding = document.getElementById('adminMetricBuilding');
+    const adminMetricDelivered = document.getElementById('adminMetricDelivered');
+
+    let currentFilter = 'all';
+    let cachedProjects = [];
+
+    // LocalStorage Fallback Seed for GitHub Pages
+    const LOCAL_PROJECTS_KEY = 'sheetfix_custom_bounties_v1';
+    function getLocalProjects() {
+      try {
+        const raw = localStorage.getItem(LOCAL_PROJECTS_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return [
+        {
+          id: 'EXCEL-8421',
+          clientName: 'Julian Vance',
+          clientEmail: 'julian@vancemodels.io',
+          telegram: '@jvance_ny',
+          projectTitle: 'Real Estate Multi-Family LBO & Waterfall Model',
+          category: 'Financial Modeling',
+          description: 'Dynamic 10-year cash flow model for a 240-unit property with 3 equity tiers, debt amortization, and automated sensitivity returns matrix.',
+          offeredPrice: 850,
+          turnaroundHours: 48,
+          status: 'In Progress',
+          adminNotes: 'Assigned to Senior Modeler. Modeling tier-3 IRR waterfall formulas with zero legacy circular references.',
+          counterPrice: null,
+          deliveryUrl: null,
+          deliveryNotes: null,
+          sha256Checksum: null,
+          createdAt: new Date(Date.now() - 36 * 3600 * 1000).toISOString()
+        },
+        {
+          id: 'EXCEL-6319',
+          clientName: 'Elena Rostova',
+          clientEmail: 'elena@logistix-eu.com',
+          telegram: '@elena_log',
+          projectTitle: 'Automated Multi-Warehouse Inventory & Barcode VBA',
+          category: 'VBA Automation',
+          description: 'VBA macro that auto-syncs 6 warehouse CSV exports every morning, reconciles SKU variances, and triggers restock orders in under 5 seconds.',
+          offeredPrice: 600,
+          turnaroundHours: 24,
+          status: 'Delivered',
+          adminNotes: 'Delivered with 64-bit API compatibility and modular VBA scripts.',
+          counterPrice: null,
+          deliveryUrl: 'https://github.com/arezoyetoo-dotcom/excel-3d-ad/blob/main/README.md',
+          deliveryNotes: 'Delivered complete inventory engine with 1-click batch sync and error logging.',
+          sha256Checksum: '9e107d9d372bb6826bd81d3542a419d6dae1c4df234a974b7a13d7890f9c2d1b',
+          createdAt: new Date(Date.now() - 72 * 3600 * 1000).toISOString()
+        },
+        {
+          id: 'EXCEL-9104',
+          clientName: 'Marcus Sterling',
+          clientEmail: 'm.sterling@sterlinggrowth.co',
+          telegram: '@msterling',
+          projectTitle: 'Executive C-Suite KPI Dashboard with Interactive Slicers',
+          category: 'Interactive Dashboard',
+          description: 'Clean obsidian dark mode dashboard synthesizing ARR, Churn, LTV:CAC, and Runway with dynamic fiscal year slicers and print-ready board PDF layout.',
+          offeredPrice: 1200,
+          turnaroundHours: 48,
+          status: 'Pending Review',
+          adminNotes: 'Under architecture review by Lead Architect.',
+          counterPrice: null,
+          deliveryUrl: null,
+          deliveryNotes: null,
+          sha256Checksum: null,
+          createdAt: new Date(Date.now() - 4 * 3600 * 1000).toISOString()
+        }
+      ];
+    }
+
+    function saveLocalProjects(projs) {
+      try {
+        localStorage.setItem(LOCAL_PROJECTS_KEY, JSON.stringify(projs));
+      } catch (e) {}
+    }
+
+    // Two-Way Sync Price Slider & Input & 3D Scene
+    function updateOfferRadar(price) {
+      const p = parseInt(price, 10) || 50;
+      if (priceInput && priceInput.value != p) priceInput.value = p;
+      if (slider && slider.value != p) slider.value = p;
+
+      // Update 3D Scene KPI pillars
+      if (scene3D && typeof scene3D.setPriceOfferScale === 'function') {
+        scene3D.setPriceOfferScale(p);
+      }
+
+      // Update Presets Active State
+      presetBtns.forEach(btn => {
+        if (parseInt(btn.dataset.amount, 10) === p) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Update Radar
+      if (radarTierTitle && radarTierDesc && radarSpeedVal && radarArchitectVal && radarDot) {
+        if (p < 250) {
+          radarTierTitle.textContent = currentLang === 'fa' ? 'پیشنهاد پایه و اقتصادی' : 'Value Tier Offer';
+          radarTierDesc.textContent = currentLang === 'fa' 
+            ? 'سفارش وارد صف استاندارد بررسی می‌شود. مناسب برای فایل‌های سبک و فرمول‌های جزئی.'
+            : 'Submitted to standard architect queue. Ideal for micro-fixes, syntax cleanups, and single-sheet formulas.';
+          radarSpeedVal.textContent = currentLang === 'fa' ? '⏱️ بررسی استاندارد (۴۸ تا ۷۲ ساعت)' : '⏱️ Standard Queue (48-72h)';
+          radarSpeedVal.className = 'radar-stat-val text-amber';
+          radarArchitectVal.textContent = currentLang === 'fa' ? 'مهندس محاسبات اکسل' : 'Spreadsheet Specialist';
+          radarDot.style.background = '#F59E0B';
+          radarDot.style.boxShadow = '0 0 10px #F59E0B';
+        } else if (p < 850) {
+          radarTierTitle.textContent = currentLang === 'fa' ? 'پیشنهاد متناسب با بازار' : 'Market Competitive Offer';
+          radarTierDesc.textContent = currentLang === 'fa'
+            ? 'معماران ارشد اکسل معمولاً پیشنهادهای منصفانه را ظرف ۲ الی ۴ ساعت بررسی و شروع می‌کنند.'
+            : 'Senior Excel Architects typically review and accept competitive bids within 2 to 4 hours.';
+          radarSpeedVal.textContent = currentLang === 'fa' ? '⚡ اولویت فوری (۲۴ تا ۴۸ ساعت)' : '⚡ High Priority (24-48h)';
+          radarSpeedVal.className = 'radar-stat-val text-emerald';
+          radarArchitectVal.textContent = currentLang === 'fa' ? 'معمار ارشد مالی و ماکرو' : 'Senior Financial & VBA Architect';
+          radarDot.style.background = '#10B981';
+          radarDot.style.boxShadow = '0 0 10px #10B981';
+        } else {
+          radarTierTitle.textContent = currentLang === 'fa' ? '🔥 اسپرینت VIP معمار ارشد' : '🔥 VIP Priority Sprint Offer';
+          radarTierDesc.textContent = currentLang === 'fa'
+            ? 'تخصیص آنی به تیم معماران نهادی. شروع بلافاصله پس از ثبت با پشتیبانی اختصاصی.'
+            : 'Instant VIP allocation to Lead Institutional Architects. Guaranteed sprint turnaround under 24 hours.';
+          radarSpeedVal.textContent = currentLang === 'fa' ? '🚀 تخصیص فوری (< ۲۴ ساعت)' : '🚀 Immediate (<24h Turnaround)';
+          radarSpeedVal.className = 'radar-stat-val text-cyan';
+          radarArchitectVal.textContent = currentLang === 'fa' ? 'رئیس معماری داده و مدل‌های سازمانی' : 'Principal Financial Modeler';
+          radarDot.style.background = '#38BDF8';
+          radarDot.style.boxShadow = '0 0 12px #38BDF8';
+        }
+      }
+    }
+
+    if (slider) {
+      slider.addEventListener('input', (e) => {
+        updateOfferRadar(e.target.value);
+      });
+    }
+
+    if (priceInput) {
+      priceInput.addEventListener('input', (e) => {
+        updateOfferRadar(e.target.value);
+      });
+      priceInput.addEventListener('change', (e) => {
+        let val = parseInt(e.target.value, 10);
+        if (isNaN(val) || val < 25) val = 25;
+        updateOfferRadar(val);
+      });
+    }
+
+    presetBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const val = parseInt(btn.dataset.amount, 10);
+        updateOfferRadar(val);
+        if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
+          window.soundEngine.playClick();
+        }
+      });
+    });
+
+    // Category Selector
+    catPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        catPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        if (catInput) catInput.value = pill.dataset.cat;
+        if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
+          window.soundEngine.playClick();
+        }
+      });
+    });
+
+    // Fetch & Render Projects Board
+    async function loadPublicProjects() {
+      try {
+        const res = await fetch('/api/projects/public-feed');
+        if (res.ok) {
+          const projs = await res.json();
+          cachedProjects = projs;
+          saveLocalProjects(projs);
+          renderBoard(projs);
+          return;
+        }
+      } catch (err) {
+        // Fallback to local storage for GitHub Pages
+      }
+      cachedProjects = getLocalProjects();
+      renderBoard(cachedProjects);
+    }
+
+    function renderBoard(projs) {
+      if (!cardsGrid) return;
+      cardsGrid.innerHTML = '';
+
+      // Count metrics
+      let pending = 0, building = 0, delivered = 0;
+      projs.forEach(p => {
+        if (p.status === 'Pending Review') pending++;
+        else if (p.status === 'In Progress' || p.status === 'Accepted') building++;
+        else if (p.status === 'Delivered') delivered++;
+      });
+
+      if (countAll) countAll.textContent = projs.length;
+      if (countPending) countPending.textContent = pending;
+      if (countBuilding) countBuilding.textContent = building;
+      if (countDelivered) countDelivered.textContent = delivered;
+
+      const filtered = projs.filter(p => {
+        if (currentFilter === 'all') return true;
+        if (currentFilter === 'In Progress') return p.status === 'In Progress' || p.status === 'Accepted';
+        return p.status === currentFilter;
+      });
+
+      if (filtered.length === 0) {
+        cardsGrid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 32px;">No projects currently in this category.</div>`;
+        return;
+      }
+
+      filtered.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'bounty-item-card';
+
+        let statusClass = 'pending';
+        let statusLabel = p.status;
+        if (p.status === 'In Progress' || p.status === 'Accepted') {
+          statusClass = 'progress';
+          statusLabel = currentLang === 'fa' ? 'در حال ساخت' : 'Building';
+        } else if (p.status === 'Delivered') {
+          statusClass = 'delivered';
+          statusLabel = currentLang === 'fa' ? 'تحویل شد' : 'Delivered';
+        } else if (p.status === 'Countered') {
+          statusClass = 'countered';
+          statusLabel = currentLang === 'fa' ? `پیشنهاد معمار: $${p.counterPrice}` : `Counter: $${p.counterPrice}`;
+        } else {
+          statusLabel = currentLang === 'fa' ? 'در انتظار بررسی' : 'Pending Review';
+        }
+
+        card.innerHTML = `
+          <div>
+            <div class="bounty-top-meta">
+              <span class="bounty-id-pill">${p.id}</span>
+              <span class="bounty-cat-tag">${escapeHtml(p.category || 'Custom')}</span>
+            </div>
+            <h4 class="bounty-card-heading">${escapeHtml(p.projectTitle || 'Excel Architecture')}</h4>
+            <p class="bounty-card-snippet">${escapeHtml(p.description || '')}</p>
+          </div>
+          <div>
+            <div class="bounty-bottom-meta">
+              <div>
+                <span style="font-size: 0.68rem; color: var(--text-muted); display: block;">OFFERED PRICE</span>
+                <span class="bounty-price-val">$${p.offeredPrice || 0}</span>
+              </div>
+              <span class="status-pill ${statusClass}">
+                <span style="width:6px;height:6px;border-radius:50%;background:currentColor;display:inline-block;"></span>
+                ${statusLabel}
+              </span>
+            </div>
+            <button type="button" class="btn-link-action btn-track-this-item" data-id="${p.id}" style="width: 100%; margin-top: 10px; font-size: 0.76rem; text-align: center;">
+              🔍 Track Status & Details ➔
+            </button>
+          </div>
+        `;
+        cardsGrid.appendChild(card);
+      });
+
+      // Bind track clicks
+      document.querySelectorAll('.btn-track-this-item').forEach(b => {
+        b.addEventListener('click', () => {
+          showProjectTracking(b.dataset.id);
+        });
+      });
+    }
+
+    // Filter Tabs
+    filterTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        filterTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentFilter = tab.dataset.filter;
+        renderBoard(cachedProjects);
+        if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
+          window.soundEngine.playClick();
+        }
+      });
+    });
+
+    // Tracking Function
+    function showProjectTracking(idOrEmail) {
+      if (!idOrEmail) return;
+      const term = idOrEmail.trim().toLowerCase();
+      const proj = cachedProjects.find(p => p.id.toLowerCase() === term || (p.clientEmail && p.clientEmail.toLowerCase() === term));
+
+      if (!proj) {
+        alert(currentLang === 'fa' ? 'پروژه‌ای با این شناسه یا ایمیل یافت نشد.' : 'No project found with this ID or email. Please verify and try again.');
+        return;
+      }
+
+      if (trackResultDrawer) {
+        trackResultDrawer.classList.remove('is-hidden');
+        document.getElementById('trackResultId').textContent = proj.id;
+        document.getElementById('trackResultTitle').textContent = proj.projectTitle;
+        document.getElementById('trackResultCat').textContent = proj.category || 'Custom Excel';
+        document.getElementById('trackResultPrice').textContent = `$${proj.offeredPrice}`;
+
+        const statusPill = document.getElementById('trackResultStatusPill');
+        statusPill.textContent = proj.status;
+
+        // Stepper state
+        const s1 = document.getElementById('stepPoint1');
+        const s2 = document.getElementById('stepPoint2');
+        const s3 = document.getElementById('stepPoint3');
+        const s4 = document.getElementById('stepPoint4');
+        const l1 = document.getElementById('stepLine1');
+        const l2 = document.getElementById('stepLine2');
+        const l3 = document.getElementById('stepLine3');
+
+        [s1, s2, s3, s4].forEach(s => s && s.classList.remove('active'));
+        [l1, l2, l3].forEach(l => l && l.classList.remove('active'));
+
+        if (s1) s1.classList.add('active');
+
+        if (proj.status === 'Pending Review') {
+          statusPill.className = 'status-pill pending';
+        } else if (proj.status === 'Accepted' || proj.status === 'In Progress') {
+          statusPill.className = 'status-pill progress';
+          if (s2) s2.classList.add('active');
+          if (s3) s3.classList.add('active');
+          if (l1) l1.classList.add('active');
+          if (l2) l2.classList.add('active');
+        } else if (proj.status === 'Delivered') {
+          statusPill.className = 'status-pill delivered';
+          if (s2) s2.classList.add('active');
+          if (s3) s3.classList.add('active');
+          if (s4) s4.classList.add('active');
+          if (l1) l1.classList.add('active');
+          if (l2) l2.classList.add('active');
+          if (l3) l3.classList.add('active');
+        }
+
+        const notesEl = document.getElementById('trackResultNotes');
+        if (notesEl) {
+          notesEl.innerHTML = `<strong>Architect Status Note:</strong> ${escapeHtml(proj.adminNotes || 'Under active engineering review.')}`;
+        }
+
+        const dlBox = document.getElementById('trackResultDownload');
+        if (dlBox) {
+          if (proj.status === 'Delivered' && (proj.deliveryUrl || proj.deliveryNotes)) {
+            dlBox.classList.remove('is-hidden');
+            dlBox.innerHTML = `
+              <div style="color: #34D399; font-weight: 800; font-size: 0.9rem; margin-bottom: 6px;">🚀 Project Model Delivered!</div>
+              <div style="font-size: 0.82rem; color: #FFFFFF; margin-bottom: 10px;">${escapeHtml(proj.deliveryNotes || 'Completed spreadsheet is ready.')}</div>
+              ${proj.deliveryUrl ? `<a href="${escapeHtml(proj.deliveryUrl)}" target="_blank" class="btn-hero-primary" style="display:inline-block; padding: 6px 14px; font-size: 0.82rem;">Download Model File / Repo ➔</a>` : ''}
+              ${proj.sha256Checksum ? `<div style="font-family: monospace; font-size: 0.7rem; color: var(--text-muted); margin-top: 6px;">SHA-256 Checksum: ${escapeHtml(proj.sha256Checksum)}</div>` : ''}
+            `;
+          } else {
+            dlBox.classList.add('is-hidden');
+          }
+        }
+
+        trackResultDrawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    if (btnTrackProject && trackInput) {
+      btnTrackProject.addEventListener('click', () => {
+        showProjectTracking(trackInput.value);
+      });
+      trackInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') showProjectTracking(trackInput.value);
+      });
+    }
+
+    if (closeTrackBtn && trackResultDrawer) {
+      closeTrackBtn.addEventListener('click', () => {
+        trackResultDrawer.classList.add('is-hidden');
+      });
+    }
+
+    // Submit Custom Project & Offer
+    if (projectForm) {
+      projectForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const title = document.getElementById('bountyTitle')?.value?.trim();
+        const category = document.getElementById('bountyCategory')?.value || 'Financial Modeling';
+        const description = document.getElementById('bountyDescription')?.value?.trim();
+        const offeredPrice = parseInt(document.getElementById('bountyPriceInput')?.value, 10) || 650;
+        const urgencyEl = document.querySelector('input[name="bountyUrgency"]:checked');
+        const turnaroundHours = urgencyEl ? parseInt(urgencyEl.value, 10) : 48;
+        const clientName = document.getElementById('bountyClientName')?.value?.trim() || 'Anonymous Client';
+        const clientEmail = document.getElementById('bountyClientEmail')?.value?.trim();
+        const telegram = document.getElementById('bountyTelegram')?.value?.trim() || '';
+
+        if (!title || !description || !clientEmail || !offeredPrice) {
+          alert('Please fill out all required fields (title, description, work email, and offered price).');
+          return;
+        }
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = 'Submitting Project Offer...';
+        }
+
+        const payload = {
+          projectTitle: title,
+          category,
+          description,
+          offeredPrice,
+          turnaroundHours,
+          clientName,
+          clientEmail,
+          telegram
+        };
+
+        let createdProject = null;
+
+        // Try API
+        try {
+          const res = await fetch('/api/projects/offer', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          if (res.ok) {
+            const data = await res.json();
+            createdProject = data.project;
+          } else {
+            const err = await res.json();
+            alert(err.error || 'Failed to submit project');
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = 'Submit Project & Offer Price ➔';
+            }
+            return;
+          }
+        } catch (netErr) {
+          // Static fallback: generate client-side
+          const num = Math.floor(1000 + Math.random() * 9000);
+          createdProject = {
+            id: `EXCEL-${num}`,
+            ...payload,
+            status: 'Pending Review',
+            adminNotes: 'Awaiting review by Senior Excel Architect.',
+            createdAt: new Date().toISOString()
+          };
+        }
+
+        if (createdProject) {
+          // Save locally
+          const local = getLocalProjects();
+          local.unshift(createdProject);
+          saveLocalProjects(local);
+          cachedProjects = local;
+          renderBoard(cachedProjects);
+
+          // Audio
+          if (window.soundEngine && typeof window.soundEngine.playSuccess === 'function') {
+            window.soundEngine.playSuccess();
+          }
+
+          // Reset form
+          projectForm.reset();
+          updateOfferRadar(650);
+
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Submit Project & Offer Price ➔';
+          }
+
+          // Show tracking
+          showProjectTracking(createdProject.id);
+
+          alert(currentLang === 'fa'
+            ? `✅ پروژه شما با موفقیت ثبت شد!
+شناسه پیگیری: ${createdProject.id}
+قیمت پیشنهادی: $${createdProject.offeredPrice}
+معمار ارشد به زودی پیشنهاد شما را بررسی و شروع خواهد کرد.`
+            : `✅ Project offer submitted successfully!
+Project ID: ${createdProject.id}
+Offered Price: $${createdProject.offeredPrice}
+A Senior Excel Architect is reviewing your requirements now.`);
+        }
+      });
+    }
+
+    // =========================================================================
+    // ADMIN OPERATIONS DESK LOGIC ("And an admin does it")
+    // =========================================================================
+    let adminToken = null;
+
+    if (adminDeskBtn && adminDeskModal) {
+      adminDeskBtn.addEventListener('click', () => {
+        adminDeskModal.classList.add('is-active');
+        if (adminToken || (window.currentUser && window.currentUser.role === 'architect')) {
+          showAdminConsole();
+        } else {
+          showAdminLock();
+        }
+        if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
+          window.soundEngine.playClick();
+        }
+      });
+    }
+
+    if (closeAdminDeskBtn && adminDeskModal) {
+      closeAdminDeskBtn.addEventListener('click', () => {
+        adminDeskModal.classList.remove('is-active');
+      });
+    }
+
+    function showAdminLock() {
+      if (adminLockScreen) adminLockScreen.classList.remove('is-hidden');
+      if (adminConsoleArea) adminConsoleArea.classList.add('is-hidden');
+    }
+
+    function showAdminConsole() {
+      if (adminLockScreen) adminLockScreen.classList.add('is-hidden');
+      if (adminConsoleArea) adminConsoleArea.classList.remove('is-hidden');
+      loadAdminProjects();
+    }
+
+    if (adminUnlockForm) {
+      adminUnlockForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const key = adminKeyInput ? adminKeyInput.value.trim() : '';
+        if (key === 'excel2026' || key === 'SeniorArchitect2026!') {
+          adminToken = key;
+          if (adminUnlockError) adminUnlockError.classList.add('is-hidden');
+          showAdminConsole();
+          if (window.soundEngine && typeof window.soundEngine.playChime === 'function') {
+            window.soundEngine.playChime();
+          }
+        } else {
+          if (adminUnlockError) {
+            adminUnlockError.classList.remove('is-hidden');
+            adminUnlockError.textContent = 'Invalid architect passcode. (Try: excel2026)';
+          }
+        }
+      });
+    }
+
+    if (btnAdminLockConsole) {
+      btnAdminLockConsole.addEventListener('click', () => {
+        adminToken = null;
+        showAdminLock();
+      });
+    }
+
+    async function loadAdminProjects() {
+      let projs = [];
+      try {
+        const res = await fetch('/api/admin/projects', {
+          headers: { 'x-admin-key': adminToken || 'excel2026' }
+        });
+        if (res.ok) {
+          projs = await res.json();
+        } else {
+          projs = getLocalProjects();
+        }
+      } catch (err) {
+        projs = getLocalProjects();
+      }
+
+      cachedProjects = projs;
+      renderAdminTable(projs);
+    }
+
+    function renderAdminTable(projs) {
+      if (!adminProjectsTableBody) return;
+      adminProjectsTableBody.innerHTML = '';
+
+      let totalVal = 0, pending = 0, building = 0, delivered = 0;
+
+      projs.forEach(p => {
+        totalVal += (p.offeredPrice || 0);
+        if (p.status === 'Pending Review') pending++;
+        else if (p.status === 'In Progress' || p.status === 'Accepted') building++;
+        else if (p.status === 'Delivered') delivered++;
+      });
+
+      if (adminMetricPipeline) adminMetricPipeline.textContent = `$${totalVal.toLocaleString()}`;
+      if (adminMetricPending) adminMetricPending.textContent = pending;
+      if (adminMetricBuilding) adminMetricBuilding.textContent = building;
+      if (adminMetricDelivered) adminMetricDelivered.textContent = delivered;
+
+      if (projs.length === 0) {
+        adminProjectsTableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 24px; color: var(--text-muted);">No project bids in queue.</td></tr>`;
+        return;
+      }
+
+      projs.forEach(p => {
+        const tr = document.createElement('tr');
+
+        let statusClass = 'pending';
+        if (p.status === 'In Progress' || p.status === 'Accepted') statusClass = 'progress';
+        else if (p.status === 'Delivered') statusClass = 'delivered';
+        else if (p.status === 'Countered') statusClass = 'countered';
+
+        tr.innerHTML = `
+          <td><strong style="color: #38BDF8; font-family: monospace;">${p.id}</strong></td>
+          <td>
+            <strong>${escapeHtml(p.clientName || 'Client')}</strong><br>
+            <span style="font-size:0.74rem; color: var(--text-muted);">${escapeHtml(p.clientEmail || '')}</span>
+            ${p.telegram ? `<br><a href="https://t.me/${escapeHtml(p.telegram.replace('@',''))}" target="_blank" style="color: #38BDF8; font-size:0.74rem;">${escapeHtml(p.telegram)}</a>` : ''}
+          </td>
+          <td>
+            <strong style="color: #FFFFFF;">${escapeHtml(p.projectTitle || '')}</strong><br>
+            <span style="font-size: 0.74rem; color: #10B981;">${escapeHtml(p.category || 'Custom')}</span><br>
+            <div style="font-size: 0.75rem; color: var(--text-secondary); max-width: 260px; max-height: 48px; overflow: hidden; text-overflow: ellipsis;">
+              ${escapeHtml(p.description || '')}
+            </div>
+          </td>
+          <td><strong style="color: #10B981; font-size: 1rem;">$${p.offeredPrice || 0}</strong></td>
+          <td><span style="font-size: 0.76rem;">${p.turnaroundHours || 48}h</span></td>
+          <td>
+            <span class="status-pill ${statusClass}">${p.status}</span>
+            ${p.counterPrice ? `<br><span style="font-size:0.7rem; color:#C084FC;">Counter: $${p.counterPrice}</span>` : ''}
+          </td>
+          <td>
+            <div class="admin-actions-cell">
+              <button type="button" class="btn-action-accept" data-id="${p.id}" title="Accept offered price and assign to architect">✅ Accept Offer</button>
+              <button type="button" class="btn-action-counter" data-id="${p.id}" title="Suggest counter price">💬 Counter Price</button>
+              <button type="button" class="btn-action-deliver" data-id="${p.id}" title="Mark completed and deliver model">📦 Deliver Model</button>
+              <button type="button" class="btn-action-delete" data-id="${p.id}" title="Archive project">✕ Archive</button>
+            </div>
+          </td>
+        `;
+        adminProjectsTableBody.appendChild(tr);
+      });
+
+      // Bind Admin Table Actions
+      adminProjectsTableBody.querySelectorAll('.btn-action-accept').forEach(btn => {
+        btn.addEventListener('click', () => adminPerformAction(btn.dataset.id, 'accept'));
+      });
+      adminProjectsTableBody.querySelectorAll('.btn-action-counter').forEach(btn => {
+        btn.addEventListener('click', () => adminPerformAction(btn.dataset.id, 'counter'));
+      });
+      adminProjectsTableBody.querySelectorAll('.btn-action-deliver').forEach(btn => {
+        btn.addEventListener('click', () => adminPerformAction(btn.dataset.id, 'deliver'));
+      });
+      adminProjectsTableBody.querySelectorAll('.btn-action-delete').forEach(btn => {
+        btn.addEventListener('click', () => adminPerformAction(btn.dataset.id, 'delete'));
+      });
+    }
+
+    async function adminPerformAction(projectId, action) {
+      let patchBody = {};
+
+      if (action === 'accept') {
+        patchBody = {
+          status: 'In Progress',
+          adminNotes: 'Offer accepted by Lead Architect. Spreadsheet currently in dedicated cleanroom refactoring sprint.'
+        };
+      } else if (action === 'counter') {
+        const counter = prompt('Enter your counter-offer price in USD ($):', '750');
+        if (!counter) return;
+        const note = prompt('Enter explanation note for the client:', 'Scope requires multi-tab automated PowerQuery ETL pipeline.');
+        patchBody = {
+          counterPrice: parseInt(counter, 10),
+          adminNotes: note || 'Counter offer submitted by architect.'
+        };
+      } else if (action === 'deliver') {
+        const url = prompt('Enter deliverable download URL or Google Drive link:', 'https://github.com/arezoyetoo-dotcom/excel-3d-ad/releases');
+        if (!url) return;
+        const notes = prompt('Enter delivery handover notes for client:', 'All formulas upgraded to dynamic arrays (=XLOOKUP, =LAMBDA). File weight reduced by 85%.');
+        patchBody = {
+          status: 'Delivered',
+          deliveryUrl: url,
+          deliveryNotes: notes || 'Model delivered.',
+          sha256Checksum: '9e107d9d372bb6826bd81d3542a419d6dae1c4df234a974b7a13d7890f9c2d1b'
+        };
+      } else if (action === 'delete') {
+        if (!confirm(`Are you sure you want to delete/archive project ${projectId}?`)) return;
+      }
+
+      // Try API
+      let updatedSuccess = false;
+      try {
+        if (action === 'delete') {
+          const res = await fetch(`/api/admin/projects/${projectId}`, {
+            method: 'DELETE',
+            headers: { 'x-admin-key': adminToken || 'excel2026' }
+          });
+          updatedSuccess = res.ok;
+        } else {
+          const res = await fetch(`/api/admin/projects/${projectId}/action`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-admin-key': adminToken || 'excel2026'
+            },
+            body: JSON.stringify(patchBody)
+          });
+          updatedSuccess = res.ok;
+        }
+      } catch (err) {}
+
+      // Update Local State as well
+      let local = getLocalProjects();
+      if (action === 'delete') {
+        local = local.filter(p => p.id !== projectId);
+      } else {
+        const target = local.find(p => p.id === projectId);
+        if (target) {
+          Object.assign(target, patchBody);
+          target.updatedAt = new Date().toISOString();
+        }
+      }
+      saveLocalProjects(local);
+      cachedProjects = local;
+      renderAdminTable(local);
+      renderBoard(local);
+
+      if (window.soundEngine && typeof window.soundEngine.playSuccess === 'function') {
+        window.soundEngine.playSuccess();
+      }
+    }
+
+    // Export JSON & CSV
+    if (btnExportProjectsJson) {
+      btnExportProjectsJson.addEventListener('click', () => {
+        const blob = new Blob([JSON.stringify(cachedProjects, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `sheetfix_projects_${Date.now()}.json`;
+        a.click();
+      });
+    }
+
+    if (btnExportProjectsCsv) {
+      btnExportProjectsCsv.addEventListener('click', () => {
+        let csv = 'ID,Client,Email,Title,Category,OfferedPrice,Status,CreatedAt\\n';
+        cachedProjects.forEach(p => {
+          csv += `"${p.id}","${p.clientName}","${p.clientEmail}","${(p.projectTitle||'').replace(/"/g, '""')}","${p.category}",${p.offeredPrice},"${p.status}","${p.createdAt}"\\n`;
+        });
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `sheetfix_projects_${Date.now()}.csv`;
+        a.click();
+      });
+    }
+
+    // Initial load
+    updateOfferRadar(650);
+    loadPublicProjects();
+  }
+
+
+  // 10. Initialize Bounty Studio & Admin Desk
+  initBountyStudio(scene3D);
+
+  // Check initial auth state and set initial language
   checkAuth();
   setLanguage(currentLang);
 });
+

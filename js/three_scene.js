@@ -35,6 +35,7 @@ class SimpleSpreadsheet3D {
     this.targetRotationY = 0.38;
     this.rotationX = 0.14;
     this.targetRotationX = 0.14;
+    this.priceOfferMultiplier = 1.0;
 
     // Camera animation targets
     this.camPos = new THREE.Vector3(0, 6.6, 9.4);
@@ -671,6 +672,11 @@ class SimpleSpreadsheet3D {
     }
   }
 
+  setPriceOfferScale(price) {
+    const num = parseFloat(price) || 650;
+    this.priceOfferMultiplier = Math.min(2.8, Math.max(0.35, num / 650));
+  }
+
   animate() {
     requestAnimationFrame(() => this.animate());
 
@@ -752,8 +758,9 @@ class SimpleSpreadsheet3D {
     }
 
     // Animate 3D Financial KPI Pillars
+    const multiplier = this.priceOfferMultiplier || 1.0;
     this.bars.forEach(bar => {
-      const h = THREE.MathUtils.lerp(0.04, bar.userData.targetHeight, this.cleanProgress);
+      const h = THREE.MathUtils.lerp(0.04, bar.userData.targetHeight * multiplier, this.cleanProgress);
       bar.scale.y = h;
       bar.position.y = h / 2;
       bar.visible = (this.cleanProgress > 0.05);
