@@ -5,6 +5,41 @@
  * Zero-Downtime Universal Vault Fallback (works on Local Node Server, GitHub Pages, and Offline Launchers).
  */
 
+// =========================================================================
+// Privacy-Preserving Analytics (GDPR & DNT Compliant, Zero PII, Zero 3rd-Party)
+// =========================================================================
+window.SheetFixAnalytics = {
+  isEnabled() {
+    if (typeof navigator !== 'undefined' && (navigator.doNotTrack === '1' || window.doNotTrack === '1')) {
+      return false;
+    }
+    const consent = localStorage.getItem('sheetfix_cookie_consent');
+    return consent === 'all';
+  },
+  init() {
+    if (!this.isEnabled()) return;
+    this.track('pageview', {
+      url: window.location.pathname,
+      title: document.title,
+      referrer: document.referrer ? (function() {
+        try { return new URL(document.referrer).hostname; } catch(e) { return 'external'; }
+      })() : 'direct'
+    });
+  },
+  track(eventName, eventData = {}) {
+    if (!this.isEnabled() && eventName !== 'consent_granted') return;
+    const payload = {
+      event: eventName,
+      timestamp: new Date().toISOString(),
+      lang: localStorage.getItem('sheetfix_lang') || 'en',
+      ...eventData
+    };
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      console.log('[SheetFix Analytics]', payload);
+    }
+  }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Environment & Mode Detection
   const isStaticHost = window.location.protocol === 'file:' || window.location.hostname.includes('github.io');
@@ -1236,6 +1271,50 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // 8. Cookie Consent & Privacy Preference Management
+  const cookieBanner = document.getElementById('cookieBanner');
+  const btnAcceptCookies = document.getElementById('btnAcceptCookies');
+  const btnEssentialCookies = document.getElementById('btnEssentialCookies');
+
+  const existingConsent = localStorage.getItem('sheetfix_cookie_consent');
+  if (!existingConsent && cookieBanner) {
+    setTimeout(() => {
+      cookieBanner.classList.remove('is-hidden');
+    }, 800);
+  }
+
+  if (btnAcceptCookies && cookieBanner) {
+    btnAcceptCookies.addEventListener('click', () => {
+      localStorage.setItem('sheetfix_cookie_consent', 'all');
+      cookieBanner.classList.add('is-hidden');
+      if (window.SheetFixAnalytics) {
+        window.SheetFixAnalytics.init();
+        window.SheetFixAnalytics.track('consent_granted', { type: 'all' });
+      }
+      if (window.soundEngine && typeof window.soundEngine.playSuccess === 'function') {
+        window.soundEngine.playSuccess();
+      }
+    });
+  }
+
+  if (btnEssentialCookies && cookieBanner) {
+    btnEssentialCookies.addEventListener('click', () => {
+      localStorage.setItem('sheetfix_cookie_consent', 'essential');
+      cookieBanner.classList.add('is-hidden');
+      if (window.SheetFixAnalytics) {
+        window.SheetFixAnalytics.track('consent_granted', { type: 'essential' });
+      }
+      if (window.soundEngine && typeof window.soundEngine.playClick === 'function') {
+        window.soundEngine.playClick();
+      }
+    });
+  }
+
+  // 9. SheetFix Analytics Auto-Initialization
+  if (window.SheetFixAnalytics) {
+    window.SheetFixAnalytics.init();
+  }
 
   // Check initial auth state and set initial language
   checkAuth();

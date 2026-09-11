@@ -15,9 +15,12 @@ const MIME_TYPES = {
   '.css': 'text/css; charset=utf-8',
   '.js': 'application/javascript; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
+  '.txt': 'text/plain; charset=utf-8',
+  '.xml': 'application/xml; charset=utf-8',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg',
+  '.webp': 'image/webp',
   '.gif': 'image/gif',
   '.svg': 'image/svg+xml',
   '.ico': 'image/x-icon',
@@ -217,7 +220,7 @@ export const server = http.createServer(async (req, res) => {
   res.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
   res.setHeader(
     'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'self';"
+    "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data:; connect-src 'self' https://api.web3forms.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self';"
   );
   res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
 
@@ -637,6 +640,12 @@ export const server = http.createServer(async (req, res) => {
 
   fs.stat(resolvedPath, (err, stats) => {
     if (err || !stats.isFile()) {
+      const notFoundPage = path.join(__dirname, '404.html');
+      if (fs.existsSync(notFoundPage)) {
+        res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
+        fs.createReadStream(notFoundPage).pipe(res);
+        return;
+      }
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
       res.end('404 Not Found');
       return;

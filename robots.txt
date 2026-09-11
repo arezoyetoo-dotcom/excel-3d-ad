@@ -1,0 +1,9 @@
+# SheetFix 3D - Robots Exclusion Standard
+User-agent: *
+Allow: /
+Disallow: /data/
+Disallow: /scripts/
+Disallow: /test/
+Disallow: /api/
+
+Sitemap: https://arezoyetoo-dotcom.github.io/excel-3d-ad/sitemap.xml

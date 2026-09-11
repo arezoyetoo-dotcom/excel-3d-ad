@@ -1925,3 +1925,87 @@ body[dir="rtl"] .architect-data-table {
   border-radius: 6px;
 }
 
+/* =============================================================
+   Cookie & Privacy Consent Banner (GDPR & Institutional Compliance)
+============================================================= */
+.cookie-consent-banner {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  max-width: 440px;
+  background: rgba(25, 28, 36, 0.98);
+  border: 1px solid var(--border-volt);
+  border-radius: 14px;
+  padding: 18px 22px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  backdrop-filter: blur(12px);
+  animation: slideUpCookie 0.3s ease-out;
+}
+
+[dir="rtl"] .cookie-consent-banner {
+  right: auto;
+  left: 24px;
+}
+
+@keyframes slideUpCookie {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.cookie-content {
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.cookie-content a {
+  color: var(--brand-volt);
+  text-decoration: underline;
+}
+
+.cookie-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-cookie-accept {
+  background: var(--brand-volt);
+  color: #11141A;
+  border: none;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cookie-accept:hover {
+  box-shadow: 0 0 12px rgba(182, 255, 46, 0.4);
+}
+
+.btn-cookie-essential {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cookie-essential:hover {
+  color: #FFFFFF;
+  border-color: #9CA3AF;
+}
+
+
